@@ -36,6 +36,9 @@ public class QKidsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 setUserDetail(false);
+                Intent intent = new Intent(QKidsActivity.this, QEnglishActivity.class);
+                startActivity(intent);
+                finish();
             }
         });
     }
