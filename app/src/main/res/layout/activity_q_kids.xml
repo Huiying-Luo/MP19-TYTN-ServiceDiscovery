@@ -10,7 +10,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:text="Do you have any kids?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
@@ -26,10 +26,12 @@
 
     <Button
         android:id="@+id/Q1_yes_Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="35dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginRight="135dp"
         android:background="@drawable/button_background"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
@@ -38,16 +40,19 @@
         android:text="Yes"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toTopOf="@+id/Q1_no_Button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/Q1_no_Button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="88dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginRight="135dp"
         android:background="@drawable/button_background"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
@@ -56,6 +61,7 @@
         android:text="No"
         android:textColor="@android:color/white"
         android:textSize="18sp"
+        android:textAllCaps="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
