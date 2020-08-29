@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="84dp"
-        android:text="Welcome to \nService Discover"
+        android:text="Welcome to \nService Discovery"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="30sp"

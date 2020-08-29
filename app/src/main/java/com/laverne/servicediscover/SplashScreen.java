@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private static int DELAY_TIME = 2000;
+    private static int DELAY_TIME = 1800;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
