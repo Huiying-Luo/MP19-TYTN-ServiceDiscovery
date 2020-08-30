@@ -6,9 +6,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputLayout;
 import com.laverne.servicediscover.MainActivity;
@@ -27,10 +32,14 @@ public class QAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_address);
 
+        configureEditText();
+
         addressTIL = findViewById(R.id.til_address);
         addressEditText = findViewById(R.id.et_address);
+        addressEditText.addTextChangedListener(new addressEditTextWatcher());
         postcodeTIL = findViewById(R.id.til_postcode);
         postcodeEditText = findViewById(R.id.et_postcode);
+        postcodeEditText.addTextChangedListener(new postcodeEditTextWatcher());
         Button button = findViewById(R.id.question_address_button);
 
         button.setOnClickListener(new View.OnClickListener() {
@@ -77,5 +86,51 @@ public class QAddressActivity extends AppCompatActivity {
         SharedPreferences.Editor spEditor = sharedPref.edit();
         spEditor.putString("address", address);
         spEditor.apply();
+    }
+
+    private void configureEditText() {
+        postcodeEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                    // hide virtual keyboard
+                    InputMethodManager imm = (InputMethodManager) QAddressActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(postcodeEditText.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
+            }
+        });
+    }
+
+    private class addressEditTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            addressTIL.setErrorEnabled(false);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
+    }
+
+
+    private class postcodeEditTextWatcher implements TextWatcher {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            postcodeTIL.setErrorEnabled(false);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+        }
     }
 }

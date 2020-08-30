@@ -56,6 +56,7 @@ import okhttp3.internal.platform.android.UtilKt;
 public class LibraryFragment extends Fragment {
 
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
+    private static final int REQUEST_CODE_CALL_PERMISSION = 2;
 
     private Spinner sortSpinner;
     private ArrayAdapter<String> sortSpinnerAdapter;
@@ -64,7 +65,6 @@ public class LibraryFragment extends Fragment {
     private LibraryRecyclerViewAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<Library> libraries;
-    private List<Library> librariesWithCurrentDist;
     private NetworkConnection networkConnection;
     private Geocoder geocoder;
     private TextView errorTextView;
@@ -91,6 +91,8 @@ public class LibraryFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
         errorTextView = view.findViewById(R.id.library_error_tv);
 
+        libraries = new ArrayList<>();
+        initRecyclerView();
         setUpSwipeToUpdate();
         networkConnection = new NetworkConnection();
         geocoder = new Geocoder(getContext(), Locale.getDefault());
@@ -98,12 +100,8 @@ public class LibraryFragment extends Fragment {
         getUserHomeLocation();
         configureSortSpinner();
 
-        //new GetAllLibaryTask().execute();
-        libraries = new ArrayList<>();
-        libraries.add(new Library("Carnegie Library", "7 Shepparson Ave, Carnegie VIC 3163", "www.google.com", "0478742887", -37.887440, 145.058280, 0, 0));
-        libraries.add(new Library("My home", "900 Dandenong Rd, Caulfield East VIC 3145", "www.google.com", "0478742887", -37.877010, 145.044266, 0, 0));
-        initRecyclerView();
-        sortByHomeAddress(false);
+        new GetAllLibaryTask().execute();
+
 
         return view;
     }
@@ -114,6 +112,10 @@ public class LibraryFragment extends Fragment {
             ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
         } else {
             enableGetLocation = true;
+        }
+
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
         }
     }
 
@@ -127,7 +129,9 @@ public class LibraryFragment extends Fragment {
         } else {
             enableGetLocation = false;
         }
+
     }
+
 
     private void getUserCurrentLocation() {
         // create location request
@@ -148,6 +152,7 @@ public class LibraryFragment extends Fragment {
                         double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
                         double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
                         currentLatLng = new double[] {latitude, longitude};
+                        calculateDistanceFromCurrentLocation();
                         Log.i("locationCurrent", String.valueOf(currentLatLng[0]) + ", " + String.valueOf(currentLatLng[1]));
                     }
                 }
@@ -175,7 +180,7 @@ public class LibraryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-            libraries = new ArrayList<>();
+
 
             if (result != null) {
                 try {
@@ -188,12 +193,12 @@ public class LibraryFragment extends Fragment {
                                 //isLastMemoir = true;
                             }
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String libName = jsonObject.getString("libName");
-                            String libAddress = jsonObject.getString("libAddress");
-                            String libPhoneNo = jsonObject.getString("libPhoneNo");
-                            String libWebsite = jsonObject.getString("libWebsite");
-                            double libLatitude = jsonObject.getDouble("libLatitude");
-                            double libLongitude = jsonObject.getDouble("libLongitude");
+                            String libName = jsonObject.getString("name");
+                            String libAddress = jsonObject.getString("address");
+                            String libPhoneNo = jsonObject.getString("phone");
+                            String libWebsite = jsonObject.getString("website");
+                            double libLatitude = jsonObject.getDouble("latitude");
+                            double libLongitude = jsonObject.getDouble("longitude");
                             float homeDistance;
                             float currentDistance = 0;
                             if (homeLatLng.length == 0) {
@@ -209,7 +214,7 @@ public class LibraryFragment extends Fragment {
                             libraries.add(library);
                         }
                         sortByHomeAddress(false);
-                        initRecyclerView();
+                        adapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
                     Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong, please try again later.");
@@ -290,8 +295,6 @@ public class LibraryFragment extends Fragment {
                             resetRecyclerViewAdapter(false);
                         }
                         sortByCurrentLocation();
-                        adapter.notifyDataSetChanged();
-                        layoutManager.scrollToPosition(0);
                         break;
                 }
             }
@@ -335,27 +338,63 @@ public class LibraryFragment extends Fragment {
     }
 
 
+    private void calculateDistanceFromCurrentLocation() {
+        for (int i = 0; i < libraries.size(); i++) {
+            // distance from user current location
+            float[] distance = new float[2];
+            Location.distanceBetween(currentLatLng[0], currentLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), distance);
+            libraries.get(i).setCurrentDistance(distance[0]);
+            Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
+        }
+        hasCurrentLocation = true;
+    }
+
+
     private void sortByCurrentLocation() {
         if (!hasCurrentLocation) {
-            getUserCurrentLocation();
+            //getUserCurrentLocation();
+            // create location request
+            LocationRequest locationRequest = LocationRequest.create();
+            locationRequest.setInterval(10000);
+            locationRequest.setFastestInterval(5000);
+            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+            checkLocationPermission();
             if (enableGetLocation) {
-                for (int i = 0; i < libraries.size(); i++) {
-                    // distance from user current location
-                    float[] distance = new float[2];
-                    Location.distanceBetween(currentLatLng[0], currentLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), distance);
-                    libraries.get(i).setCurrentDistance(distance[0]);
-                    Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
-                }
-                hasCurrentLocation = true;
+                LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
+                    @Override
+                    public void onLocationResult(LocationResult locationResult) {
+                        super.onLocationResult(locationResult);
+                        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
+                        if (locationResult != null && locationResult.getLocations().size() > 0) {
+                            int latestLocationIndex = locationResult.getLocations().size() - 1;
+                            double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
+                            double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
+                            currentLatLng = new double[] {latitude, longitude};
+                            calculateDistanceFromCurrentLocation();
+                            sorting();
+                            Log.i("locationCurrent", String.valueOf(currentLatLng[0]) + ", " + String.valueOf(currentLatLng[1]));
+
+                        }
+                    }
+                }, Looper.getMainLooper());
             }
         }
 
+        sorting();
+
+
+    }
+
+    private void sorting() {
         Collections.sort(libraries, new Comparator<Library>() {
             @Override
             public int compare(Library o1, Library o2) {
                 return Float.compare(o1.getCurrentDistance(), o2.getCurrentDistance());
             }
         });
+        adapter.notifyDataSetChanged();
+        layoutManager.scrollToPosition(0);
     }
 
     private void setUpSwipeToUpdate() {
@@ -374,4 +413,6 @@ public class LibraryFragment extends Fragment {
             }
         });
     }
+
+
 }

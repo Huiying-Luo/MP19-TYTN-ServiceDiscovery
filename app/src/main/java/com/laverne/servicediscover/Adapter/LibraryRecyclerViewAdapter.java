@@ -1,9 +1,12 @@
 package com.laverne.servicediscover.Adapter;
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,16 +16,21 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.R;
+import com.laverne.servicediscover.Utilities;
 
 import org.w3c.dom.Text;
 
 import java.util.List;
 
+import okhttp3.internal.platform.android.UtilKt;
+
 public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecyclerViewAdapter.ViewHolder> {
+    private static final int REQUEST_CODE_CALL_PERMISSION = 2;
 
     private List<Library> liraries;
     private Context context;
@@ -97,29 +105,46 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         } else {
             tvDistance.setText("Distance: " + String.format("%.2f", distance * 0.001) + "km");
         }
-        String phoneNo = library.getPhoneNo();
-        String website = library.getWebsite();
-        Button callBtn = viewHolder.callButton;
+        final String phoneNo = library.getPhoneNo();
+        final String website = library.getWebsite();
+        final Button callBtn = viewHolder.callButton;
         Button websiteBtn = viewHolder.websiteButton;
 
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // make phone call
+                if (ActivityCompat.checkSelfPermission(context,
+                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+                    Utilities.showAlertDialogwithOkButton(context, "No Permission", "Oops, you do not grant me a permission to make a phone call.");
+                } else {
+                    Intent callIntent = new Intent(Intent.ACTION_CALL);
+                    callIntent.setData(Uri.parse("tel:" + phoneNo));
+                    context.startActivity(callIntent);
+                }
+
             }
         });
+
 
         websiteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // open website
+                Uri uri = Uri.parse(website);
+                Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
+                context.startActivity(launchWeb);
             }
         });
     }
+
+
 
 
     public void updateList(List<Library> liraries) {
         this.liraries = liraries;
         notifyDataSetChanged();
     }
+
+
 }
