@@ -40,7 +40,7 @@ public class QAddressActivity extends AppCompatActivity {
                 String postcode = postcodeEditText.getText().toString();
 
                 if (validateAddress(address) && validatePostcode(postcode)) {
-                    setUserAddress(address + ", " + postcode + " " + "VIC");
+                    setUserAddress(address + " " + "VIC" + " " + postcode);
 
                     Intent intent = new Intent(QAddressActivity.this, MainActivity.class);
                     startActivity(intent);

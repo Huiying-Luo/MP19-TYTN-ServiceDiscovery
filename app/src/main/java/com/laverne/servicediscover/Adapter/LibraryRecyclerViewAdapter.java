@@ -26,9 +26,11 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
 
     private List<Library> liraries;
     private Context context;
+    private boolean isHomeDistance;
 
-    public LibraryRecyclerViewAdapter(List<Library> libraries) {
+    public LibraryRecyclerViewAdapter(List<Library> libraries, boolean isHomeDistance) {
         this.liraries = libraries;
+        this.isHomeDistance = isHomeDistance;
     }
 
 
@@ -39,9 +41,12 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         public TextView distanceTextView;
         public Button callButton;
         public Button websiteButton;
+        public  boolean isHomeDistance;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, boolean isHomeDistance) {
             super(itemView);
+
+            this.isHomeDistance = isHomeDistance;
 
             nameTextView = itemView.findViewById(R.id.library_name);
             addressTextView = itemView.findViewById(R.id.library_address);
@@ -66,7 +71,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         // Inflate the view from XML layout file
         View libraryView = inflater.inflate(R.layout.library_rv_layout, parent, false);
         // construct the viewholder with the new view
-        ViewHolder viewHolder = new ViewHolder(libraryView);
+        ViewHolder viewHolder = new ViewHolder(libraryView, isHomeDistance);
         return viewHolder;
     }
 
@@ -81,7 +86,17 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         TextView tvAddress = viewHolder.addressTextView;
         tvAddress.setText(library.getAddress());
         TextView tvDistance = viewHolder.distanceTextView;
-        tvDistance.setText(library.getDistance());
+        float distance = 0;
+        if (isHomeDistance) {
+            distance = library.getHomeDistance();
+        } else {
+            distance = library.getCurrentDistance();
+        }
+        if (distance < 1000) {
+            tvDistance.setText("Distance: " + String.valueOf((int)distance) + "m");
+        } else {
+            tvDistance.setText("Distance: " + String.format("%.2f", distance * 0.001) + "km");
+        }
         String phoneNo = library.getPhoneNo();
         String website = library.getWebsite();
         Button callBtn = viewHolder.callButton;

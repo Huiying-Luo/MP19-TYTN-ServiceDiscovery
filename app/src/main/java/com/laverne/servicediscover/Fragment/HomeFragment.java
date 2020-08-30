@@ -1,5 +1,7 @@
 package com.laverne.servicediscover.Fragment;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +12,8 @@ import android.widget.TextView;
 import androidx.annotation.NavigationRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +22,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.R;
 
 public class HomeFragment extends Fragment {
+
 
     private ImageView libraryBtn;
     private NavigationView navigationView;
@@ -49,4 +54,7 @@ public class HomeFragment extends Fragment {
         fragmentTransaction.replace(R.id.content_frame, nextFragment);
         fragmentTransaction.commit();
     }
+
+
+
 }
