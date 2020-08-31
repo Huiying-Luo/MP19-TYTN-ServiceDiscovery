@@ -32,7 +32,7 @@ public class QAddressActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_address);
 
-        configureEditText();
+        //configureEditText();
 
         addressTIL = findViewById(R.id.til_address);
         addressEditText = findViewById(R.id.et_address);

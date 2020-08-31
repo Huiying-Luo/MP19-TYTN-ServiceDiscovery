@@ -246,7 +246,9 @@ public class LibraryFragment extends Fragment {
             userAddr = geocoder.getFromLocationName(address, 1);
 
             if (userAddr == null || userAddr.size() == 0) {
+
                 Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "We cannot calculate the distance for you.\n Please check your home address in Setting!");
+                homeLatLng = new double[] {0, 0};
                 return;
             }
 
@@ -258,12 +260,12 @@ public class LibraryFragment extends Fragment {
         } catch (IOException e) {
             e.printStackTrace();
             Log.i("error", e.getMessage().toString());
+            homeLatLng = new double[] {0, 0};
             Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "We cannot calculate the distance for you.\n Please check your home address in Setting!");
         }
 
-        if (homeLatitude != 0 && homeLongitude != 0) {
-            homeLatLng = new double[] {homeLatitude, homeLongitude};
-        }
+        homeLatLng = new double[] {homeLatitude, homeLongitude};
+
     }
 
 
