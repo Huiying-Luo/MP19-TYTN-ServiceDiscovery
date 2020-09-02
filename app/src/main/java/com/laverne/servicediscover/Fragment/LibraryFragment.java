@@ -1,21 +1,28 @@
 package com.laverne.servicediscover.Fragment;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Looper;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,16 +31,21 @@ import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.Adapter.LibraryRecyclerViewAdapter;
+import com.laverne.servicediscover.MainActivity;
 import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.NetworkConnection.NetworkConnection;
 import com.laverne.servicediscover.R;
@@ -51,12 +63,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
-import okhttp3.internal.platform.android.UtilKt;
-
 public class LibraryFragment extends Fragment {
 
-    private static final int REQUEST_CODE_LOCATION_PERMISSION = 1;
     private static final int REQUEST_CODE_CALL_PERMISSION = 2;
+    private static final String TAG = "LibraryFragment";
+    FusedLocationProviderClient fusedLocationProviderClient;
 
     private Spinner sortSpinner;
     private ArrayAdapter<String> sortSpinnerAdapter;
@@ -68,14 +79,13 @@ public class LibraryFragment extends Fragment {
     private NetworkConnection networkConnection;
     private Geocoder geocoder;
     private TextView errorTextView;
+    private ProgressBar progressBar;
 
     private String address;
-    private double[] homeLatLng;
+    private double[] homeLatLng = null;
     private double[] currentLatLng = null;
 
-    private boolean enableGetLocation = false;
-    private boolean hasCurrentLocation = false;
-    private boolean isSortedByHomeAddress = true;
+    private boolean isSortedByHomeAddress = false;
 
     public LibraryFragment() {
     }
@@ -90,14 +100,18 @@ public class LibraryFragment extends Fragment {
         recyclerView = view.findViewById(R.id.library_recycler_view);
         swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
         errorTextView = view.findViewById(R.id.library_error_tv);
+        progressBar = view.findViewById(R.id.library_progress_bar);
+
+        geocoder = new Geocoder(getContext(), Locale.getDefault());
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         libraries = new ArrayList<>();
         initRecyclerView();
         setUpSwipeToUpdate();
+
         networkConnection = new NetworkConnection();
-        geocoder = new Geocoder(getContext(), Locale.getDefault());
+
         getUserCurrentLocation();
-        getUserHomeLocation();
         configureSortSpinner();
 
         new GetAllLibaryTask().execute();
@@ -107,57 +121,34 @@ public class LibraryFragment extends Fragment {
     }
 
 
-    private void checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_CODE_LOCATION_PERMISSION);
-        } else {
-            enableGetLocation = true;
-        }
+    private void getLastLocation() {
+        @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
 
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if (requestCode == REQUEST_CODE_LOCATION_PERMISSION && grantResults.length > 0) {
-            enableGetLocation = true;
-        } else {
-            enableGetLocation = false;
-        }
-
-    }
-
-
-    private void getUserCurrentLocation() {
-        // create location request
-        LocationRequest locationRequest = LocationRequest.create();
-        locationRequest.setInterval(10000);
-        locationRequest.setFastestInterval(5000);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-        checkLocationPermission();
-        if (enableGetLocation) {
-            LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
-                @Override
-                public void onLocationResult(LocationResult locationResult) {
-                    super.onLocationResult(locationResult);
-                    LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
-                    if (locationResult != null && locationResult.getLocations().size() > 0) {
-                        int latestLocationIndex = locationResult.getLocations().size() - 1;
-                        double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                        double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-                        currentLatLng = new double[] {latitude, longitude};
-                        calculateDistanceFromCurrentLocation();
-                        Log.i("locationCurrent", String.valueOf(currentLatLng[0]) + ", " + String.valueOf(currentLatLng[1]));
-                    }
+        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                if (location != null) {
+                    // We have location
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLongitude();
+                    SharedPreferences sharedPref = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+                    SharedPreferences.Editor spEditor = sharedPref.edit();
+                    spEditor.putFloat("latitude", (float) latitude);
+                    spEditor.putFloat("longitude", (float) longitude);
+                    spEditor.apply();
                 }
-            }, Looper.getMainLooper());
-        }
+            }
+        });
+
+
+        locationTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                // show error alert
+                Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong! Fail to get your current location.");
+                Log.d(TAG, e.getLocalizedMessage());
+            }
+        });
     }
 
 
@@ -165,7 +156,7 @@ public class LibraryFragment extends Fragment {
         adapter = new LibraryRecyclerViewAdapter(libraries, isSortedByHomeAddress);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 0));
         recyclerView.setAdapter(adapter);
-
+        registerCallbackForPhoneCall();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
     }
@@ -199,21 +190,24 @@ public class LibraryFragment extends Fragment {
                             String libWebsite = jsonObject.getString("website");
                             double libLatitude = jsonObject.getDouble("latitude");
                             double libLongitude = jsonObject.getDouble("longitude");
-                            float homeDistance;
-                            float currentDistance = 0;
-                            if (homeLatLng.length == 0) {
-                                homeDistance = 0;
+                            float homeDistance = 0;
+                            float currentDistance;
+                            if (currentLatLng[0] == 0 && currentLatLng[1] == 0) {
+                                currentDistance = 0;
                             } else {
-                                // distance from user's home address
-                                float[] homeDist = new float[2];
-                                Location.distanceBetween(homeLatLng[0], homeLatLng[1], libLatitude, libLongitude, homeDist);
-                                homeDistance = homeDist[0];
+                                // distance from user current location
+                                float[] distance = new float[2];
+                                Location.distanceBetween(currentLatLng[0], currentLatLng[1], libLatitude, libLongitude, distance);
+                                currentDistance = distance[0];
+                                Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
                             }
 
-                            Library library = new Library(libName,libAddress, libWebsite, libPhoneNo, libLatitude, libLongitude, homeDistance, currentDistance);
+                            Library library = new Library(libName, libAddress, libWebsite, libPhoneNo, libLatitude, libLongitude, homeDistance, currentDistance);
                             libraries.add(library);
                         }
-                        sortByHomeAddress(false);
+                        sortByCurrentLocation(false);
+                        // remove the progress bar
+                        progressBar.setVisibility(View.GONE);
                         adapter.notifyDataSetChanged();
                     }
                 } catch (JSONException e) {
@@ -235,8 +229,24 @@ public class LibraryFragment extends Fragment {
     }
 
 
+    private void getUserCurrentLocation() {
+        SharedPreferences sharedPref = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
+        if (currentLatLng == null) {
+            currentLatLng = new double[]{0, 0};
+        }
+        currentLatLng[0] = sharedPref.getFloat("latitude", 0);
+        currentLatLng[1] = sharedPref.getFloat("longitude", 0);
+    }
+
+
     private void getUserHomeLocation() {
         address = getUserAddress();
+        if (address.length() == 0) {
+            // show an alert dialog
+            alertForHomeAddress("You have not set  your home address, please go to Settings to enter your address.");
+            sortSpinner.setSelection(0);
+            return;
+        }
 
         double homeLatitude = 0;
         double homeLongitude = 0;
@@ -246,31 +256,57 @@ public class LibraryFragment extends Fragment {
             userAddr = geocoder.getFromLocationName(address, 1);
 
             if (userAddr == null || userAddr.size() == 0) {
-
-                Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "We cannot calculate the distance for you.\n Please check your home address in Setting!");
-                homeLatLng = new double[] {0, 0};
+                alertForHomeAddress("We cannot calculate the distance for you.\n Please check your home address in Setting");
+                sortSpinner.setSelection(0);
                 return;
             }
 
             Address addr = userAddr.get(0);
             homeLatitude = addr.getLatitude();
-            homeLongitude= addr.getLongitude();
+            homeLongitude = addr.getLongitude();
 
 
         } catch (IOException e) {
             e.printStackTrace();
             Log.i("error", e.getMessage().toString());
-            homeLatLng = new double[] {0, 0};
-            Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "We cannot calculate the distance for you.\n Please check your home address in Setting!");
+            alertForHomeAddress("We cannot calculate the distance for you.\n Please check your home address in Setting");
+            sortSpinner.setSelection(0);
         }
 
-        homeLatLng = new double[] {homeLatitude, homeLongitude};
+        homeLatLng = new double[]{homeLatitude, homeLongitude};
 
     }
 
 
-    private  void configureSortSpinner() {
-        String[] options = new String[] {"Distance from home", "Distance from current location"};
+    private void alertForHomeAddress(String message) {
+        new AlertDialog.Builder(getActivity())
+                .setTitle("Sorry")
+                .setMessage(message)
+                .setPositiveButton("Go to Setting", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                        fragmentTransaction.replace(R.id.content_frame, new SettingFragment());
+                        fragmentTransaction.commit();
+                        NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
+                        navigationView.setCheckedItem(R.id.library);
+                        getActivity().setTitle("Library");
+                    }
+                })
+                .setCancelable(false)
+                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .show();
+    }
+
+
+    private void configureSortSpinner() {
+        String[] options = new String[]{"Distance from current location", "Distance from home"};
 
         final List<String> sortList = new ArrayList<String>(Arrays.asList(options));
 
@@ -281,22 +317,25 @@ public class LibraryFragment extends Fragment {
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 switch (position) {
                     case 0:
-                        // sort by distance from home
-                        sortByHomeAddress(false);
-                        if (!isSortedByHomeAddress) {
-                            isSortedByHomeAddress = true;
-                            resetRecyclerViewAdapter(true);
-                        }
-                        adapter.notifyDataSetChanged();
-                        layoutManager.scrollToPosition(0);
-                        break;
-                    case 1:
                         // sort by distance from current location
                         if (isSortedByHomeAddress) {
                             isSortedByHomeAddress = false;
                             resetRecyclerViewAdapter(false);
                         }
-                        sortByCurrentLocation();
+                        sortByCurrentLocation(false);
+                        break;
+                    case 1:
+                        // sort by distance from home
+                        getUserHomeLocation();
+                        if (homeLatLng != null) {
+                            sortByHomeAddress();
+                            if (!isSortedByHomeAddress) {
+                                isSortedByHomeAddress = true;
+                                resetRecyclerViewAdapter(true);
+                            }
+                            adapter.notifyDataSetChanged();
+                            layoutManager.scrollToPosition(0);
+                        }
                         break;
                 }
             }
@@ -311,84 +350,44 @@ public class LibraryFragment extends Fragment {
     private void resetRecyclerViewAdapter(boolean isSortedByHomeAddress) {
         adapter = new LibraryRecyclerViewAdapter(libraries, isSortedByHomeAddress);
         recyclerView.setAdapter(adapter);
+        registerCallbackForPhoneCall();
     }
 
 
-    private void sortByHomeAddress(boolean forRefresh) {
-        if (forRefresh) {
-            // if user has update his address in setting
-            if (getUserAddress() != address) {
-                getUserHomeLocation();
-                for (int i = 0; i < libraries.size(); i++) {
-                    if (homeLatLng.length == 0) {
-                        libraries.get(i).setHomeDistance(0);
-                    } else {
-                        // distance from user's home address
-                        float[] homeDist = new float[2];
-                        Location.distanceBetween(homeLatLng[0], homeLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), homeDist);
-                        libraries.get(i).setHomeDistance(homeDist[0]);
-                    }
-                }
-            }
+    private void sortByHomeAddress() {
+        for (int i = 0; i < libraries.size(); i++) {
+            // distance from user's home address
+            float[] homeDist = new float[2];
+            Location.distanceBetween(homeLatLng[0], homeLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), homeDist);
+            libraries.get(i).setHomeDistance(homeDist[0]);
         }
+
         Collections.sort(libraries, new Comparator<Library>() {
             @Override
             public int compare(Library o1, Library o2) {
                 return Float.compare(o1.getHomeDistance(), o2.getHomeDistance());
             }
         });
+        adapter.notifyDataSetChanged();
+        layoutManager.scrollToPosition(0);
     }
 
 
-    private void calculateDistanceFromCurrentLocation() {
-        for (int i = 0; i < libraries.size(); i++) {
-            // distance from user current location
-            float[] distance = new float[2];
-            Location.distanceBetween(currentLatLng[0], currentLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), distance);
-            libraries.get(i).setCurrentDistance(distance[0]);
-            Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
-        }
-        hasCurrentLocation = true;
-    }
-
-
-    private void sortByCurrentLocation() {
-        if (!hasCurrentLocation) {
-            //getUserCurrentLocation();
-            // create location request
-            LocationRequest locationRequest = LocationRequest.create();
-            locationRequest.setInterval(10000);
-            locationRequest.setFastestInterval(5000);
-            locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
-            checkLocationPermission();
-            if (enableGetLocation) {
-                LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
-                    @Override
-                    public void onLocationResult(LocationResult locationResult) {
-                        super.onLocationResult(locationResult);
-                        LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
-                        if (locationResult != null && locationResult.getLocations().size() > 0) {
-                            int latestLocationIndex = locationResult.getLocations().size() - 1;
-                            double latitude = locationResult.getLocations().get(latestLocationIndex).getLatitude();
-                            double longitude = locationResult.getLocations().get(latestLocationIndex).getLongitude();
-                            currentLatLng = new double[] {latitude, longitude};
-                            calculateDistanceFromCurrentLocation();
-                            sorting();
-                            Log.i("locationCurrent", String.valueOf(currentLatLng[0]) + ", " + String.valueOf(currentLatLng[1]));
-
-                        }
-                    }
-                }, Looper.getMainLooper());
+    private void sortByCurrentLocation(boolean forRefresh) {
+        if (forRefresh) {
+            // Update location
+            getLastLocation();
+            getUserCurrentLocation();
+            for (int i = 0; i < libraries.size(); i++) {
+                // distance from user current location
+                float[] distance = new float[2];
+                Location.distanceBetween(currentLatLng[0], currentLatLng[1], libraries.get(i).getLatitude(), libraries.get(i).getLongitude(), distance);
+                libraries.get(i).setCurrentDistance(distance[0]);
+                Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
             }
         }
 
-        sorting();
-
-
-    }
-
-    private void sorting() {
+        // Sorting
         Collections.sort(libraries, new Comparator<Library>() {
             @Override
             public int compare(Library o1, Library o2) {
@@ -397,17 +396,16 @@ public class LibraryFragment extends Fragment {
         });
         adapter.notifyDataSetChanged();
         layoutManager.scrollToPosition(0);
+        isSortedByHomeAddress = false;
     }
+
 
     private void setUpSwipeToUpdate() {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (isSortedByHomeAddress) {
-                    sortByHomeAddress(true);
-                } else {
-                    hasCurrentLocation = false;
-                    sortByCurrentLocation();
+                if (!isSortedByHomeAddress) {
+                    sortByCurrentLocation(true);
                 }
                 adapter.notifyDataSetChanged();
                 layoutManager.scrollToPosition(0);
@@ -416,5 +414,67 @@ public class LibraryFragment extends Fragment {
         });
     }
 
+
+    private void goToApplicationSettings() {
+        Intent intent = new Intent();
+        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
+        intent.setData(uri);
+        startActivity(intent);
+    }
+
+
+    private void registerCallbackForPhoneCall() {
+        adapter.setPhoneCallListener(new LibraryRecyclerViewAdapter.OnPhoneCallListener() {
+            @Override
+            public void onPhoneCallClick(String phoneNo) {
+                makePhoneCall(phoneNo);
+            }
+        });
+    }
+
+
+    private void makePhoneCall(final String phoneNo) {
+        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
+            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {
+                // This block here means PERMANENTLY DENIED PERMISSION (Don't ask again)
+                new AlertDialog.Builder(getActivity())
+                        .setMessage("Phone Number: " + phoneNo + "\nIf you want to make a phone call here, please go to Settings to enable the phone call permission.")
+                        .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                goToApplicationSettings();
+                            }
+                        })
+                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                            }
+                        })
+                        .show();
+            }
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
+        } else {
+            new AlertDialog.Builder(getActivity())
+                    .setMessage("Do you want to call the number:\n" + phoneNo)
+                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+                        @SuppressLint("MissingPermission")
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent callIntent = new Intent(Intent.ACTION_CALL);
+                            callIntent.setData(Uri.parse("tel:" + phoneNo));
+                            getActivity().startActivity(callIntent);
+                        }
+                    })
+                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .show();
+        }
+    }
 
 }

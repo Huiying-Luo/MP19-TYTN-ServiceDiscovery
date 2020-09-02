@@ -13,36 +13,46 @@
         android:icon="@drawable/list"
         android:title="Discovery List" />
 
-    <item android:title="Public Services">
-        <menu>
-            <item
-                android:id="@+id/library"
-                android:checkable="true"
-                android:iconTint="@android:color/black"
-                android:icon="@drawable/library"
-                android:title="Library" />
-            <item
-                android:id="@+id/education"
-                android:checkable="true"
-                android:iconTint="@android:color/black"
-                android:icon="@drawable/education"
-                android:title="Education" />
-            <item
-                android:id="@+id/healthcare"
-                android:checkable="true"
-                android:iconTint="@android:color/black"
-                android:icon="@drawable/healthcare"
-                android:title="Healthcare" />
+    <group android:id="@+id/services">
+        <item android:title="Public Services">
+            <menu>
+                <item
+                    android:id="@+id/library"
+                    android:checkable="true"
+                    android:iconTint="@android:color/black"
+                    android:icon="@drawable/library"
+                    android:title="Library" />
+                <item
+                    android:id="@+id/education"
+                    android:checkable="true"
+                    android:iconTint="@android:color/black"
+                    android:icon="@drawable/education"
+                    android:title="Education" />
+                <item
+                    android:id="@+id/healthcare"
+                    android:checkable="true"
+                    android:iconTint="@android:color/black"
+                    android:icon="@drawable/healthcare"
+                    android:title="Healthcare" />
 
-            <item
-                android:id="@+id/workplace"
-                android:checkable="true"
-                android:iconTint="@android:color/black"
-                android:icon="@drawable/workplace"
-                android:title="Workplace" />
-        </menu>
+                <item
+                    android:id="@+id/workplace"
+                    android:checkable="true"
+                    android:iconTint="@android:color/black"
+                    android:icon="@drawable/workplace"
+                    android:title="Workplace" />
+            </menu>
 
-    </item>
+        </item>
+    </group>
+
+    <group android:id="@+id/setting">
+        <item
+            android:id="@+id/menu_setting"
+            android:checkable="true"
+            android:icon="@drawable/setting"
+            android:title="Setting" />
+    </group>
 
 
     <item

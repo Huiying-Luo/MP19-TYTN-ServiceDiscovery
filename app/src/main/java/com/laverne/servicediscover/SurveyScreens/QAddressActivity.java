@@ -41,6 +41,7 @@ public class QAddressActivity extends AppCompatActivity {
         postcodeEditText = findViewById(R.id.et_postcode);
         postcodeEditText.addTextChangedListener(new postcodeEditTextWatcher());
         Button button = findViewById(R.id.question_address_button);
+        Button skipBtn = findViewById(R.id.button_skip);
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +58,17 @@ public class QAddressActivity extends AppCompatActivity {
                 }
             }
         });
+
+        skipBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setUserAddress("");
+                Intent intent = new Intent(QAddressActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
     }
 
     private boolean validateAddress(String address) {

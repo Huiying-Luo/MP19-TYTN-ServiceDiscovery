@@ -21,6 +21,17 @@
         android:layout_height="40dp"
         android:layout_margin="15dp"/>
 
+    <ProgressBar
+        android:id="@+id/library_progress_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:indeterminate="true"
+        android:max="100"
+        android:progress="1"/>
+
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/library_swipe_refresh_layout"
         android:layout_width="match_parent"
@@ -33,6 +44,7 @@
             android:scrollbars="vertical"/>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 
 
 

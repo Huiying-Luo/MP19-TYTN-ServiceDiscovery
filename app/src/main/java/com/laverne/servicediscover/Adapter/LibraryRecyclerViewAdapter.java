@@ -36,11 +36,17 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
     private Context context;
     private boolean isHomeDistance;
 
+    private OnPhoneCallListener phoneCallListener;
+
     public LibraryRecyclerViewAdapter(List<Library> libraries, boolean isHomeDistance) {
         this.liraries = libraries;
         this.isHomeDistance = isHomeDistance;
     }
 
+
+    public void setPhoneCallListener(OnPhoneCallListener listener) {
+        this.phoneCallListener = listener;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -64,6 +70,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
 
             context = itemView.getContext();
         }
+
     }
 
     @Override
@@ -86,7 +93,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
 
     // this method binds the view holder created with data that will be displayed
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
         final Library library = liraries.get(position);
         // viewholder binding with its data at the specified position
         TextView tvName = viewHolder.nameTextView;
@@ -113,15 +120,8 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         callBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // make phone call
-                if (ActivityCompat.checkSelfPermission(context,
-                        Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-                    Utilities.showAlertDialogwithOkButton(context, "No Permission", "Oops, you do not grant me a permission to make a phone call.");
-                } else {
-                    Intent callIntent = new Intent(Intent.ACTION_CALL);
-                    callIntent.setData(Uri.parse("tel:" + phoneNo));
-                    context.startActivity(callIntent);
-                }
+                phoneCallListener.onPhoneCallClick(phoneNo);
+
 
             }
         });
@@ -139,7 +139,9 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
     }
 
 
-
+    public interface OnPhoneCallListener{
+        void onPhoneCallClick(String phoneNo);
+    }
 
     public void updateList(List<Library> liraries) {
         this.liraries = liraries;
