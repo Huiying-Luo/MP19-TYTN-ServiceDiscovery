@@ -53,7 +53,6 @@ public class SplashScreen extends AppCompatActivity {
                 finish();
             }
         }, DELAY_TIME);
-
     }
 
     private void setUpSharedPref(boolean isFirstRun) {
