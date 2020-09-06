@@ -19,6 +19,7 @@ Our project is to develop an Android application to guide refugees to discover a
      <img src="/Screenshots/AVDManager.png" width="600"><br />
      <br />
     2. Click __"Create Virtual Device"__<br />
+    <br />
     <img src="/Screenshots/addDevice.png" width="650"><br />
     <br />
     3. Select __"Pixel 2"__ as the type of the emulater<br />
