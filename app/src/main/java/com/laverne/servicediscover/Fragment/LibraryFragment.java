@@ -45,7 +45,6 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.Adapter.LibraryRecyclerViewAdapter;
-import com.laverne.servicediscover.MainActivity;
 import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.NetworkConnection.NetworkConnection;
 import com.laverne.servicediscover.R;
@@ -80,6 +79,8 @@ public class LibraryFragment extends Fragment {
     private Geocoder geocoder;
     private TextView errorTextView;
     private ProgressBar progressBar;
+
+    private String callingNumber;
 
     private String address;
     private double[] homeLatLng = null;
@@ -433,8 +434,19 @@ public class LibraryFragment extends Fragment {
         });
     }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // permission granted
+                makePhoneCall(callingNumber);
+            }
+        }
+    }
+
 
     private void makePhoneCall(final String phoneNo) {
+        callingNumber = phoneNo;
         if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
             if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {
                 // This block here means PERMANENTLY DENIED PERMISSION (Don't ask again)
@@ -453,8 +465,10 @@ public class LibraryFragment extends Fragment {
                             }
                         })
                         .show();
+            } else {
+                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
             }
-            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
+
         } else {
             new AlertDialog.Builder(getActivity())
                     .setMessage("Do you want to call the number:\n" + phoneNo)
