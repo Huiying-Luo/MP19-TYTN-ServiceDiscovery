@@ -45,6 +45,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.Fragment.HomeFragment;
 import com.laverne.servicediscover.Fragment.LibraryFragment;
+import com.laverne.servicediscover.Fragment.MissionFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -101,6 +102,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.homepage:
                 replaceFragment(new HomeFragment());
+                break;
+            case R.id.mission:
+                replaceFragment(new MissionFragment());
                 break;
             case R.id.library:
                 replaceFragment(new LibraryFragment());

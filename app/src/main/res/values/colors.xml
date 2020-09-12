@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4dd0e1</color>
-    <color name="colorPrimaryDark">#009faf</color>
-    <color name="colorAccent">#22AAAA</color>
+    <color name="colorPrimary">#2A9D8F</color>
+    <color name="colorPrimaryDark">#185A52</color>
+    <color name="colorAccent">#3ECCBB</color>
     <color name="buttonDark">#067583</color>
     <color name="buttonLight">#0896A8</color>
-    <color name="buttonColor">#087784</color>
+    <color name="buttonColor">#33C0B0</color>
     <color name="disableButton">#8d8d8d</color>
     <color name="red">#C80606</color>
+    <color name="lightGrey">#B2B2B2</color>
+    <color name="lightGrey2">#C6C6C6</color>
+    <color name="orange">#e76f51</color>
+    <color name="orangeDark">#C43C1B</color>
 
 
 

@@ -18,15 +18,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.R;
 
-import co.mobiwise.materialintro.animation.MaterialIntroListener;
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
+public class HomeFragment extends Fragment {
 
-public class HomeFragment extends Fragment implements MaterialIntroListener {
-
-    private TextView statusTextView;
+    private TextView notstartTextView;
+    private TextView inprogressTextView;
+    private TextView viewBtn;
     private TextView percentageTextView;
     private CardView missionCardView;
 
@@ -47,6 +43,15 @@ public class HomeFragment extends Fragment implements MaterialIntroListener {
 
         configureUI(view);
 
+        viewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new MissionFragment());
+                navigationView.setCheckedItem(R.id.mission);
+                getActivity().setTitle("My Mission");
+            }
+        });
+
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,16 +61,15 @@ public class HomeFragment extends Fragment implements MaterialIntroListener {
             }
         });
 
-        showIntro(statusTextView, "status", "This show the status of your weekly mission!", Focus.ALL, ShapeType.CIRCLE);
 
         return view;
     }
 
 
     private void configureUI(View view) {
-        statusTextView = view.findViewById(R.id.home_status);
-        percentageTextView = view.findViewById(R.id.home_percentage);
-        missionCardView = view.findViewById(R.id.cardView_mission);
+        notstartTextView = view.findViewById(R.id.notstart_number);
+        inprogressTextView = view.findViewById(R.id.inprogress_number);
+        viewBtn = view.findViewById(R.id.home_view_btn);
         libraryBtn = view.findViewById(R.id.cardView_library);
         healthBtn = view.findViewById(R.id.cardView_health);
         educationBtn = view.findViewById(R.id.cardView_edu);
@@ -74,42 +78,7 @@ public class HomeFragment extends Fragment implements MaterialIntroListener {
         navigationView = getActivity().findViewById(R.id.navigationView);
     }
 
-    // Check whether the user is first time to use
 
-    private void showIntro(View view, String id, String text, Focus focusType, ShapeType shapeType) {
-        new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(false)
-                .enableIcon(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(focusType)
-                .setDelayMillis(200)
-                .enableFadeAnimation(true)
-                .performClick(true)
-                .setInfoText(text)
-                .setShape(shapeType)
-                .setTarget(view)
-                .setInfoTextSize(19)
-                .setUsageId(id) //THIS SHOULD BE UNIQUE ID
-                .setListener(this)
-                .show();
-    }
-
-    @Override
-    public void onUserClicked(String materialIntroViewId) {
-        switch (materialIntroViewId) {
-            case "status":
-                showIntro(percentageTextView, "percentage", "This show your percentage of your completed tasks in this week", Focus.ALL, ShapeType.CIRCLE);
-                break;
-            case "percentage":
-                showIntro(missionCardView, "mission","You can click here to check you weekly mission detail.", Focus.ALL, ShapeType.RECTANGLE);
-                break;
-            case "mission":
-                showIntro(publicServiceLayout, "services","There are 4 categories of public services you can check out!", Focus.NORMAL, ShapeType.CIRCLE);
-                break;
-            default:
-                break;
-        }
-    }
 
 
     private void replaceFragment(Fragment nextFragment) {

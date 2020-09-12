@@ -7,11 +7,11 @@
         android:icon="@drawable/home"
         android:title="Home" />
     <item
-        android:id="@+id/discover"
+        android:id="@+id/mission"
         android:checkable="true"
         android:iconTint="@android:color/black"
         android:icon="@drawable/list"
-        android:title="Discovery List" />
+        android:title="My Mission" />
 
     <group android:id="@+id/services">
         <item android:title="Public Services">
@@ -29,18 +29,18 @@
                     android:icon="@drawable/education"
                     android:title="Education" />
                 <item
-                    android:id="@+id/healthcare"
+                    android:id="@+id/park"
                     android:checkable="true"
                     android:iconTint="@android:color/black"
-                    android:icon="@drawable/healthcare"
-                    android:title="Healthcare" />
+                    android:icon="@drawable/park"
+                    android:title="Park" />
 
                 <item
-                    android:id="@+id/workplace"
+                    android:id="@+id/museum"
                     android:checkable="true"
                     android:iconTint="@android:color/black"
-                    android:icon="@drawable/workplace"
-                    android:title="Workplace" />
+                    android:icon="@drawable/museum"
+                    android:title="Museum" />
             </menu>
 
         </item>

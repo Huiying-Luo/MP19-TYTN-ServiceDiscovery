@@ -131,7 +131,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="88dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/intro_button_background"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"

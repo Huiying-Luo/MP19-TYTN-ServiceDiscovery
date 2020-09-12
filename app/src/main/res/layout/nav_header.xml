@@ -22,7 +22,7 @@
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:text="Service Discovery"
-        android:textColor="@android:color/black"
+        android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold" />
 

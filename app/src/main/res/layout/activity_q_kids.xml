@@ -32,7 +32,7 @@
         android:layout_marginBottom="35dp"
         android:layout_marginLeft="135dp"
         android:layout_marginRight="135dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/intro_button_background"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"

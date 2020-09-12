@@ -10,92 +10,174 @@
         android:id="@+id/home_title1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:text="Weekly Missions"
+        android:fontFamily="@font/opensansbold"
+        android:text="Mission Summry"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView_mission"
+    <LinearLayout
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:orientation="horizontal"
+        android:weightSum="1.5"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/home_view_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="@font/opensanssemibold"
+            android:text="View"
+            android:textColor="@color/red"
+            android:textSize="18sp" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="17dp"
+            android:layout_height="17dp"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="0.5"
+            android:background="@drawable/forward"
+            android:backgroundTint="@color/red"
+            tools:layout_editor_absoluteX="384dp"
+            tools:layout_editor_absoluteY="26dp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mission_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_marginLeft="18dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+
         android:layout_marginTop="20dp"
         android:layout_marginRight="18dp"
-        app:cardCornerRadius="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_title1">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView_inprogress"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            app:cardCornerRadius="10dp">
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="28dp"
-                android:layout_marginLeft="28dp"
-                android:background="@drawable/mission_logo"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.533" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/home_status"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginStart="24dp"
-                android:layout_marginLeft="24dp"
-                android:text="Incomplete"
-                android:textColor="@android:color/holo_red_dark"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/imageView2"
-                app:layout_constraintTop_toTopOf="parent" />
+                <ImageView
+                    android:id="@+id/imageView_inprogress"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/not_start_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/home_percentage"
-                android:layout_width="60dp"
-                android:layout_height="60dp"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="36dp"
-                android:text="0%"
-                android:textAlignment="center"
-                android:textColor="@android:color/black"
-                android:textSize="20sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/imageView3"
-                app:layout_constraintTop_toTopOf="parent" />
+                <TextView
+                    android:id="@+id/notstart_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:fontFamily="@font/opensanssemibold"
+                    android:textColor="@color/lightGrey"
+                    android:text="Not Start"
+                    android:textSize="13sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_inprogress" />
 
-            <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginEnd="16dp"
-                android:layout_marginRight="16dp"
-                android:background="@drawable/forward"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.49" />
+                <TextView
+                    android:id="@+id/notstart_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="15dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="0"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView_notstart"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginBottom="3dp"
+            android:layout_marginRight="3dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="10dp">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:id="@+id/imageView_notstart"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/in_progress_icon"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/inprogress_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="In Progress"
+                    android:fontFamily="@font/opensanssemibold"
+                    android:textSize="13sp"
+                    android:textColor="@color/lightGrey"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_notstart" />
+
+                <TextView
+                    android:id="@+id/inprogress_number"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginRight="15dp"
+                    android:fontFamily="@font/opensansbold"
+                    android:text="0"
+                    android:textColor="@android:color/black"
+                    android:textSize="22sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+                " />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
+
+
+    </LinearLayout>
+
 
     <TextView
         android:id="@+id/home_title2"
@@ -103,13 +185,14 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="35dp"
         android:text="Public Services"
+        android:fontFamily="@font/opensansbold"
         android:textColor="@android:color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.061"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cardView_mission" />
+        app:layout_constraintTop_toBottomOf="@+id/mission_linearlayout" />
 
 
     <LinearLayout
@@ -154,7 +237,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/healthcare_bk" />
+                    android:src="@drawable/education_bk" />
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
@@ -178,7 +261,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/education_bk" />
+                    android:src="@drawable/park_bk" />
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
@@ -191,11 +274,12 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/workplace_bk" />
+                    android:src="@drawable/museum_bk" />
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </LinearLayout>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

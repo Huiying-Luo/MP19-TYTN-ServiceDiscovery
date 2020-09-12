@@ -97,11 +97,7 @@ public class LibraryFragment extends Fragment {
         // Inflate the View for this fragment
         View view = inflater.inflate(R.layout.library_fragment, container, false);
 
-        sortSpinner = view.findViewById(R.id.library_sort_spinner);
-        recyclerView = view.findViewById(R.id.library_recycler_view);
-        swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
-        errorTextView = view.findViewById(R.id.library_error_tv);
-        progressBar = view.findViewById(R.id.library_progress_bar);
+        configureView(view);
 
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -119,6 +115,15 @@ public class LibraryFragment extends Fragment {
 
 
         return view;
+    }
+
+
+    private void configureView(View view) {
+        sortSpinner = view.findViewById(R.id.library_sort_spinner);
+        recyclerView = view.findViewById(R.id.library_recycler_view);
+        swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
+        errorTextView = view.findViewById(R.id.library_error_tv);
+        progressBar = view.findViewById(R.id.library_progress_bar);
     }
 
 
