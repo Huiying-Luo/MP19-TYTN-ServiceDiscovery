@@ -14,10 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SettingActivity"></activity>
+        <activity android:name=".MissionListActivity"></activity>
+        <activity android:name=".AddMissionActivity" />
+        <activity android:name=".SettingActivity" />
         <activity
             android:name=".SurveyScreens.QAddressActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"></activity>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".SurveyScreens.QEnglishActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
@@ -41,7 +43,7 @@
         </activity>
         <activity
             android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="preloaded_fonts"

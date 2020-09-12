@@ -62,13 +62,12 @@
         android:weightSum="2"
 
         android:layout_marginTop="20dp"
-        android:layout_marginRight="18dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/home_title1">
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView_inprogress"
+            android:id="@+id/cardView_completed"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
@@ -82,12 +81,12 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView_inprogress"
+                    android:id="@+id/imageView_completed"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginTop="8dp"
-                    android:background="@drawable/not_start_icon"
+                    android:background="@drawable/completed_icon"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,13 +98,13 @@
                     android:layout_marginLeft="8dp"
                     android:fontFamily="@font/opensanssemibold"
                     android:textColor="@color/lightGrey"
-                    android:text="Not Start"
+                    android:text="Completed"
                     android:textSize="13sp"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView_inprogress" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_completed" />
 
                 <TextView
-                    android:id="@+id/notstart_number"
+                    android:id="@+id/completed_number"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
@@ -121,13 +120,13 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/cardView_notstart"
+            android:id="@+id/cardView_inprogress"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="15dp"
             android:layout_marginTop="3dp"
             android:layout_marginBottom="3dp"
-            android:layout_marginRight="3dp"
+            android:layout_marginRight="18dp"
             android:layout_weight="1"
             app:cardCornerRadius="10dp">
 
@@ -136,7 +135,7 @@
                 android:layout_height="match_parent">
 
                 <ImageView
-                    android:id="@+id/imageView_notstart"
+                    android:id="@+id/imageView_inprogress"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginLeft="8dp"
@@ -156,7 +155,7 @@
                     android:textSize="13sp"
                     android:textColor="@color/lightGrey"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/imageView_notstart" />
+                    app:layout_constraintTop_toBottomOf="@+id/imageView_inprogress" />
 
                 <TextView
                     android:id="@+id/inprogress_number"
@@ -210,6 +209,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="36dp"
             android:gravity="center"
+            android:weightSum="2"
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView

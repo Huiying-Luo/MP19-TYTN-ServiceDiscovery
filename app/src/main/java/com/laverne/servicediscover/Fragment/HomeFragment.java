@@ -20,7 +20,7 @@ import com.laverne.servicediscover.R;
 
 public class HomeFragment extends Fragment {
 
-    private TextView notstartTextView;
+    private TextView completedTextView;
     private TextView inprogressTextView;
     private TextView viewBtn;
     private TextView percentageTextView;
@@ -67,7 +67,7 @@ public class HomeFragment extends Fragment {
 
 
     private void configureUI(View view) {
-        notstartTextView = view.findViewById(R.id.notstart_number);
+        completedTextView = view.findViewById(R.id.completed_number);
         inprogressTextView = view.findViewById(R.id.inprogress_number);
         viewBtn = view.findViewById(R.id.home_view_btn);
         libraryBtn = view.findViewById(R.id.cardView_library);

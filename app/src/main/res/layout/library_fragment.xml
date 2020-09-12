@@ -10,9 +10,9 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="15dp"
         android:text="Sort By"
+        android:fontFamily="@font/opensansbold"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:textStyle="bold"/>
+        android:textSize="18sp" />
 
     <Spinner
         android:id="@+id/library_sort_spinner"
