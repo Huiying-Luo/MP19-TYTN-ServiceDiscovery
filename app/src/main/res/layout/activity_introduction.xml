@@ -1,62 +1,79 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".IntroductionActivity">
+    tools:context=".IntroductionActivity"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/intro_title"
-        android:layout_width="match_parent"
+
+    <ImageView
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="84dp"
-        android:text="Welcome to \nService Discovery"
-        android:textAlignment="center"
-        android:textColor="@android:color/black"
-        android:textSize="30sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/intro_startButton"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:background="@drawable/logo" />
+
+    <ImageView
+        android:id="@+id/app_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="30dp"
+        android:layout_below="@+id/logo"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/app_name" />
 
     <TextView
         android:id="@+id/intro_description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="Tell us something\nabout you!\n\nWe’ll help you discover more\nfree public services\nfor refugees!"
+        android:layout_marginBottom="50dp"
+        android:text="Tell us something\nabout you!\n\nWe would like to recommend\n suitable public services\n for you! "
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="22sp"
-        android:lineSpacingExtra="2dp"
-        app:layout_constraintBottom_toTopOf="@+id/intro_startButton"
-        app:layout_constraintTop_toBottomOf="@+id/intro_title"
-        app:layout_constraintVertical_bias="0.593"
-        tools:layout_editor_absoluteX="0dp" />
+        android:fontFamily="@font/opensanssemibold"
+        android:lineSpacingExtra="2dp" />
 
-    <Button
-        android:id="@+id/intro_startButton"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="88dp"
-        android:layout_marginLeft="135dp"
-        android:layout_marginRight="135dp"
-        android:background="@drawable/intro_button_background"
-        android:paddingLeft="20dp"
-        android:paddingTop="15dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="15dp"
-        android:text="Start"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textAllCaps="false"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:layout_margin="20dp"
+        android:orientation="horizontal"
+        android:weightSum="2">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <Button
+            android:id="@+id/intro_cancelButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/intro_button_background"
+            android:text="Cancel"
+            android:fontFamily="@font/opensansbold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textAllCaps="false" />
+
+        <Button
+            android:id="@+id/intro_startButton"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="25dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/intro_button_background"
+            android:text="Start"
+            android:fontFamily="@font/opensansbold"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textAllCaps="false" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

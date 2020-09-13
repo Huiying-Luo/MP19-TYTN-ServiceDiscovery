@@ -24,20 +24,39 @@ public class MissionViewModel extends ViewModel {
         mRepository = new MissionRepository(application);
     }
 
-    public LiveData<List<Mission>> getAllMissionsByCategory(String category) {
-        return mRepository.getAllMissionsByCategory(category);
+    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(String category) {
+        return mRepository.getAllNotAddedMissionsByCategory(category);
     }
 
     public LiveData<List<Mission>> getAllMissionsByStatus(int status) {
         return mRepository.getAllMissionsByStatus(status);
     }
 
-    public List<Mission> getAllMission() {
-        return mRepository.getAllMissions();
+    public List<Mission> getAllNotAddedMissions() {
+        return mRepository.getAllNotAddedMissions();
     }
+
+
+    public List<Mission> getAllInProgressMissions() {
+        return mRepository.getAllInProgressMissions();
+    }
+
+
+    public List<Mission> getAllCompletedMissions() {
+        return mRepository.getAllCompletedMissions();
+    }
+
+    public Mission findMissionByID(int id) {
+        return mRepository.findMissionByID(id);
+    }
+
 
     public void insert(Mission mission) {
         mRepository.insert(mission);
+    }
+
+    public void updateMission(Mission mission) {
+        mRepository.updateMission(mission);
     }
 
     public void insertAll(Mission... missions) {

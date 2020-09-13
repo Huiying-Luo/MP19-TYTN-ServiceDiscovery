@@ -1,5 +1,6 @@
 package com.laverne.servicediscover;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
@@ -8,8 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.laverne.servicediscover.SurveyScreens.QKidsActivity;
-
 public class AddMissionActivity extends AppCompatActivity {
 
     private CardView libraryBtn;
@@ -17,6 +16,8 @@ public class AddMissionActivity extends AppCompatActivity {
     private CardView parkBtn;
     private CardView museumBtn;
     private Button resetBtn;
+
+    private static final int REQUEST_CODE = 2002;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,28 +53,28 @@ public class AddMissionActivity extends AppCompatActivity {
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("library");
+                goToNextScreen("Library");
             }
         });
 
         educationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("education");
+                goToNextScreen("Education");
             }
         });
 
         parkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("park");
+                goToNextScreen("Park");
             }
         });
 
         museumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("museum");
+                goToNextScreen("Museum");
             }
         });
 
@@ -91,5 +92,8 @@ public class AddMissionActivity extends AppCompatActivity {
         Intent intent = new Intent(AddMissionActivity.this, MissionListActivity.class);
         intent.putExtra("category", category);
         startActivity(intent);
+        //startActivityForResult(intent, REQUEST_CODE);
     }
+
+
 }

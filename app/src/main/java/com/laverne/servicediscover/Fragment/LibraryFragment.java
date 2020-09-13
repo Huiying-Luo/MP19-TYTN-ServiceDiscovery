@@ -108,7 +108,7 @@ public class LibraryFragment extends Fragment {
 
         networkConnection = new NetworkConnection();
 
-        getUserCurrentLocation();
+        getLastLocation();
         configureSortSpinner();
 
         new GetAllLibaryTask().execute();
@@ -135,17 +135,11 @@ public class LibraryFragment extends Fragment {
             public void onSuccess(Location location) {
                 if (location != null) {
                     // We have location
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    SharedPreferences sharedPref = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor spEditor = sharedPref.edit();
-                    spEditor.putFloat("latitude", (float) latitude);
-                    spEditor.putFloat("longitude", (float) longitude);
-                    spEditor.apply();
+                    currentLatLng[0] = location.getLatitude();
+                    currentLatLng[1] = location.getLongitude();
                 }
             }
         });
-
 
         locationTask.addOnFailureListener(new OnFailureListener() {
             @Override
@@ -177,8 +171,6 @@ public class LibraryFragment extends Fragment {
 
         @Override
         protected void onPostExecute(String result) {
-
-
             if (result != null) {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
@@ -232,16 +224,6 @@ public class LibraryFragment extends Fragment {
         String userAddress = sharedPref.getString("address", "");
         Log.i("home", userAddress);
         return userAddress;
-    }
-
-
-    private void getUserCurrentLocation() {
-        SharedPreferences sharedPref = getActivity().getSharedPreferences("User", Context.MODE_PRIVATE);
-        if (currentLatLng == null) {
-            currentLatLng = new double[]{0, 0};
-        }
-        currentLatLng[0] = sharedPref.getFloat("latitude", 0);
-        currentLatLng[1] = sharedPref.getFloat("longitude", 0);
     }
 
 
@@ -383,7 +365,6 @@ public class LibraryFragment extends Fragment {
         if (forRefresh) {
             // Update location
             getLastLocation();
-            getUserCurrentLocation();
             for (int i = 0; i < libraries.size(); i++) {
                 // distance from user current location
                 float[] distance = new float[2];

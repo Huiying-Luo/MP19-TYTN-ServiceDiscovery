@@ -17,6 +17,8 @@ public class Mission {
     private Double longitude;
     private String category;
     private int status;
+    private String completeDate = "";
+    private float distance = 0;
 
 
     public Mission(String name, String address, Double latitude, Double longitude, String category, int status) {
@@ -74,6 +76,22 @@ public class Mission {
 
     public void setStatus(int status) {
         this.status = status;
+    }
+
+    public String getCompleteDate() {
+        return completeDate;
+    }
+
+    public void setCompleteDate(String completeDate) {
+        this.completeDate = completeDate;
+    }
+
+    public float getDistance() {
+        return distance;
+    }
+
+    public void setDistance(float distance) {
+        this.distance = distance;
     }
 
 }

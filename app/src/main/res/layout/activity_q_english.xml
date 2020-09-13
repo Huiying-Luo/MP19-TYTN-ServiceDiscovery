@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".SurveyScreens.QEnglishActivity">
+    tools:context=".QEnglishActivity">
 
     <TextView
         android:layout_width="match_parent"
@@ -15,8 +15,9 @@
         android:text="What do you think of \nyour English？"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        android:textSize="26sp"
+        android:fontFamily="@font/opensansbold"
+        android:lineSpacingExtra="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,6 +38,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/question_eglish_intermediate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -56,6 +58,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/question_eglish_advanced"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -75,6 +78,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

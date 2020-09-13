@@ -10,7 +10,7 @@
 
     <FrameLayout
         android:id="@+id/mission_framelayout"
-        android:background="@color/orange"
+        android:background="@color/colorPrimary"
         android:layout_width="4dp"
         android:layout_height="match_parent"/>
 
@@ -24,45 +24,54 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="15dp"
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/mission_name"
+                android:id="@+id/inprogress_mission_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
-                android:layout_marginTop="15dp"
                 android:text="Carnegie Library"
                 android:fontFamily="@font/opensanssemibold"
                 android:textColor="@android:color/black"
-                android:textSize="21sp"
+                android:textSize="20sp"
                 />
 
             <TextView
-                android:id="@+id/mission_address"
+                android:id="@+id/inprogress_mission_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="15dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginBottom="15dp"
                 android:fontFamily="@font/opensans"
                 android:text="16 Woorayl St"
-                android:textSize="17sp"
-                />
+                android:textSize="16sp" />
+
+
+            <TextView
+                android:id="@+id/inprogress_mission_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:fontFamily="@font/opensans"
+                android:text="200m"
+                android:textColor="@android:color/holo_red_dark"
+                android:textSize="16sp" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/mission_view_button"
-            android:layout_width="80dp"
-            android:layout_height="45dp"
+            android:layout_width="70dp"
+            android:layout_height="40dp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:fontFamily="@font/opensansbold"
-            android:textSize="18sp"
+            android:textSize="16sp"
             android:text="View"
             android:layout_marginRight="15dp"
-            android:background="@drawable/orange_button_background"
+            android:background="@drawable/button_background"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

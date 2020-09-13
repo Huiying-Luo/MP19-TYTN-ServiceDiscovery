@@ -13,6 +13,7 @@ import java.util.List;
 public class MissionRepository {
     private MissionDAO dao;
     private LiveData<List<Mission>> allMissions;
+    private List<Mission> missionList;
     private Mission mission;
 
     public MissionRepository(Application application) {
@@ -21,8 +22,8 @@ public class MissionRepository {
     }
 
 
-    public LiveData<List<Mission>> getAllMissionsByCategory(final String category) {
-        allMissions = dao.getAllMissionByCategory(category);
+    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(final String category) {
+        allMissions = dao.getAllNotAddedMissionsByCategory(category);
         return allMissions;
     }
 
@@ -31,11 +32,31 @@ public class MissionRepository {
         return allMissions;
     }
 
-    public List<Mission> getAllMissions() {
+    public List<Mission> getAllNotAddedMissions() {
 
-        return dao.getAllMissions();
+        return missionList = dao.getAllNotAddedMissions();
+
     }
 
+    public List<Mission> getAllInProgressMissions() {
+        return dao.getAllInProgressMissions();
+
+    }
+
+
+    public List<Mission> getAllCompletedMissions() {
+        return missionList = dao.getAllCompletedMissions();
+    }
+
+
+    public Mission findMissionByID(int id) {
+        return dao.findMissionByID(id);
+    }
+
+
+    public void setMission(Mission mission) {
+        this.mission = mission;
+    }
 
     public void insert(final Mission mission) {
         MissionDatabase.databaseWriteExecutor.execute(new Runnable() {
@@ -51,6 +72,16 @@ public class MissionRepository {
             @Override
             public void run() {
                 dao.insertAll(missions);
+            }
+        });
+    }
+
+
+    public void updateMission(final Mission mission) {
+        MissionDatabase.databaseWriteExecutor.execute(new Runnable() {
+            @Override
+            public void run() {
+                dao.updateMission(mission);
             }
         });
     }

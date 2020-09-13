@@ -228,7 +228,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView_health"
+                android:id="@+id/cardView_edu"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 app:cardCornerRadius="10dp">
@@ -251,7 +251,7 @@
             android:orientation="horizontal">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView_edu"
+                android:id="@+id/cardView_park"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 android:layout_marginRight="38dp"
@@ -265,7 +265,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView_work"
+                android:id="@+id/cardView_museum"
                 android:layout_width="150dp"
                 android:layout_height="150dp"
                 app:cardCornerRadius="10dp">

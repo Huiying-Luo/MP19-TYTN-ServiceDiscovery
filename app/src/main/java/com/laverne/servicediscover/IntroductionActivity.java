@@ -7,8 +7,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.laverne.servicediscover.SurveyScreens.QKidsActivity;
-
 public class IntroductionActivity extends AppCompatActivity {
 
     @Override
@@ -17,11 +15,20 @@ public class IntroductionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_introduction);
 
         Button startButton = findViewById(R.id.intro_startButton);
+        Button cancelButton = findViewById(R.id.intro_cancelButton);
+
         startButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(IntroductionActivity.this, QKidsActivity.class);
                 startActivity(intent);
+                finish();
+            }
+        });
+
+        cancelButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 finish();
             }
         });

@@ -52,8 +52,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private static final int REQUEST_CODE_LOCATION_PERMISSION = 10001;
     private static final String TAG = "MainActivity";
 
-    FusedLocationProviderClient fusedLocationProviderClient;
-
     private DrawerLayout drawerLayout;
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
@@ -63,7 +61,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(this);
 
         //adding the toolbar as the app bar for this activity
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -82,7 +79,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         navigationView.setNavigationItemSelectedListener(this);
 
-        replaceFragment(new HomeFragment());
+        Intent intent = getIntent();
+        if (intent.getBooleanExtra("goToMission", false)) {
+            replaceFragment(new MissionFragment());
+            setTitle("My Mission");
+            navigationView.setCheckedItem(R.id.mission);
+        } else {
+            replaceFragment(new HomeFragment());
+            navigationView.setCheckedItem(R.id.homepage);
+        }
+
+
+
+
     }
 
 
@@ -134,7 +143,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onStart();
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            getLastLocation();
+            Log.i("Location Permission", "Granted" );
         } else {
             askLocationPermission();
         }
@@ -185,36 +194,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 */
 
-    private void getLastLocation() {
-        @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
-
-        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
-                    // We have location
-                    double latitude = location.getLatitude();
-                    double longitude = location.getLongitude();
-                    SharedPreferences sharedPref = getSharedPreferences("User", Context.MODE_PRIVATE);
-                    SharedPreferences.Editor spEditor = sharedPref.edit();
-                    spEditor.putFloat("latitude", (float) latitude);
-                    spEditor.putFloat("longitude", (float)longitude);
-                    spEditor.apply();
-                }
-            }
-        });
-
-
-        locationTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // show error alert
-                Utilities.showAlertDialogwithOkButton(MainActivity.this, "Error", "Something went wrong! Fail to get your current location.");
-                Log.d(TAG, e.getLocalizedMessage());
-            }
-        });
-    }
-
 
     private void askLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -234,7 +213,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             // Permission is Granted
-            getLastLocation();
+
         }
     }
 
@@ -244,7 +223,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (requestCode == REQUEST_CODE_LOCATION_PERMISSION ) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // permission granted
-                getLastLocation();
+                Log.i("Location Permission", "Granted" );
             } else {
                 // Permission not granted
 

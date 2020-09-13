@@ -1,5 +1,9 @@
 package com.laverne.servicediscover.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,25 +17,23 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.google.android.material.navigation.NavigationView;
+import com.laverne.servicediscover.AddMissionActivity;
+import com.laverne.servicediscover.IntroductionActivity;
 import com.laverne.servicediscover.R;
+import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 public class HomeFragment extends Fragment {
 
-    private TextView completedTextView;
-    private TextView inprogressTextView;
-    private TextView viewBtn;
-    private TextView percentageTextView;
-    private CardView missionCardView;
-
-    private CardView libraryBtn;
-    private CardView healthBtn;
-    private CardView educationBtn;
-    private CardView workBtn;
+    private TextView completedTextView, inprogressTextView, viewBtn;
+    private CardView libraryBtn, parkBtn, educationBtn, museumBtn;
     private LinearLayout publicServiceLayout;
     private NavigationView navigationView;
+
+    private MissionViewModel missionViewModel;
 
     public HomeFragment() {
     }
@@ -42,6 +44,13 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.home_fragment, container, false);
 
         configureUI(view);
+
+        // initialize view model
+        missionViewModel = new ViewModelProvider(this).get(MissionViewModel.class);
+        missionViewModel.initializeVars(getActivity().getApplication());
+
+        new CheckInProgressMissionsAsyncTask().execute();
+        new CheckCompletedMissionsAsyncTask().execute();
 
         viewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,13 +80,39 @@ public class HomeFragment extends Fragment {
         inprogressTextView = view.findViewById(R.id.inprogress_number);
         viewBtn = view.findViewById(R.id.home_view_btn);
         libraryBtn = view.findViewById(R.id.cardView_library);
-        healthBtn = view.findViewById(R.id.cardView_health);
+        parkBtn = view.findViewById(R.id.cardView_park);
         educationBtn = view.findViewById(R.id.cardView_edu);
-        workBtn = view.findViewById(R.id.cardView_work);
+        museumBtn = view.findViewById(R.id.cardView_museum);
         publicServiceLayout = view.findViewById(R.id.services_layout);
         navigationView = getActivity().findViewById(R.id.navigationView);
     }
 
+
+    private class CheckCompletedMissionsAsyncTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            return missionViewModel.getAllCompletedMissions().size();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            completedTextView.setText(String.valueOf(result));
+        }
+    }
+
+    private class CheckInProgressMissionsAsyncTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            return missionViewModel.getAllInProgressMissions().size();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            inprogressTextView.setText(String.valueOf(result));
+        }
+    }
 
 
 

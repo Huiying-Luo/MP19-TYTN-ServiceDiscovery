@@ -1,4 +1,4 @@
-package com.laverne.servicediscover.SurveyScreens;
+package com.laverne.servicediscover;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,8 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
-import com.laverne.servicediscover.R;
 
 public class QSchoolActivity extends AppCompatActivity {
 
