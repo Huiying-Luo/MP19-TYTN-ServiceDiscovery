@@ -39,6 +39,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -47,6 +50,7 @@ import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.Adapter.LibraryRecyclerViewAdapter;
 import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.NetworkConnection.NetworkConnection;
+import com.laverne.servicediscover.QAddressActivity;
 import com.laverne.servicediscover.R;
 import com.laverne.servicediscover.Utilities;
 
@@ -67,6 +71,7 @@ public class LibraryFragment extends Fragment {
     private static final int REQUEST_CODE_CALL_PERMISSION = 2;
     private static final String TAG = "LibraryFragment";
     FusedLocationProviderClient fusedLocationProviderClient;
+    private LocationRequest locationRequest;
 
     private Spinner sortSpinner;
     private ArrayAdapter<String> sortSpinnerAdapter;
@@ -84,7 +89,7 @@ public class LibraryFragment extends Fragment {
 
     private String address;
     private double[] homeLatLng = null;
-    private double[] currentLatLng = null;
+    private double[] currentLatLng = new double[] {0,0};
 
     private boolean isSortedByHomeAddress = false;
 
@@ -108,7 +113,7 @@ public class LibraryFragment extends Fragment {
 
         networkConnection = new NetworkConnection();
 
-        getLastLocation();
+        getLastLocation(false);
         configureSortSpinner();
 
         new GetAllLibaryTask().execute();
@@ -127,28 +132,36 @@ public class LibraryFragment extends Fragment {
     }
 
 
-    private void getLastLocation() {
-        @SuppressLint("MissingPermission") Task<Location> locationTask = fusedLocationProviderClient.getLastLocation();
+    @SuppressLint("MissingPermission")
+    private void getLastLocation(final boolean forRefresh) {
 
-        locationTask.addOnSuccessListener(new OnSuccessListener<Location>() {
+        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
+        locationRequest = LocationRequest.create();
+        locationRequest.setInterval(10000);
+        locationRequest.setFastestInterval(3000);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        LocationServices.getFusedLocationProviderClient(getActivity()).requestLocationUpdates(locationRequest, new LocationCallback() {
+
             @Override
-            public void onSuccess(Location location) {
-                if (location != null) {
+            public void onLocationResult(LocationResult locationResult) {
+                super.onLocationResult(locationResult);
+                LocationServices.getFusedLocationProviderClient(getActivity()).removeLocationUpdates(this);
+                if (locationResult != null && locationResult.getLocations().size() > 0) {
                     // We have location
-                    currentLatLng[0] = location.getLatitude();
-                    currentLatLng[1] = location.getLongitude();
+                    double latitude = locationResult.getLastLocation().getLatitude();
+                    double longitude = locationResult.getLastLocation().getLongitude();
+                    currentLatLng[0] = latitude;
+                    currentLatLng[1] = longitude;
+                    if (forRefresh) {
+                        sortByCurrentLocation(true);
+                    }
+                } else {
+                    // show error alert
+                    Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong! Fail to get your current location.");
                 }
             }
-        });
-
-        locationTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // show error alert
-                Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong! Fail to get your current location.");
-                Log.d(TAG, e.getLocalizedMessage());
-            }
-        });
+        }, Looper.getMainLooper());
     }
 
 
@@ -364,7 +377,6 @@ public class LibraryFragment extends Fragment {
     private void sortByCurrentLocation(boolean forRefresh) {
         if (forRefresh) {
             // Update location
-            getLastLocation();
             for (int i = 0; i < libraries.size(); i++) {
                 // distance from user current location
                 float[] distance = new float[2];
@@ -381,9 +393,13 @@ public class LibraryFragment extends Fragment {
                 return Float.compare(o1.getCurrentDistance(), o2.getCurrentDistance());
             }
         });
+        swipeRefreshLayout.setRefreshing(false);
         adapter.notifyDataSetChanged();
         layoutManager.scrollToPosition(0);
+
         isSortedByHomeAddress = false;
+
+
     }
 
 
@@ -392,11 +408,9 @@ public class LibraryFragment extends Fragment {
             @Override
             public void onRefresh() {
                 if (!isSortedByHomeAddress) {
-                    sortByCurrentLocation(true);
+                    getLastLocation(true);
                 }
-                adapter.notifyDataSetChanged();
-                layoutManager.scrollToPosition(0);
-                swipeRefreshLayout.setRefreshing(false);
+
             }
         });
     }

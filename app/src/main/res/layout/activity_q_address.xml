@@ -86,7 +86,8 @@
                 android:ems="10"
                 android:hint="Street No. + Street Name"
                 android:inputType="text"
-                android:paddingLeft="7dp" />
+                android:paddingLeft="7dp"
+                android:imeOptions="actionNext"/>
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
@@ -120,26 +121,12 @@
                 android:ems="10"
                 android:hint="Postcode"
                 android:inputType="number"
+                android:imeOptions="actionDone"
                 android:paddingLeft="7dp" />
         </com.google.android.material.textfield.TextInputLayout>
 
     </LinearLayout>
 
-    <Button
-        android:id="@+id/question_address_location_button"
-        android:layout_width="250dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="35dp"
-        android:background="@drawable/orange_button_background"
-        android:text="Use Current Location"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:fontFamily="@font/opensansbold"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout_address"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <LinearLayout
         android:id="@+id/linearLayout_address"
@@ -180,7 +167,24 @@
             android:textColor="@android:color/white"
             android:textSize="18sp" />
 
+
     </LinearLayout>
+
+    <Button
+        android:id="@+id/question_address_location_button"
+        android:layout_width="250dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/orange_button_background"
+        android:text="Use Current Location"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:fontFamily="@font/opensansbold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
 

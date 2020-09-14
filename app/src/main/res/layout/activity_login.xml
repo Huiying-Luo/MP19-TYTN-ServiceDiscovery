@@ -30,7 +30,7 @@
             android:layout_gravity="center"
             android:ems="10"
             android:hint="Enter Password"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:inputType="textPassword" />
     </com.google.android.material.textfield.TextInputLayout>
 

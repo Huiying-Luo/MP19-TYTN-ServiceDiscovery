@@ -61,7 +61,7 @@ public class QAddressActivity extends AppCompatActivity {
     private Button cancelButton;
 
     private boolean isValid = false;
-    private boolean useCurrentLocation = false;
+    private boolean hasUseCurrentLocation = false;
 
     private double userLatitude = 0;
     private double userLongitude = 0;
@@ -90,6 +90,7 @@ public class QAddressActivity extends AppCompatActivity {
 
         //configureEditText();
         configureUI();
+        configureEditText();
 
         configureFinishButton();
         configureCancelButton();
@@ -118,11 +119,7 @@ public class QAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                if (!isValid) {
-                    Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Invaild Address", "Please enter a valid address or use current location.");
-                    return;
-                }
-                if (useCurrentLocation) {
+                if (hasUseCurrentLocation && isValid) {
                     generateMissions();
                     return;
                 }
@@ -133,8 +130,12 @@ public class QAddressActivity extends AppCompatActivity {
                     convertAddressToCoordinate(address, postcode);
                     if (isValid) {
                         generateMissions();
+                    } else {
+                        Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Invaild Address", "Please enter a valid address or use current location.");
+                        return;
                     }
                 }
+
             }
 
         });
@@ -145,7 +146,7 @@ public class QAddressActivity extends AppCompatActivity {
         useCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (useCurrentLocation) {
+                if (hasUseCurrentLocation) {
                     addressEditText.setEnabled(true);
                     addressEditText.setText("");
                     postcodeEditText.setEnabled(true);
@@ -153,7 +154,7 @@ public class QAddressActivity extends AppCompatActivity {
                     addressTIL.setEndIconActivated(true);
                     postcodeTIL.setEndIconActivated(true);
                     useCurrentLocationButton.setText("Use Current Location");
-                    useCurrentLocation = false;
+                    hasUseCurrentLocation = false;
                 } else {
                     getLastLocation();
                 }
@@ -208,7 +209,7 @@ public class QAddressActivity extends AppCompatActivity {
                     postcodeEditText.setEnabled(false);
                     addressTIL.setEndIconActivated(false);
                     postcodeTIL.setEndIconActivated(false);
-                    useCurrentLocation = true;
+                    hasUseCurrentLocation = true;
                     useCurrentLocationButton.setText("Enter My Location");
                 } else {
                     // show error alert
@@ -234,6 +235,8 @@ public class QAddressActivity extends AppCompatActivity {
                 addressEditText.setText(address);
                 postcodeEditText.setText(postcode);
             } else {
+                addressEditText.setText("Use current Location");
+                postcodeEditText.setText("Use current Location");
                 Log.i("ConvertAddressError", resultData.getString(Constants.RESULT_DATA_KEY_ONE));
             }
             missionProgressBar.setVisibility(View.GONE);
@@ -252,7 +255,8 @@ public class QAddressActivity extends AppCompatActivity {
 
     private void convertAddressToCoordinate(String address, String postcode) {
         List<Address> addressList = null;
-        String location = address + " VIC " + postcode + " Australia";
+        String location = address + " VIC " + postcode;
+        Log.i("Address", location);
         try {
             addressList = geocoder.getFromLocationName(location, 1);
 
@@ -401,7 +405,7 @@ public class QAddressActivity extends AppCompatActivity {
         postcodeEditText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+                if (event != null && (event.getAction() == KeyEvent.ACTION_DOWN) && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
                     // hide virtual keyboard
                     InputMethodManager imm = (InputMethodManager) QAddressActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(postcodeEditText.getWindowToken(), 0);
