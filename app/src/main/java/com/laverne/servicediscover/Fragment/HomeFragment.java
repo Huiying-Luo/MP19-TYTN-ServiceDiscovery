@@ -29,7 +29,7 @@ import com.laverne.servicediscover.ViewModel.MissionViewModel;
 public class HomeFragment extends Fragment {
 
     private TextView completedTextView, inprogressTextView, viewBtn;
-    private CardView libraryBtn, parkBtn, educationBtn, museumBtn;
+    private CardView libraryBtn, parkBtn, educationBtn, museumBtn, inprogressBtn, completeBtn;
     private LinearLayout publicServiceLayout;
     private NavigationView navigationView;
 
@@ -52,12 +52,17 @@ public class HomeFragment extends Fragment {
         new CheckInProgressMissionsAsyncTask().execute();
         new CheckCompletedMissionsAsyncTask().execute();
 
+        setUpButtons();
+
+        return view;
+    }
+
+
+    private void setUpButtons() {
         viewBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new MissionFragment());
-                navigationView.setCheckedItem(R.id.mission);
-                getActivity().setTitle("My Mission");
+                goToMissionScreen(0);
             }
         });
 
@@ -70,8 +75,26 @@ public class HomeFragment extends Fragment {
             }
         });
 
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMissionScreen(1);
+            }
+        });
 
-        return view;
+        inprogressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMissionScreen(0);
+            }
+        });
+    }
+
+
+    private void goToMissionScreen(int pageIndex) {
+        replaceFragment(new MissionFragment(pageIndex));
+        navigationView.setCheckedItem(R.id.mission);
+        getActivity().setTitle("My Mission");
     }
 
 
@@ -85,6 +108,8 @@ public class HomeFragment extends Fragment {
         museumBtn = view.findViewById(R.id.cardView_museum);
         publicServiceLayout = view.findViewById(R.id.services_layout);
         navigationView = getActivity().findViewById(R.id.navigationView);
+        completeBtn = view.findViewById(R.id.cardView_completed);
+        inprogressBtn = view.findViewById(R.id.cardView_inprogress);
     }
 
 

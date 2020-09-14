@@ -89,14 +89,31 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
 
     @Override
-    public void onMissionClick(int position) {
-        Log.i("AddMission", missionList.get(position).getName());
-        Mission mission = missionList.get(position);
-        mission.setStatus(1);
-        missionViewModel.updateMission(mission);
-        Intent intent = new Intent(MissionListActivity.this, MainActivity.class);
-        intent.putExtra("goToMission", true);
-        startActivity(intent);
-        finish();
+    public void onMissionClick(final int position) {
+
+        // create a alert dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(MissionListActivity.this);
+        alert.setTitle("Add Mission");
+        alert.setMessage("Are you sure to add " + missionList.get(position).getName() + " into your mission list?");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Log.i("AddMission", missionList.get(position).getName());
+                Mission mission = missionList.get(position);
+                mission.setStatus(1);
+                missionViewModel.updateMission(mission);
+                Intent intent = new Intent(MissionListActivity.this, MainActivity.class);
+                intent.putExtra("goToMission", true);
+                startActivity(intent);
+                finish();
+            }
+        });
+        alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        alert.create().show();
     }
 }

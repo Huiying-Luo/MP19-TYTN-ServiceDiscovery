@@ -19,9 +19,13 @@ public class MissionFragment extends Fragment {
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
+    private int pageIndex = 8888;
 
 
     public MissionFragment() {}
+    public MissionFragment(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
 
     @Nullable
     @Override
@@ -33,6 +37,10 @@ public class MissionFragment extends Fragment {
         viewPager = view.findViewById(R.id.viewpager);
 
         getTabs();
+
+        if (pageIndex == 0 || pageIndex == 1) {
+            selectPage();
+        }
 
         return view;
     }
@@ -52,13 +60,16 @@ public class MissionFragment extends Fragment {
                 tabLayout.setupWithViewPager(viewPager);
             }
         });
-
-
     }
 
 
-
-
-
-
+    private void selectPage () {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                viewPager.setCurrentItem(pageIndex, true);
+                tabLayout.setScrollPosition(pageIndex, 0f, true);
+            }
+        });
+    }
 }

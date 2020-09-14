@@ -4,6 +4,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -81,9 +83,25 @@ public class AddMissionActivity extends AppCompatActivity {
         resetBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(AddMissionActivity.this, QKidsActivity.class);
-                startActivity(intent);
-        }
+                // create a alert dialog
+                AlertDialog.Builder alert = new AlertDialog.Builder(AddMissionActivity.this);
+                alert.setTitle("Warning");
+                alert.setMessage("Reset the preferences will also \nclear all the missions in your list\n and provide new mission recommendation.\n Are you sure to reset?");
+                alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(AddMissionActivity.this, IntroductionActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alert.create().show();
+            }
         });
     }
 

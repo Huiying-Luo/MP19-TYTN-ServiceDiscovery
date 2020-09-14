@@ -105,7 +105,18 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
         mMap.addMarker(new MarkerOptions().position(missionLocation).title(missionName));
         mMap.addMarker(new MarkerOptions().position(userLocation).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).title("Your Location"));
 
-        float zoomLevel = (float) 12.0;
+       zoomToCenter();
+    }
+
+/** Citation: https://stackoverflow.com/questions/38264483/google-map-zoom-in-between-latlng-bounds **/
+
+    private void zoomToCenter() {
+        float[] distance = new float[2];
+        Location.distanceBetween(userLocation.latitude, userLocation.longitude, missionLocation.latitude, missionLocation.longitude, distance);
+        double radius = distance[0] / 2;
+
+        double scale = radius / 150;
+        float zoomLevel =  ((int) (16 - Math.log(scale) / Math.log(2)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(userLocation, zoomLevel));
     }
 
@@ -244,15 +255,31 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
                 mission.setCompleteDate(date);
                 mission.setStatus(2);
                 missionViewModel.updateMission(mission);
-                Intent intent = new Intent(MissionMapActivity.this, MainActivity.class);
-                intent.putExtra("goToMission", true);
-                startActivity(intent);
-                finish();
+
+                showAlertAndMove();
+
             } else {
 
                 Log.i("Mission", "null");
             }
         }
+    }
+
+    private void showAlertAndMove() {
+        // create a alert dialog
+        android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(MissionMapActivity.this);
+        alert.setTitle("Congrats!");
+        alert.setMessage("You have known more one service!!!");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(MissionMapActivity.this, MainActivity.class);
+                intent.putExtra("goToCompletedMission", true);
+                startActivity(intent);
+                finish();
+            }
+        });
+        alert.create().show();
     }
 
 

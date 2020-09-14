@@ -54,7 +54,7 @@
         android:layout_marginBottom="88dp"
         android:layout_marginLeft="135dp"
         android:layout_marginRight="135dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/intro_button_background"
         android:fontFamily="@font/opensansbold"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"

@@ -14,13 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-
+        <activity android:name=".LoginActivity"></activity>
 
         <meta-data
-        android:name="com.google.android.geo.API_KEY"
-        android:value="AIzaSyCEADqWbiBEunIO0gjudx7NLK8OC8ccTI4" />
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyCEADqWbiBEunIO0gjudx7NLK8OC8ccTI4" />
 
-        <activity android:name=".MissionMapActivity"></activity>
+        <activity android:name=".MissionMapActivity" />
         <activity android:name=".MissionListActivity" />
         <activity android:name=".AddMissionActivity" />
         <activity
@@ -55,7 +55,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <service android:name=".FetchAddressIntentService"/>
+        <service android:name=".FetchAddressIntentService" />
     </application>
 
 </manifest>

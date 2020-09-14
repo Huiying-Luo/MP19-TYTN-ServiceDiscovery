@@ -80,18 +80,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
+
         if (intent.getBooleanExtra("goToMission", false)) {
             replaceFragment(new MissionFragment());
+            setTitle("My Mission");
+            navigationView.setCheckedItem(R.id.mission);
+        } else if (intent.getBooleanExtra("goToCompletedMission", false)) {
+            replaceFragment(new MissionFragment(1));
             setTitle("My Mission");
             navigationView.setCheckedItem(R.id.mission);
         } else {
             replaceFragment(new HomeFragment());
             navigationView.setCheckedItem(R.id.homepage);
         }
-
-
-
-
     }
 
 
