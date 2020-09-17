@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/background"
-    tools:context=".SurveyScreens.QSchoolActivity">
+    tools:context=".QSchoolActivity">
 
 
     <TextView
@@ -14,11 +14,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="140dp"
         android:gravity="center_horizontal"
-        android:text="What kind of school\nyour kid(s) gonna go to?"
+        android:text="What kind of school\nyour kid(s) going to go to?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="28sp"
-        android:textStyle="bold"
+        android:textSize="26sp"
+        android:fontFamily="@font/opensansbold"
+        android:lineSpacingExtra="2dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -26,23 +27,22 @@
 
     <CheckBox
         android:id="@+id/checkBoxPrimary"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:buttonTint="@android:color/black"
         android:gravity="center_horizontal"
-        android:text="    Primary School"
+        android:text="Primary School"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/checkBoxSecondary"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.443"
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/checkBoxSecondary"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="15dp"
         android:buttonTint="@android:color/black"
@@ -50,25 +50,25 @@
         android:text="    Secondary School"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/checkBoxNone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.502"
+
         app:layout_constraintStart_toStartOf="parent" />
 
     <CheckBox
         android:id="@+id/checkBoxNone"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="150dp"
         android:buttonTint="@android:color/black"
-        android:text="    Other"
+        android:text="      Other"
         android:textColor="@android:color/black"
         android:textSize="20sp"
-        android:textStyle="bold"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/question_school_nextButton"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.32"
+
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -78,6 +78,7 @@
         android:layout_marginTop="8dp"
         android:text="*You can select more than one option."
         android:textSize="15sp"
+        android:fontFamily="@font/opensans"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.622"
         app:layout_constraintStart_toStartOf="parent"
@@ -105,7 +106,7 @@
         android:layout_marginBottom="88dp"
         android:layout_marginLeft="135dp"
         android:layout_marginRight="135dp"
-        android:background="@drawable/button_background"
+        android:background="@drawable/intro_button_background"
         android:paddingLeft="20dp"
         android:paddingTop="15dp"
         android:paddingRight="20dp"
@@ -114,6 +115,7 @@
         android:textColor="@android:color/white"
         android:textSize="18sp"
         android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

@@ -36,19 +36,11 @@ public class SplashScreen extends AppCompatActivity {
         logo.setAnimation(topAnim);
         appName.setAnimation(bottomAnim);
 
-        // Check whether the user is first time to use
-        final Boolean isFirstRun = getSharedPreferences("App", MODE_PRIVATE).getBoolean("isFirstRun", true);
 
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                Intent intent;
-                if (isFirstRun) {
-                    intent = new Intent(SplashScreen.this, IntroductionActivity.class);
-                    setUpSharedPref(false);
-                } else {
-                    intent = new Intent(SplashScreen.this, MainActivity.class);
-                }
+                Intent intent = new Intent(SplashScreen.this, LoginActivity.class);
                 startActivity(intent);
                 finish();
             }

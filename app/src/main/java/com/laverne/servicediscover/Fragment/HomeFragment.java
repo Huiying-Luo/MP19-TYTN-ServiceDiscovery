@@ -1,5 +1,9 @@
 package com.laverne.servicediscover.Fragment;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,29 +17,23 @@ import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.lifecycle.ViewModelProvider;
 
 
 import com.google.android.material.navigation.NavigationView;
+import com.laverne.servicediscover.AddMissionActivity;
+import com.laverne.servicediscover.IntroductionActivity;
 import com.laverne.servicediscover.R;
+import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
-import co.mobiwise.materialintro.animation.MaterialIntroListener;
-import co.mobiwise.materialintro.shape.Focus;
-import co.mobiwise.materialintro.shape.FocusGravity;
-import co.mobiwise.materialintro.shape.ShapeType;
-import co.mobiwise.materialintro.view.MaterialIntroView;
+public class HomeFragment extends Fragment {
 
-public class HomeFragment extends Fragment implements MaterialIntroListener {
-
-    private TextView statusTextView;
-    private TextView percentageTextView;
-    private CardView missionCardView;
-
-    private CardView libraryBtn;
-    private CardView healthBtn;
-    private CardView educationBtn;
-    private CardView workBtn;
+    private TextView completedTextView, inprogressTextView, viewBtn;
+    private CardView libraryBtn, parkBtn, educationBtn, museumBtn, inprogressBtn, completeBtn;
     private LinearLayout publicServiceLayout;
     private NavigationView navigationView;
+
+    private MissionViewModel missionViewModel;
 
     public HomeFragment() {
     }
@@ -47,6 +45,27 @@ public class HomeFragment extends Fragment implements MaterialIntroListener {
 
         configureUI(view);
 
+        // initialize view model
+        missionViewModel = new ViewModelProvider(this).get(MissionViewModel.class);
+        missionViewModel.initializeVars(getActivity().getApplication());
+
+        new CheckInProgressMissionsAsyncTask().execute();
+        new CheckCompletedMissionsAsyncTask().execute();
+
+        setUpButtons();
+
+        return view;
+    }
+
+
+    private void setUpButtons() {
+        viewBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMissionScreen(0);
+            }
+        });
+
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,60 +75,70 @@ public class HomeFragment extends Fragment implements MaterialIntroListener {
             }
         });
 
-        showIntro(statusTextView, "status", "This show the status of your weekly mission!", Focus.ALL, ShapeType.CIRCLE);
+        completeBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMissionScreen(1);
+            }
+        });
 
-        return view;
+        inprogressBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                goToMissionScreen(0);
+            }
+        });
+    }
+
+
+    private void goToMissionScreen(int pageIndex) {
+        replaceFragment(new MissionFragment(pageIndex));
+        navigationView.setCheckedItem(R.id.mission);
+        getActivity().setTitle("My Mission");
     }
 
 
     private void configureUI(View view) {
-        statusTextView = view.findViewById(R.id.home_status);
-        percentageTextView = view.findViewById(R.id.home_percentage);
-        missionCardView = view.findViewById(R.id.cardView_mission);
+        completedTextView = view.findViewById(R.id.completed_number);
+        inprogressTextView = view.findViewById(R.id.inprogress_number);
+        viewBtn = view.findViewById(R.id.home_view_btn);
         libraryBtn = view.findViewById(R.id.cardView_library);
-        healthBtn = view.findViewById(R.id.cardView_health);
+        parkBtn = view.findViewById(R.id.cardView_park);
         educationBtn = view.findViewById(R.id.cardView_edu);
-        workBtn = view.findViewById(R.id.cardView_work);
+        museumBtn = view.findViewById(R.id.cardView_museum);
         publicServiceLayout = view.findViewById(R.id.services_layout);
         navigationView = getActivity().findViewById(R.id.navigationView);
+        completeBtn = view.findViewById(R.id.cardView_completed);
+        inprogressBtn = view.findViewById(R.id.cardView_inprogress);
     }
 
-    // Check whether the user is first time to use
 
-    private void showIntro(View view, String id, String text, Focus focusType, ShapeType shapeType) {
-        new MaterialIntroView.Builder(getActivity())
-                .enableDotAnimation(false)
-                .enableIcon(false)
-                .setFocusGravity(FocusGravity.CENTER)
-                .setFocusType(focusType)
-                .setDelayMillis(200)
-                .enableFadeAnimation(true)
-                .performClick(true)
-                .setInfoText(text)
-                .setShape(shapeType)
-                .setTarget(view)
-                .setInfoTextSize(19)
-                .setUsageId(id) //THIS SHOULD BE UNIQUE ID
-                .setListener(this)
-                .show();
-    }
+    private class CheckCompletedMissionsAsyncTask extends AsyncTask<String, Void, Integer> {
 
-    @Override
-    public void onUserClicked(String materialIntroViewId) {
-        switch (materialIntroViewId) {
-            case "status":
-                showIntro(percentageTextView, "percentage", "This show your percentage of your completed tasks in this week", Focus.ALL, ShapeType.CIRCLE);
-                break;
-            case "percentage":
-                showIntro(missionCardView, "mission","You can click here to check you weekly mission detail.", Focus.ALL, ShapeType.RECTANGLE);
-                break;
-            case "mission":
-                showIntro(publicServiceLayout, "services","There are 4 categories of public services you can check out!", Focus.NORMAL, ShapeType.CIRCLE);
-                break;
-            default:
-                break;
+        @Override
+        protected Integer doInBackground(String... strings) {
+            return missionViewModel.getAllCompletedMissions().size();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            completedTextView.setText(String.valueOf(result));
         }
     }
+
+    private class CheckInProgressMissionsAsyncTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            return missionViewModel.getAllInProgressMissions().size();
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            inprogressTextView.setText(String.valueOf(result));
+        }
+    }
+
 
 
     private void replaceFragment(Fragment nextFragment) {
