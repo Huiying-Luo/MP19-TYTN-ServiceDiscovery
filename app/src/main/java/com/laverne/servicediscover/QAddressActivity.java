@@ -4,7 +4,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Address;
@@ -41,6 +43,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -293,7 +298,6 @@ public class QAddressActivity extends AppCompatActivity {
 
 
     private void generateMissions() {
-
         new GetAllLibaryTask().execute();
         titleTextView.setVisibility(View.GONE);
         addressTIL.setVisibility(View.GONE);
@@ -326,9 +330,9 @@ public class QAddressActivity extends AppCompatActivity {
                 try {
                     JSONArray jsonArray = new JSONArray(result);
                     if (jsonArray.length() == 0) {
-                        Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Error", "Oops, something went wrong when connecting to the network. Please try again later.");
-                        cancelButton.performClick();
+                        showAlert();
                     } else {
+                        missionViewModel.deleteAll();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String libName = jsonObject.getString("name");
@@ -346,9 +350,10 @@ public class QAddressActivity extends AppCompatActivity {
                                 Location.distanceBetween(userLatitude, userLongitude, libLatitude, libLongitude, distance);
                                 currentDistance = distance[0];
                                 Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
-                                if (currentDistance < 10000) {
+                                if (currentDistance < 8000) {
                                     Mission mission = new Mission(libName, libAddress, libLatitude, libLongitude, "Library", 0);
                                     missionViewModel.insert(mission);
+
                                 }
                             }
                         }
@@ -356,15 +361,32 @@ public class QAddressActivity extends AppCompatActivity {
                         goToAddMissionScreen();
                     }
                 } catch (JSONException e) {
-                    Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Error", "Oops, something went wrong when connecting to the network. Please try again later.");
-                    cancelButton.performClick();
+                    showAlert();
                     e.printStackTrace();
                 }
             } else {
-                Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Error", "Oops, something went wrong when connecting to the network. Please try again later.");
-                cancelButton.performClick();
+                showAlert();
             }
         }
+    }
+
+
+
+    private void showAlert() {
+        // create a alert dialog
+        AlertDialog.Builder alert = new AlertDialog.Builder(QAddressActivity.this);
+        alert.setTitle("Error");
+        alert.setMessage("Oops, something went wrong when connecting to the network. Please try again later.");
+        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Intent intent = new Intent(QAddressActivity.this, MainActivity.class);
+                intent.putExtra("goToMission", true);
+                startActivity(intent);
+                finish();
+            }
+        });
+        alert.create().show();
     }
 
 

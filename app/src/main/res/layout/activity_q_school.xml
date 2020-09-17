@@ -12,91 +12,87 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="140dp"
+        android:layout_marginBottom="64dp"
+        android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
+        android:lineSpacingExtra="2dp"
         android:text="What kind of school\nyour kid(s) going to go to?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="26sp"
-        android:fontFamily="@font/opensansbold"
-        android:lineSpacingExtra="2dp"
+        app:layout_constraintBottom_toTopOf="@+id/school_linear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/checkBoxPrimary"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:buttonTint="@android:color/black"
-        android:gravity="center_horizontal"
-        android:text="Primary School"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:fontFamily="@font/opensansbold"
-        app:layout_constraintBottom_toTopOf="@+id/checkBoxSecondary"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <CheckBox
-        android:id="@+id/checkBoxSecondary"
-        android:layout_width="250dp"
+    <LinearLayout
+        android:id="@+id/school_linear"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
-        android:buttonTint="@android:color/black"
-        android:gravity="center_horizontal"
-        android:text="    Secondary School"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:fontFamily="@font/opensansbold"
-        app:layout_constraintBottom_toTopOf="@+id/checkBoxNone"
-        app:layout_constraintEnd_toEndOf="parent"
-
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <CheckBox
-        android:id="@+id/checkBoxNone"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="150dp"
-        android:buttonTint="@android:color/black"
-        android:text="      Other"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:fontFamily="@font/opensansbold"
+        android:layout_marginBottom="36dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/question_school_nextButton"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.505"
+        app:layout_constraintStart_toStartOf="parent">
 
-        app:layout_constraintStart_toStartOf="parent" />
+        <CheckBox
+            android:id="@+id/checkBoxPrimary"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center_horizontal"
+            android:text="Primary School"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/hint"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:text="*You can select more than one option."
-        android:textSize="15sp"
-        android:fontFamily="@font/opensans"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.622"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxNone"
-        app:layout_constraintVertical_bias="1.0" />
+        <CheckBox
+            android:id="@+id/checkBoxSecondary"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center_horizontal"
+            android:text="    Secondary School"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
-    <TextView
-        android:id="@+id/question_school_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5dp"
-        android:text=""
-        android:textColor="@android:color/holo_red_dark"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.422"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/hint" />
+        <CheckBox
+            android:id="@+id/checkBoxNone"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:text="      Other"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/opensans"
+            android:text="*You can select more than one option."
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/question_school_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="15sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.422"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/hint" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/question_school_nextButton"
