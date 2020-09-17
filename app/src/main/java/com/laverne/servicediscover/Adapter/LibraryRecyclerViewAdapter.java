@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -25,28 +27,31 @@ import com.laverne.servicediscover.Utilities;
 
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.internal.platform.android.UtilKt;
 
-public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecyclerViewAdapter.ViewHolder> {
+public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecyclerViewAdapter.ViewHolder> implements Filterable {
     private static final int REQUEST_CODE_CALL_PERMISSION = 2;
 
     private List<Library> liraries;
+    private List<Library> allLibraries;
     private Context context;
-    private boolean isHomeDistance;
-
     private OnPhoneCallListener phoneCallListener;
 
-    public LibraryRecyclerViewAdapter(List<Library> libraries, boolean isHomeDistance) {
+    public LibraryRecyclerViewAdapter(List<Library> libraries) {
+
         this.liraries = libraries;
-        this.isHomeDistance = isHomeDistance;
+        allLibraries = new ArrayList<>(libraries);
+        //this.isHomeDistance = isHomeDistance;
     }
 
 
     public void setPhoneCallListener(OnPhoneCallListener listener) {
         this.phoneCallListener = listener;
     }
+
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -57,10 +62,10 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         public Button websiteButton;
         public  boolean isHomeDistance;
 
-        public ViewHolder(@NonNull View itemView, boolean isHomeDistance) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            this.isHomeDistance = isHomeDistance;
+            //this.isHomeDistance = isHomeDistance;
 
             nameTextView = itemView.findViewById(R.id.library_name);
             addressTextView = itemView.findViewById(R.id.library_address);
@@ -86,7 +91,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         // Inflate the view from XML layout file
         View libraryView = inflater.inflate(R.layout.library_rv_layout, parent, false);
         // construct the viewholder with the new view
-        ViewHolder viewHolder = new ViewHolder(libraryView, isHomeDistance);
+        ViewHolder viewHolder = new ViewHolder(libraryView);
         return viewHolder;
     }
 
@@ -102,11 +107,8 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         tvAddress.setText(library.getAddress());
         TextView tvDistance = viewHolder.distanceTextView;
         float distance = 0;
-        if (isHomeDistance) {
-            distance = library.getHomeDistance();
-        } else {
-            distance = library.getCurrentDistance();
-        }
+        distance = library.getCurrentDistance();
+
         if (distance < 1000) {
             tvDistance.setText("Distance: " + String.valueOf((int)distance) + "m");
         } else {
@@ -126,7 +128,6 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
             }
         });
 
-
         websiteBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,8 +146,43 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
 
     public void updateList(List<Library> liraries) {
         this.liraries = liraries;
+        allLibraries = new ArrayList<>(liraries);
         notifyDataSetChanged();
     }
 
+    @Override
+    public Filter getFilter() {
+        return libraryFilter;
+    }
 
+    private Filter libraryFilter = new Filter() {
+        @Override
+        protected FilterResults performFiltering(CharSequence constraint) {
+            List<Library> filteredList = new ArrayList<>();
+
+
+            if (constraint == null || constraint.length() == 0) {
+                // search input is empty, return all
+                filteredList.addAll(allLibraries);
+            } else {
+                String filterPattern = constraint.toString().toLowerCase().trim();
+                for (Library library: allLibraries) {
+                    if (library.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(library);
+                    }
+                }
+            }
+            FilterResults results = new FilterResults();
+            results.values = filteredList;
+
+            return  results;
+        }
+
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            liraries.clear();
+            liraries.addAll((List)results.values);
+            notifyDataSetChanged();
+        }
+    };
 }

@@ -22,7 +22,8 @@
 
         <activity android:name=".MissionMapActivity" />
         <activity android:name=".MissionListActivity" />
-        <activity android:name=".AddMissionActivity" />
+        <activity android:name=".AddMissionActivity"
+            />
         <activity
             android:name=".QAddressActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

@@ -17,7 +17,7 @@ import static androidx.room.OnConflictStrategy.REPLACE;
 @Dao
 public interface MissionDAO {
 
-    @Query("SELECT * FROM mission WHERE status = :status")
+    @Query("SELECT * FROM mission WHERE status = :status ORDER BY distance")
     LiveData<List<Mission>> getAllMissionByStatus(int status);
 
     @Query("SELECT * FROM mission WHERE status = 0")
@@ -37,7 +37,7 @@ public interface MissionDAO {
 
 
     @Insert
-    void insertAll(Mission... missions);
+    void insertAll(Mission...missions);
 
     @Insert
     long insert(Mission mission);

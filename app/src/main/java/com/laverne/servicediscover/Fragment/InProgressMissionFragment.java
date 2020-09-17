@@ -17,6 +17,8 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -40,6 +42,7 @@ import com.laverne.servicediscover.ViewModel.MissionViewModel;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
 import static android.content.Context.MODE_PRIVATE;
 
 public class InProgressMissionFragment extends Fragment {
@@ -56,7 +59,15 @@ public class InProgressMissionFragment extends Fragment {
     private FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
 
-    public InProgressMissionFragment() {}
+    private Boolean needQuestionnaire;
+
+    private static final int REQUEST_INTRO = 2001;
+    private static final int REQUEST_ADD_MISSION = 2002;
+
+
+
+    public InProgressMissionFragment() {
+    }
 
     @Nullable
     @Override
@@ -79,19 +90,34 @@ public class InProgressMissionFragment extends Fragment {
 
     private void setupAddMissionButton() {
         // Check whether the user is first time to use
-        final Boolean needQuestionnaire = getActivity().getSharedPreferences("App", MODE_PRIVATE).getBoolean("needQuestionnaire", true);
+           needQuestionnaire = getActivity().getSharedPreferences("App", MODE_PRIVATE).getBoolean("needQuestionnaire", true);
+
+
         addMissionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (needQuestionnaire) {
                     Intent intent = new Intent(getActivity(), IntroductionActivity.class);
-                    startActivity(intent);
+                    startActivityForResult(intent, REQUEST_INTRO);
                 } else {
                     new CheckMissionsAsyncTask().execute();
                 }
             }
         });
     }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == REQUEST_INTRO) {
+            if (resultCode == RESULT_OK) {
+                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, new MissionFragment());
+                fragmentTransaction.commit();
+            }
+        }
+    }
+
 
 
     private class CheckMissionsAsyncTask extends AsyncTask<String, Void, Integer> {
@@ -193,18 +219,18 @@ public class InProgressMissionFragment extends Fragment {
                     double longitude = locationResult.getLastLocation().getLongitude();
 
 
-                    for(int i = 0; i < missionList.size(); i++) {
+                    for (int i = 0; i < missionList.size(); i++) {
                         // distance from user location
                         float[] distance = new float[2];
                         Mission mission = missionList.get(i);
-                        Location.distanceBetween(latitude, longitude, mission.getLatitude(),mission.getLongitude(), distance);
+                        Location.distanceBetween(latitude, longitude, mission.getLatitude(), mission.getLongitude(), distance);
                         mission.setDistance(distance[0]);
                         missionViewModel.updateMission(mission);
                     }
                 } else {
                     // show error alert
                     Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong! Fail to get your current location.");
-                    for(int i = 0; i < missionList.size(); i++) {
+                    for (int i = 0; i < missionList.size(); i++) {
                         Mission mission = missionList.get(i);
                         mission.setDistance(0);
                         missionViewModel.updateMission(mission);

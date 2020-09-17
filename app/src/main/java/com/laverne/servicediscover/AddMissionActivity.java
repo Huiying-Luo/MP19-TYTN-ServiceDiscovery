@@ -19,7 +19,8 @@ public class AddMissionActivity extends AppCompatActivity {
     private CardView museumBtn;
     private Button resetBtn;
 
-    private static final int REQUEST_CODE = 2002;
+    private static final int REQUEST_INTRO = 1001;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,7 +92,8 @@ public class AddMissionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(AddMissionActivity.this, IntroductionActivity.class);
-                        startActivity(intent);
+                        startActivityForResult(intent, REQUEST_INTRO);
+
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -105,6 +107,15 @@ public class AddMissionActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_INTRO) {
+            if (resultCode == RESULT_OK) {
+                finish();
+            }
+        }
+    }
 
     private void goToNextScreen(String category) {
         Intent intent = new Intent(AddMissionActivity.this, MissionListActivity.class);

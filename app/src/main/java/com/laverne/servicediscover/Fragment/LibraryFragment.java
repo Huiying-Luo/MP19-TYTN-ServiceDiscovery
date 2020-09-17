@@ -3,6 +3,7 @@ package com.laverne.servicediscover.Fragment;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.SearchManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,8 +19,12 @@ import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
@@ -28,6 +33,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -89,9 +95,12 @@ public class LibraryFragment extends Fragment {
 
     private String address;
     private double[] homeLatLng = null;
-    private double[] currentLatLng = new double[] {0,0};
+    private double[] currentLatLng = new double[]{0, 0};
 
-    private boolean isSortedByHomeAddress = false;
+    //private boolean isSortedByHomeAddress = false;
+
+    private SearchView searchView = null;
+    private SearchView.OnQueryTextListener queryTextListener;
 
     public LibraryFragment() {
     }
@@ -114,7 +123,7 @@ public class LibraryFragment extends Fragment {
         networkConnection = new NetworkConnection();
 
         getLastLocation(false);
-        configureSortSpinner();
+        //configureSortSpinner();
 
         new GetAllLibaryTask().execute();
 
@@ -122,9 +131,58 @@ public class LibraryFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
+    // Set up search Bar
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        inflater.inflate(R.menu.search_bar, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getActivity().getSystemService(Context.SEARCH_SERVICE);
+
+        if (searchItem != null) {
+            searchView = (SearchView) searchItem.getActionView();
+        }
+
+        if (searchView != null) {
+            //searchView.setSearchableInfo(searchManager.getSearchableInfo(getActivity().getComponentName()));
+            searchView.setImeOptions(EditorInfo.IME_ACTION_DONE);
+
+            queryTextListener = new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String query) {
+                    return false;
+                }
+
+                @Override
+                public boolean onQueryTextChange(String newText) {
+                    adapter.getFilter().filter(newText);
+                    return false;
+                }
+            };
+            searchView.setOnQueryTextListener(queryTextListener);
+        }
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    /*    @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.action_search:
+                    return false;
+                default:
+                    break;
+            }
+            searchView.setOnQueryTextListener(queryTextListener);
+            return super.onOptionsItemSelected(item);
+        }
+    */
     private void configureView(View view) {
-        sortSpinner = view.findViewById(R.id.library_sort_spinner);
+        //sortSpinner = view.findViewById(R.id.library_sort_spinner);
         recyclerView = view.findViewById(R.id.library_recycler_view);
         swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
         errorTextView = view.findViewById(R.id.library_error_tv);
@@ -166,7 +224,7 @@ public class LibraryFragment extends Fragment {
 
 
     private void initRecyclerView() {
-        adapter = new LibraryRecyclerViewAdapter(libraries, isSortedByHomeAddress);
+        adapter = new LibraryRecyclerViewAdapter(libraries);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 0));
         recyclerView.setAdapter(adapter);
         registerCallbackForPhoneCall();
@@ -219,7 +277,7 @@ public class LibraryFragment extends Fragment {
                         sortByCurrentLocation(false);
                         // remove the progress bar
                         progressBar.setVisibility(View.GONE);
-                        adapter.notifyDataSetChanged();
+                        adapter.updateList(libraries);
                     }
                 } catch (JSONException e) {
                     Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong, please try again later.");
@@ -305,7 +363,7 @@ public class LibraryFragment extends Fragment {
                 .show();
     }
 
-
+/*
     private void configureSortSpinner() {
         String[] options = new String[]{"Distance from current location", "Distance from home"};
 
@@ -346,10 +404,10 @@ public class LibraryFragment extends Fragment {
             }
         });
     }
-
+*/
 
     private void resetRecyclerViewAdapter(boolean isSortedByHomeAddress) {
-        adapter = new LibraryRecyclerViewAdapter(libraries, isSortedByHomeAddress);
+        adapter = new LibraryRecyclerViewAdapter(libraries);
         recyclerView.setAdapter(adapter);
         registerCallbackForPhoneCall();
     }
@@ -369,7 +427,7 @@ public class LibraryFragment extends Fragment {
                 return Float.compare(o1.getHomeDistance(), o2.getHomeDistance());
             }
         });
-        adapter.notifyDataSetChanged();
+        adapter.updateList(libraries);
         layoutManager.scrollToPosition(0);
     }
 
@@ -394,11 +452,8 @@ public class LibraryFragment extends Fragment {
             }
         });
         swipeRefreshLayout.setRefreshing(false);
-        adapter.notifyDataSetChanged();
+        adapter.updateList(libraries);
         layoutManager.scrollToPosition(0);
-
-        isSortedByHomeAddress = false;
-
 
     }
 
@@ -407,9 +462,8 @@ public class LibraryFragment extends Fragment {
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if (!isSortedByHomeAddress) {
-                    getLastLocation(true);
-                }
+                getLastLocation(true);
+
 
             }
         });

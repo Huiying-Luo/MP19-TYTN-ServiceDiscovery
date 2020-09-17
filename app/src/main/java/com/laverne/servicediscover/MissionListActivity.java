@@ -10,15 +10,20 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.laverne.servicediscover.Adapter.MissionListRecyclerViewAdapter;
 import com.laverne.servicediscover.Entity.Mission;
+import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class MissionListActivity extends AppCompatActivity implements MissionListRecyclerViewAdapter.OnMissionListener {
@@ -47,7 +52,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
         initializeViewModel();
         initializeRecyclerView();
-        missionList = new ArrayList<>();
+
         getAllMissionsByCategoryFromRoomDatabase();
     }
 
@@ -77,14 +82,42 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
 
     private void getAllMissionsByCategoryFromRoomDatabase() {
+        missionList = new ArrayList<>();
 
         missionViewModel.getAllNotAddedMissionsByCategory(category).observe(this, new Observer<List<Mission>>() {
             @Override
             public void onChanged(List<Mission> missions) {
                 missionList = missions;
-                adapter.setMissionList(missions);
+                adapter.setMissionList(missionList);
             }
         });
+
+        calculateDistance();
+    }
+
+
+    private void sorting(List<Mission> missions) {
+        Collections.sort(missions, new Comparator<Mission>() {
+            @Override
+            public int compare(Mission o1, Mission o2) {
+                return Float.compare(o1.getDistance(), o2.getDistance());
+            }
+        });
+    }
+
+
+    private void calculateDistance() {
+        SharedPreferences sharedPref = getSharedPreferences("User", MODE_PRIVATE);
+        double latitude = sharedPref.getFloat("latitude", 0);
+        double longitude = sharedPref.getFloat("longitude", 0);
+        for (int i = 0; i < missionList.size(); i++) {
+            // distance from user location
+            float[] distance = new float[2];
+            Mission mission = missionList.get(i);
+            Location.distanceBetween(latitude, longitude, mission.getLatitude(), mission.getLongitude(), distance);
+            mission.setDistance(distance[0]);
+            missionViewModel.updateMission(mission);
+        }
     }
 
 
