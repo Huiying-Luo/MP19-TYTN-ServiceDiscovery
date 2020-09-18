@@ -224,8 +224,7 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
             @Override
             public void onClick(View v) {
                 if (uid != 0) {
-                    new FindMissionsAsyncTask().execute();
-
+                    new FindMissionAsyncTask().execute();
                 }
             }
         });
@@ -239,7 +238,7 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
     }
 
 
-    private class FindMissionsAsyncTask extends AsyncTask<String, Void, Mission> {
+    private class FindMissionAsyncTask extends AsyncTask<String, Void, Mission> {
 
         @Override
         protected Mission doInBackground(String... strings) {
@@ -249,34 +248,45 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
         @Override
         protected void onPostExecute(Mission mission) {
             if (mission != null) {
-                Date currentTime = Calendar.getInstance().getTime();
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-                String date = dateFormat.format(currentTime);
-                mission.setCompleteDate(date);
-                mission.setStatus(2);
-                missionViewModel.updateMission(mission);
-
-                showAlertAndMove();
-
+                showAlert(mission);
             } else {
-
+                Utilities.showAlertDialogwithOkButton(MissionMapActivity.this,"Error", "Something went wrong, please try again later.");
                 Log.i("Mission", "null");
             }
         }
     }
 
-    private void showAlertAndMove() {
+
+    private void setMissionComplete(Mission mission) {
+        Date currentTime = Calendar.getInstance().getTime();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+        String date = dateFormat.format(currentTime);
+        mission.setCompleteDate(date);
+        mission.setStatus(2);
+        missionViewModel.updateMission(mission);
+
+    }
+
+    private void showAlert(final Mission mission) {
         // create a alert dialog
         android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(MissionMapActivity.this);
-        alert.setTitle("Congrats!");
-        alert.setMessage("You have known more one service!!!");
-        alert.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+        alert.setTitle("Conformation!");
+        alert.setMessage("Are you sure you have gone to find out about this service?  ");
+        alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
+                setMissionComplete(mission);
+
                 Intent intent = new Intent(MissionMapActivity.this, MainActivity.class);
                 intent.putExtra("goToCompletedMission", true);
                 startActivity(intent);
                 finish();
+            }
+        });
+        alert.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
             }
         });
         alert.create().show();
