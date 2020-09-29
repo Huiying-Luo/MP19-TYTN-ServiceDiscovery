@@ -271,7 +271,7 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
         // create a alert dialog
         android.app.AlertDialog.Builder alert = new android.app.AlertDialog.Builder(MissionMapActivity.this);
         alert.setTitle("Conformation!");
-        alert.setMessage("Are you sure you have gone to find out about this service?  ");
+        alert.setMessage("Are you sure you have found out about this service?");
         alert.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
