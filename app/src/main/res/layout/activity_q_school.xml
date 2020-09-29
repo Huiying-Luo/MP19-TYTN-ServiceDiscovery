@@ -16,7 +16,7 @@
         android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2dp"
-        android:text="What kind of school\nyour kid(s) going to go to?"
+        android:text="What kind of school\nyour kid(s) go to?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
         android:textSize="26sp"

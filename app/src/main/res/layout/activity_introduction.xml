@@ -31,24 +31,24 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/app_name" />
 
+        <TextView
+            android:id="@+id/intro_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="80dp"
+            android:fontFamily="@font/opensanssemibold"
+            android:lineSpacingExtra="2dp"
+            android:text="Tell us something\nabout yourself so that we can provide suitable public services to you! "
+            android:textAlignment="center"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
 
-        <TextView
-            android:id="@+id/intro_description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="50dp"
-            android:fontFamily="@font/opensanssemibold"
-            android:lineSpacingExtra="2dp"
-            android:text="Tell us something\nabout you!\n\nWe would like to recommend\n suitable public services\n for you! "
-            android:textAlignment="center"
-            android:textColor="@android:color/black"
-            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
