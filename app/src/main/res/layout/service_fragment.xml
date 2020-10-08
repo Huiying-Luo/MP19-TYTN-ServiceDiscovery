@@ -6,6 +6,26 @@
     android:orientation="vertical">
 
 
+    <TextView
+        android:id="@+id/filter_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:text="Filter"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:fontFamily="@font/opensanssemibold"
+        android:visibility="gone"/>
+
+    <Spinner
+        android:id="@+id/school_filter_spinner"
+        style="@style/Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_margin="5dp"
+        android:visibility="gone"/>
+
+
     <ProgressBar
         android:id="@+id/library_progress_bar"
         android:layout_width="wrap_content"
@@ -39,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_gravity="center"
-        android:textStyle="bold"
+        android:fontFamily="@font/opensans"
         android:textSize="18sp" />
 
 </LinearLayout>
