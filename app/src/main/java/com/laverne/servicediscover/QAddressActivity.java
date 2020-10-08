@@ -321,7 +321,7 @@ public class QAddressActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            return networkConnection.getAllLibraries();
+            return networkConnection.getSerivces(0);
         }
 
         @Override
