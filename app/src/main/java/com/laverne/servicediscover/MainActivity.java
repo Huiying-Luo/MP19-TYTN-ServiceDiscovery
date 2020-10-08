@@ -99,16 +99,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(new MissionFragment());
                 break;
             case R.id.library:
-                replaceFragment(new ServiceFragment("Library"));
+                replaceFragment(new ServiceFragment(0));
                 break;
             case R.id.education:
-                replaceFragment(new ServiceFragment("Education"));
+                replaceFragment(new ServiceFragment(1));
                 break;
             case R.id.park:
-                replaceFragment(new ServiceFragment("Park"));
+                replaceFragment(new ServiceFragment(2));
                 break;
             case R.id.museum:
-                replaceFragment(new ServiceFragment("Museum"));
+                replaceFragment(new ServiceFragment(3));
                 break;
             case R.id.faq:
                 replaceFragment(new FAQFragment());

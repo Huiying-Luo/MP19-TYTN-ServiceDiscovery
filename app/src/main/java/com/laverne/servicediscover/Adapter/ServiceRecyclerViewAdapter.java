@@ -25,15 +25,15 @@ import java.util.List;
 
 public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecyclerViewAdapter.ViewHolder> implements Filterable {
 
-    private List<Service> liraries;
-    private List<Service> allLibraries;
+    private List<Service> services;
+    private List<Service> allServices;
     private Context context;
     private OnPhoneCallListener phoneCallListener;
 
-    public ServiceRecyclerViewAdapter(List<Service> libraries) {
+    public ServiceRecyclerViewAdapter(List<Service> services) {
 
-        this.liraries = libraries;
-        allLibraries = new ArrayList<>(libraries);
+        this.services = services;
+        allServices = new ArrayList<>(services);
     }
 
 
@@ -66,7 +66,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
     @Override
     public int getItemCount() {
-        return liraries.size();
+        return services.size();
     }
 
     @NonNull
@@ -85,44 +85,48 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
     // this method binds the view holder created with data that will be displayed
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
-        final Service library = liraries.get(position);
+        final Service service = services.get(position);
         // viewholder binding with its data at the specified position
         TextView tvName = viewHolder.nameTextView;
-        tvName.setText(library.getName());
+        tvName.setText(service.getName());
         TextView tvAddress = viewHolder.addressTextView;
-        tvAddress.setText(library.getAddress());
+        tvAddress.setText(service.getAddress());
         TextView tvDistance = viewHolder.distanceTextView;
         float distance = 0;
-        distance = library.getCurrentDistance();
+        distance = service.getCurrentDistance();
 
         if (distance < 1000) {
             tvDistance.setText("Distance: " + String.valueOf((int)distance) + "m");
         } else {
             tvDistance.setText("Distance: " + String.format("%.2f", distance * 0.001) + "km");
         }
-        final String phoneNo = library.getPhoneNo();
-        final String website = library.getWebsite();
-        final Button callBtn = viewHolder.callButton;
+        Button callBtn = viewHolder.callButton;
         Button websiteBtn = viewHolder.websiteButton;
+        // park does not have website and phone no
+        if (service.getCategory() != 2) {
+            final String phoneNo = service.getPhoneNo();
+            final String website = service.getWebsite();
+            callBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    phoneCallListener.onPhoneCallClick(phoneNo);
+                }
+            });
 
-        callBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                phoneCallListener.onPhoneCallClick(phoneNo);
-
-
-            }
-        });
-
-        websiteBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // open website
-                Uri uri = Uri.parse(website);
-                Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
-                context.startActivity(launchWeb);
-            }
-        });
+            websiteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // open website
+                    Uri uri = Uri.parse(website);
+                    Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
+                    context.startActivity(launchWeb);
+                }
+            });
+        } else {
+            // make the buttons invisible when display parks
+            callBtn.setVisibility(View.GONE);
+            websiteBtn.setVisibility(View.GONE);
+        }
     }
 
 
@@ -130,9 +134,9 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         void onPhoneCallClick(String phoneNo);
     }
 
-    public void updateList(List<Service> liraries) {
-        this.liraries = liraries;
-        allLibraries = new ArrayList<>(liraries);
+    public void updateList(List<Service> services) {
+        this.services = services;
+        allServices = new ArrayList<>(services);
         notifyDataSetChanged();
     }
 
@@ -149,10 +153,10 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
             if (constraint == null || constraint.length() == 0) {
                 // search input is empty, return all
-                filteredList.addAll(allLibraries);
+                filteredList.addAll(allServices);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Service library: allLibraries) {
+                for (Service library: allServices) {
                     if (library.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(library);
                     }
@@ -166,8 +170,8 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
-            liraries.clear();
-            liraries.addAll((List)results.values);
+            services.clear();
+            services.addAll((List)results.values);
             notifyDataSetChanged();
         }
     };

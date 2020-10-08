@@ -67,7 +67,7 @@ public class ServiceFragment extends Fragment {
 
     private static final int REQUEST_CODE_CALL_PERMISSION = 2;
     private static final String TAG = "ServiceFragment";
-    private String category;
+    private int category;
 
     FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
@@ -94,7 +94,7 @@ public class ServiceFragment extends Fragment {
     private SearchView searchView = null;
     private SearchView.OnQueryTextListener queryTextListener;
 
-    public ServiceFragment(String category) {
+    public ServiceFragment(int category) {
         this.category = category;
     }
 
@@ -105,8 +105,8 @@ public class ServiceFragment extends Fragment {
         View view = inflater.inflate(R.layout.service_fragment, container, false);
 
         configureView(view);
-
-        if (category.equals("Education")) {
+        // 1 = Education
+        if (category == 1) {
             configureFilterSpinner();
         }
 
@@ -234,14 +234,14 @@ public class ServiceFragment extends Fragment {
         @Override
         protected String doInBackground(String... strings) {
             switch (category) {
-                case "Library":
-                    return networkConnection.getAllLibraries();
-                case "Education":
-                    return networkConnection.getAllSchools();
-                case "Park":
-                    return networkConnection.getAllParks();
-                case "Museum":
-                    return networkConnection.getAllMuseums();
+                case 0:
+                    return networkConnection.getSerivces(0);
+                case 1:
+                    return networkConnection.getSerivces(1);
+                case 2:
+                    return networkConnection.getSerivces(2);
+                case 3:
+                    return networkConnection.getSerivces(3);
                 default:
                     return "";
             }
@@ -262,8 +262,7 @@ public class ServiceFragment extends Fragment {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             String serviceName = jsonObject.getString("name");
                             String serviceAddress = jsonObject.getString("address");
-                            String servicePhoneNo = jsonObject.getString("phone");
-                            String serviceWebsite = jsonObject.getString("website");
+
                             double serviceLat = jsonObject.getDouble("latitude");
                             double serviceLong = jsonObject.getDouble("longitude");
 
@@ -279,10 +278,18 @@ public class ServiceFragment extends Fragment {
                                 Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
                             }
 
-                            Service service = new Service(serviceName, serviceAddress, serviceWebsite, servicePhoneNo, serviceLat, serviceLong, currentDistance);
-
+                            Service service = new Service(serviceName, serviceAddress, serviceLat, serviceLong, currentDistance, category);
+                            // park do not has website and phone number
+                            // 2 = park
+                            if (category != 2) {
+                                String servicePhoneNo = jsonObject.getString("phone");
+                                String serviceWebsite = jsonObject.getString("website");
+                                service.setPhoneNo(servicePhoneNo);
+                                service.setWebsite(serviceWebsite);
+                            }
                             // if it is education service, set the school type
-                            if (category.equals("Education")) {
+                            // 1 = Education
+                            if (category == 1) {
                                 String serviceSchoolType = jsonObject.getString("schoolType");
                                 service.setSchoolType(serviceSchoolType);
                                 allServices.add(service);
@@ -395,7 +402,8 @@ public class ServiceFragment extends Fragment {
         swipeRefreshLayout.setRefreshing(false);
         adapter.updateList(services);
         layoutManager.scrollToPosition(0);
-        if (category.equals("Education")) {
+        // 1 = education
+        if (category == 1) {
             // Sorting the school list (can be filtered)
             Collections.sort(allServices, new Comparator<Service>() {
                 @Override

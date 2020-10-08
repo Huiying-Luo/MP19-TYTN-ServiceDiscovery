@@ -20,9 +20,23 @@ public class NetworkConnection {
         client = new OkHttpClient();
     }
 
-    public String getAllLibraries() {
-        final String methodPath = "libraries";
 
+    public String getSerivces(int category) {
+        String methodPath = "";
+        switch (category) {
+            case 0:
+                methodPath = "libraries";
+                break;
+            case 1:
+                methodPath = "schools";
+                break;
+            case 2:
+                methodPath = "parks";
+                break;
+            case 3:
+                methodPath = "museums";
+                break;
+        }
         Request.Builder builder = new Request.Builder();
         builder.url(BASE_URL + methodPath);
         Request request = builder.build();
@@ -34,20 +48,7 @@ public class NetworkConnection {
             e.printStackTrace();
             Log.i("networkError", e.getMessage().toString());
         }
-        return result;
-    }
 
-    public String getAllSchools() {
-        return result;
-    }
-
-
-    public String getAllParks() {
-        return result;
-    }
-
-
-    public String getAllMuseums() {
         return result;
     }
 }

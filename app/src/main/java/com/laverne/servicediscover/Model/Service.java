@@ -9,15 +9,15 @@ public class Service {
     private double longitude;
     private float currentDistance;
     private String schoolType;
+    private int category;
 
-    public Service(String name, String address, String website, String phoneNo, double latitude, double longitude, float currentDistance) {
+    public Service(String name, String address, double latitude, double longitude, float currentDistance,  int category) {
         this.name = name;
         this.address = address;
-        this.website = website;
-        this.phoneNo = phoneNo;
         this.latitude = latitude;
         this.longitude = longitude;
         this.currentDistance = currentDistance;
+        this.category = category;
     }
 
     public String getName() {
@@ -82,5 +82,13 @@ public class Service {
 
     public void setSchoolType(String schoolType) {
         this.schoolType = schoolType;
+    }
+
+    public int getCategory() {
+        return category;
+    }
+
+    public void setCategory(int category) {
+        this.category = category;
     }
 }
