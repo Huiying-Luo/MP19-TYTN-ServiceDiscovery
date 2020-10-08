@@ -13,28 +13,20 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Looper;
 import android.provider.Settings;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.SearchView;
 
 import com.google.android.material.navigation.NavigationView;
+import com.laverne.servicediscover.Fragment.FAQFragment;
 import com.laverne.servicediscover.Fragment.HomeFragment;
-import com.laverne.servicediscover.Fragment.LibraryFragment;
+import com.laverne.servicediscover.Fragment.ServiceFragment;
 import com.laverne.servicediscover.Fragment.MissionFragment;
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -107,9 +99,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 replaceFragment(new MissionFragment());
                 break;
             case R.id.library:
-                replaceFragment(new LibraryFragment());
+                replaceFragment(new ServiceFragment("Library"));
                 break;
-
+            case R.id.education:
+                replaceFragment(new ServiceFragment("Education"));
+                break;
+            case R.id.park:
+                replaceFragment(new ServiceFragment("Park"));
+                break;
+            case R.id.museum:
+                replaceFragment(new ServiceFragment("Museum"));
+                break;
+            case R.id.faq:
+                replaceFragment(new FAQFragment());
         }
         // highlight the selected item
         navigationView.setCheckedItem(id);

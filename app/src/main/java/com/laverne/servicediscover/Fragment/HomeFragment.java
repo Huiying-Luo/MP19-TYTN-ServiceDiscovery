@@ -1,22 +1,14 @@
 package com.laverne.servicediscover.Fragment;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
 
 import androidx.fragment.app.Fragment;
@@ -26,8 +18,6 @@ import androidx.lifecycle.ViewModelProvider;
 
 
 import com.google.android.material.navigation.NavigationView;
-import com.laverne.servicediscover.AddMissionActivity;
-import com.laverne.servicediscover.IntroductionActivity;
 import com.laverne.servicediscover.R;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
@@ -74,11 +64,42 @@ public class HomeFragment extends Fragment {
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new LibraryFragment());
+                replaceFragment(new ServiceFragment("Library"));
                 navigationView.setCheckedItem(R.id.library);
                 getActivity().setTitle("Library");
             }
         });
+
+        educationBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new ServiceFragment("Education"));
+                navigationView.setCheckedItem(R.id.education);
+                getActivity().setTitle("Education");
+            }
+        });
+
+
+        parkBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new ServiceFragment("Park"));
+                navigationView.setCheckedItem(R.id.park);
+                getActivity().setTitle("Park");
+            }
+        });
+
+
+        museumBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replaceFragment(new ServiceFragment("Museum"));
+                navigationView.setCheckedItem(R.id.museum);
+                getActivity().setTitle("Museum");
+            }
+        });
+
+
 
         completeBtn.setOnClickListener(new View.OnClickListener() {
             @Override

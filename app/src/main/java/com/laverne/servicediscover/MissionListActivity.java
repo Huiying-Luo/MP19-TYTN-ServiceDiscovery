@@ -12,13 +12,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.laverne.servicediscover.Adapter.MissionListRecyclerViewAdapter;
 import com.laverne.servicediscover.Entity.Mission;
-import com.laverne.servicediscover.Model.Library;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 import java.util.ArrayList;

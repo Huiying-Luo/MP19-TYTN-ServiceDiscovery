@@ -11,15 +11,15 @@ import androidx.fragment.app.Fragment;
 
 import com.laverne.servicediscover.R;
 
-public class SettingFragment extends Fragment {
+public class FAQFragment extends Fragment {
 
-    public SettingFragment() {}
+    public FAQFragment() {}
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Inflate the View for this fragment
-        View view = inflater.inflate(R.layout.setting_fragment, container, false);
+        View view = inflater.inflate(R.layout.faq_fragment, container, false);
         return view;
     }
 }

@@ -351,7 +351,7 @@ public class QAddressActivity extends AppCompatActivity {
                                 currentDistance = distance[0];
                                 Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
                                 if (currentDistance < 8000) {
-                                    Mission mission = new Mission(libName, libAddress, libLatitude, libLongitude, "Library", 0);
+                                    Mission mission = new Mission(libName, libAddress, libLatitude, libLongitude, "Service", 0);
                                     missionViewModel.insert(mission);
 
                                 }

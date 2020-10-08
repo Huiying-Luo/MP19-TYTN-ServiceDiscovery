@@ -1,11 +1,8 @@
 package com.laverne.servicediscover.Adapter;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.location.Location;
+
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,38 +10,30 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
-import android.widget.ImageView;
-import android.widget.RatingBar;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.laverne.servicediscover.Model.Library;
+import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.R;
-import com.laverne.servicediscover.Utilities;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.internal.platform.android.UtilKt;
 
-public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecyclerViewAdapter.ViewHolder> implements Filterable {
-    private static final int REQUEST_CODE_CALL_PERMISSION = 2;
+public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecyclerViewAdapter.ViewHolder> implements Filterable {
 
-    private List<Library> liraries;
-    private List<Library> allLibraries;
+    private List<Service> liraries;
+    private List<Service> allLibraries;
     private Context context;
     private OnPhoneCallListener phoneCallListener;
 
-    public LibraryRecyclerViewAdapter(List<Library> libraries) {
+    public ServiceRecyclerViewAdapter(List<Service> libraries) {
 
         this.liraries = libraries;
         allLibraries = new ArrayList<>(libraries);
-        //this.isHomeDistance = isHomeDistance;
     }
 
 
@@ -60,12 +49,9 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         public TextView distanceTextView;
         public Button callButton;
         public Button websiteButton;
-        public  boolean isHomeDistance;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            //this.isHomeDistance = isHomeDistance;
 
             nameTextView = itemView.findViewById(R.id.library_name);
             addressTextView = itemView.findViewById(R.id.library_address);
@@ -85,11 +71,11 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
 
     @NonNull
     @Override
-    public LibraryRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ServiceRecyclerViewAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         // Inflate the view from XML layout file
-        View libraryView = inflater.inflate(R.layout.library_rv_layout, parent, false);
+        View libraryView = inflater.inflate(R.layout.service_rv_layout, parent, false);
         // construct the viewholder with the new view
         ViewHolder viewHolder = new ViewHolder(libraryView);
         return viewHolder;
@@ -99,7 +85,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
     // this method binds the view holder created with data that will be displayed
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, int position) {
-        final Library library = liraries.get(position);
+        final Service library = liraries.get(position);
         // viewholder binding with its data at the specified position
         TextView tvName = viewHolder.nameTextView;
         tvName.setText(library.getName());
@@ -144,7 +130,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
         void onPhoneCallClick(String phoneNo);
     }
 
-    public void updateList(List<Library> liraries) {
+    public void updateList(List<Service> liraries) {
         this.liraries = liraries;
         allLibraries = new ArrayList<>(liraries);
         notifyDataSetChanged();
@@ -158,7 +144,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
     private Filter libraryFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
-            List<Library> filteredList = new ArrayList<>();
+            List<Service> filteredList = new ArrayList<>();
 
 
             if (constraint == null || constraint.length() == 0) {
@@ -166,7 +152,7 @@ public class LibraryRecyclerViewAdapter extends RecyclerView.Adapter<LibraryRecy
                 filteredList.addAll(allLibraries);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Library library: allLibraries) {
+                for (Service library: allLibraries) {
                     if (library.getName().toLowerCase().contains(filterPattern)) {
                         filteredList.add(library);
                     }

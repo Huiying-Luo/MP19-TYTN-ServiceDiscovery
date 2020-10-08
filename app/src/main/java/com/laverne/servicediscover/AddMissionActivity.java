@@ -56,7 +56,7 @@ public class AddMissionActivity extends AppCompatActivity {
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("Library");
+                goToNextScreen("Service");
             }
         });
 

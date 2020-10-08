@@ -9,12 +9,12 @@ import okhttp3.Response;
 
 public class NetworkConnection {
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+    //public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     private static final String BASE_URL = "https://safe-everglades-39383.herokuapp.com/api/";
 
     private OkHttpClient client = null;
     private String result;
-    private int resultCode;
+    //private int resultCode;
 
     public NetworkConnection() {
         client = new OkHttpClient();
@@ -34,6 +34,20 @@ public class NetworkConnection {
             e.printStackTrace();
             Log.i("networkError", e.getMessage().toString());
         }
+        return result;
+    }
+
+    public String getAllSchools() {
+        return result;
+    }
+
+
+    public String getAllParks() {
+        return result;
+    }
+
+
+    public String getAllMuseums() {
         return result;
     }
 }
