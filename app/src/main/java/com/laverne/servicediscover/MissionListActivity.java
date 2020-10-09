@@ -94,16 +94,6 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     }
 
 
-    private void sorting(List<Mission> missions) {
-        Collections.sort(missions, new Comparator<Mission>() {
-            @Override
-            public int compare(Mission o1, Mission o2) {
-                return Float.compare(o1.getDistance(), o2.getDistance());
-            }
-        });
-    }
-
-
     private void calculateDistance() {
         SharedPreferences sharedPref = getSharedPreferences("User", MODE_PRIVATE);
         double latitude = sharedPref.getFloat("latitude", 0);

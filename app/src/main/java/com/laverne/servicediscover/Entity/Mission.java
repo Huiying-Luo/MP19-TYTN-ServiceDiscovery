@@ -15,13 +15,13 @@ public class Mission {
     private String address;
     private Double latitude;
     private Double longitude;
-    private String category;
+    private int category;
     private int status;
     private String completeDate = "";
     private float distance = 0;
 
 
-    public Mission(String name, String address, Double latitude, Double longitude, String category, int status) {
+    public Mission(String name, String address, Double latitude, Double longitude, int category, int status) {
         this.name = name;
         this.address = address;
         this.latitude = latitude;
@@ -62,11 +62,11 @@ public class Mission {
         this.longitude = longitude;
     }
 
-    public String getCategory() {
+    public int getCategory() {
         return category;
     }
 
-    public void setCategory(String category) {
+    public void setCategory(int category) {
         this.category = category;
     }
 
