@@ -24,7 +24,7 @@ public class MissionViewModel extends ViewModel {
         mRepository = new MissionRepository(application);
     }
 
-    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(String category) {
+    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(int category) {
         return mRepository.getAllNotAddedMissionsByCategory(category);
     }
 

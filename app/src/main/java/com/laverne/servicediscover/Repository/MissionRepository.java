@@ -22,7 +22,7 @@ public class MissionRepository {
     }
 
 
-    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(final String category) {
+    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(final int category) {
         allMissions = dao.getAllNotAddedMissionsByCategory(category);
         return allMissions;
     }

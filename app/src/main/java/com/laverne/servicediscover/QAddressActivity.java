@@ -317,7 +317,7 @@ public class QAddressActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            return "[" + networkConnection.getSerivces(0) + "}, {" + networkConnection.getSerivces(1) + "," + networkConnection.getSerivces(2) + "," + networkConnection.getSerivces(3) + "]";
+            return "[" + networkConnection.getSerivces(0) + "," + networkConnection.getSerivces(1) + "," + networkConnection.getSerivces(2) + "," + networkConnection.getSerivces(3) + "]";
         }
 
         @Override
@@ -332,7 +332,7 @@ public class QAddressActivity extends AppCompatActivity {
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONArray serviceArray = jsonArray.getJSONArray(i);
                             for (int j = 0; j < serviceArray.length(); j++) {
-                                JSONObject jsonObject = jsonArray.getJSONObject(j);
+                                JSONObject jsonObject = serviceArray.getJSONObject(j);
                                 String serviceName = jsonObject.getString("name");
                                 String serviceAddress = jsonObject.getString("address");
                                 double serviceLat = jsonObject.getDouble("latitude");
@@ -348,6 +348,26 @@ public class QAddressActivity extends AppCompatActivity {
                                     Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
                                     if (currentDistance < 8000) {
                                         Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
+                                        // Education services should set the school type
+                                        if (i == 1) {
+                                            switch (jsonObject.getString("type")) {
+                                                case "Primary":
+                                                    mission.setSchoolType(0);
+                                                    break;
+                                                case "Secondary":
+                                                    mission.setSchoolType(1);
+                                                    break;
+                                                case "Pri/Sec":
+                                                    mission.setSchoolType(2);
+                                                    break;
+                                                case "Special":
+                                                    mission.setSchoolType(3);
+                                                    break;
+                                                case "Adult English Program":
+                                                    mission.setSchoolType(4);
+                                                    break;
+                                            }
+                                        }
                                         missionViewModel.insert(mission);
                                     }
                                 }

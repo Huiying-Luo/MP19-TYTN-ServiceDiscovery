@@ -14,12 +14,19 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.laverne.servicediscover.Adapter.MissionListRecyclerViewAdapter;
 import com.laverne.servicediscover.Entity.Mission;
+import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -27,12 +34,14 @@ import java.util.List;
 public class MissionListActivity extends AppCompatActivity implements MissionListRecyclerViewAdapter.OnMissionListener {
 
     private RecyclerView recyclerView;
-
+    private Spinner filterSpinner;
+    private ArrayAdapter<String> filterSpinnerAdapter;
     private MissionListRecyclerViewAdapter adapter;
     private RecyclerView.LayoutManager layoutManager;
     private MissionViewModel missionViewModel;
-    private String category;
+    private int category;
     private List<Mission> missionList;
+    private List<Mission> allMissions;
     private Intent intent;
 
     @Override
@@ -42,7 +51,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         setTitle("Add New Mission");
 
         intent = getIntent();
-        category = intent.getStringExtra("category");
+        category = intent.getIntExtra("category", -1);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -51,7 +60,16 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         initializeViewModel();
         initializeRecyclerView();
 
-        getAllMissionsByCategoryFromRoomDatabase();
+        if (category == 1) {
+            filterSpinner = findViewById(R.id.mission_filter_spinner);
+            filterSpinner.setVisibility(View.VISIBLE);
+            getAllMissionsByCategoryFromRoomDatabase();
+            allMissions = new ArrayList<>();
+            allMissions.addAll(missionList);
+            configureFilterSpinner();
+        } else {
+            getAllMissionsByCategoryFromRoomDatabase();
+        }
     }
 
     // Back button in action bar
@@ -106,6 +124,52 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
             mission.setDistance(distance[0]);
             missionViewModel.updateMission(mission);
         }
+    }
+
+
+    private void configureFilterSpinner() {
+
+
+        String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
+        final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
+        filterSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, filterList);
+
+        filterSpinner.setAdapter(filterSpinnerAdapter);
+        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                filterBySchoolType(position);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+    }
+
+    private void filterBySchoolType(int position) {
+        missionList.removeAll(missionList);
+        if (position != 0) {
+            for (int i = 0; i < allMissions.size(); i++) {
+                Mission tempMission = allMissions.get(i);
+                // primary and secondary schools
+                int schoolType = tempMission.getSchoolType();
+                if (position == 1 || position == 2) {
+                    if (schoolType == position - 1 || schoolType == 2) {
+                        missionList.add(tempMission);
+                    }
+                } else {
+                    // special and adult english schools
+                    if (schoolType == position) {
+                        missionList.add(tempMission);
+                    }
+                }
+            }
+        } else {
+            missionList.addAll(allMissions);
+        }
+        adapter.updateList(missionList);
+        layoutManager.scrollToPosition(0);
     }
 
 

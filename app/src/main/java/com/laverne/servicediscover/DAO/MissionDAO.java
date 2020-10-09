@@ -30,7 +30,7 @@ public interface MissionDAO {
     List<Mission> getAllCompletedMissions();
 
     @Query("SELECT * FROM mission WHERE status = 0 AND category = :category")
-    LiveData<List<Mission>> getAllNotAddedMissionsByCategory(String category);
+    LiveData<List<Mission>> getAllNotAddedMissionsByCategory(int category);
 
     @Query("SELECT * FROM mission WHERE uid = :id LIMIT 1")
     Mission findMissionByID(int id);

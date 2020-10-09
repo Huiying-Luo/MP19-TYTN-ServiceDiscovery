@@ -16,6 +16,7 @@ public class Mission {
     private Double latitude;
     private Double longitude;
     private int category;
+    private int schoolType = 0;
     private int status;
     private String completeDate = "";
     private float distance = 0;
@@ -94,4 +95,11 @@ public class Mission {
         this.distance = distance;
     }
 
+    public int getSchoolType() {
+        return schoolType;
+    }
+
+    public void setSchoolType(int schoolType) {
+        this.schoolType = schoolType;
+    }
 }

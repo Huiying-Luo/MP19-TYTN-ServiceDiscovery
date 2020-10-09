@@ -12,7 +12,7 @@ import com.laverne.servicediscover.Entity.Mission;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-@Database(entities = {Mission.class}, version = 1, exportSchema = false)
+@Database(entities = {Mission.class}, version = 2, exportSchema = false)
 public  abstract  class MissionDatabase extends RoomDatabase {
 
     public abstract MissionDAO missionDAO();
