@@ -32,38 +32,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
+        android:layout_gravity="center"
         android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toTopOf="@+id/postcode">
-
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            app:errorEnabled="true"
-            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
-            app:errorTextColor="@android:color/holo_red_dark">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_address"
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:ems="10"
-                android:hint="Street No. + Street Name"
-                android:inputType="text"
-                android:paddingLeft="7dp"
-                android:imeOptions="actionNext"/>
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/generate_msg"
@@ -89,7 +62,6 @@
                 android:max="100"
                 android:progress="1"
                 android:visibility="gone" />
-        </LinearLayout>
 
     </LinearLayout>
 

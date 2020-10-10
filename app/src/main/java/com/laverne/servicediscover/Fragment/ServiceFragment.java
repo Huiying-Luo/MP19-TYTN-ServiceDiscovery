@@ -107,6 +107,7 @@ public class ServiceFragment extends Fragment {
         configureView(view);
         // 1 = Education
         if (category == 1) {
+            filterTitleTextView.setVisibility(View.VISIBLE);
             configureFilterSpinner();
         }
 
@@ -114,6 +115,7 @@ public class ServiceFragment extends Fragment {
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
 
         services = new ArrayList<>();
+        allServices = new ArrayList<>();
         initRecyclerView();
         setUpSwipeToUpdate();
 
@@ -183,6 +185,7 @@ public class ServiceFragment extends Fragment {
         errorTextView = view.findViewById(R.id.library_error_tv);
         progressBar = view.findViewById(R.id.library_progress_bar);
         filterSpinner = view.findViewById(R.id.school_filter_spinner);
+        filterTitleTextView = view.findViewById(R.id.filter_title);
     }
 
 
@@ -290,8 +293,24 @@ public class ServiceFragment extends Fragment {
                             // if it is education service, set the school type
                             // 1 = Education
                             if (category == 1) {
-                                String serviceSchoolType = jsonObject.getString("schoolType");
-                                service.setSchoolType(serviceSchoolType);
+                                String serviceSchoolType = jsonObject.getString("type");
+                                switch (serviceSchoolType) {
+                                    case "Primary":
+                                        service.setSchoolType(0);
+                                        break;
+                                    case "Secondary":
+                                        service.setSchoolType(1);
+                                        break;
+                                    case "Pri/Sec":
+                                        service.setSchoolType(2);
+                                        break;
+                                    case "Special":
+                                        service.setSchoolType(3);
+                                        break;
+                                    case "Adult English Program":
+                                        service.setSchoolType(4);
+                                        break;
+                                }
                                 allServices.add(service);
                             }
                             services.add(service);
@@ -315,38 +334,15 @@ public class ServiceFragment extends Fragment {
     private void configureFilterSpinner() {
         filterSpinner.setVisibility(View.VISIBLE);
 
-        String[] options = new String[]{"All", "Primary School", "Secondary School", "Adult English Program"};
+        String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
         final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
-        filterSpinnerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, filterList) {
-            @Override
-            public boolean isEnabled(int position) {
-                if (position == 0) {
-                    return false;
-                } else {
-                    return true;
-                }
-            }
-
-            @Override
-            public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-                View view = super.getDropDownView(position, convertView, parent);
-                TextView tv = (TextView) view;
-                if (position == 0) {
-                    tv.setTextColor(Color.GRAY);
-                } else {
-                    tv.setTextColor(Color.BLACK);
-                }
-                return view;
-            }
-        };
+        filterSpinnerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, filterList);
 
         filterSpinner.setAdapter(filterSpinnerAdapter);
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position > 0) {
-                    filterBySchoolType(filterList.get(position));
-                }
+                filterBySchoolType(position);
             }
 
             @Override
@@ -356,13 +352,22 @@ public class ServiceFragment extends Fragment {
     }
 
 
-    private void filterBySchoolType(String schoolType) {
+    private void filterBySchoolType(int position) {
         services.removeAll(services);
-        if (!schoolType.equals("All")) {
+        if (position != 0) {
             for (int i = 0; i < allServices.size(); i++) {
                 Service tempSerivce = allServices.get(i);
-                if (tempSerivce.getSchoolType().equals(schoolType)) {
-                    services.add(tempSerivce);
+                // primary and secondary schools
+                int schoolType = tempSerivce.getSchoolType();
+                if (position == 1 || position == 2) {
+                    if (schoolType == position - 1 || schoolType == 2) {
+                        services.add(tempSerivce);
+                    }
+                } else {
+                    // special and adult english schools
+                    if (schoolType == position) {
+                        services.add(tempSerivce);
+                    }
                 }
             }
         } else {

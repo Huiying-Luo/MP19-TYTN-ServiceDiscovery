@@ -20,6 +20,7 @@ public class QSchoolActivity extends AppCompatActivity {
 
         final CheckBox primarySchool = findViewById(R.id.checkBoxPrimary);
         final CheckBox secondarySchool = findViewById(R.id.checkBoxSecondary);
+        final CheckBox specialSchool = findViewById(R.id.checkBoxSpecial);
         final CheckBox other = findViewById(R.id.checkBoxNone);
 
         final TextView errorTextView = findViewById(R.id.question_school_error);
@@ -41,7 +42,13 @@ public class QSchoolActivity extends AppCompatActivity {
                     setUserDetail("needSecondarySchool", false);
                 }
 
-                if (!other.isChecked() && !primarySchool.isChecked() && !secondarySchool.isChecked()) {
+                if (specialSchool.isChecked()) {
+                    setUserDetail("needSpecialSchool", true);
+                } else {
+                    setUserDetail("needSpecialSchool", false);
+                }
+
+                if (!other.isChecked() && !primarySchool.isChecked() && !secondarySchool.isChecked() && !specialSchool.isChecked()) {
                     errorTextView.setText("*Please at least select one!");
                 } else {
                     Intent intent = new Intent(QSchoolActivity.this, QEnglishActivity.class);

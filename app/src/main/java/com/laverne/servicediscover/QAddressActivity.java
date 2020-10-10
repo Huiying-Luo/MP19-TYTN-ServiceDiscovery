@@ -51,13 +51,10 @@ import java.util.Locale;
 
 public class QAddressActivity extends AppCompatActivity {
 
-    private static int DELAY_TIME = 3200;
     private static final String TAG = "QAddressActivity";
 
     private TextView titleTextView;
-    private TextInputLayout addressTIL;
     private TextInputLayout postcodeTIL;
-    private EditText addressEditText;
     private EditText postcodeEditText;
     private TextView generateMsg;
     private ProgressBar missionProgressBar;
@@ -67,6 +64,8 @@ public class QAddressActivity extends AppCompatActivity {
 
     private boolean isValid = false;
     private boolean hasUseCurrentLocation = false;
+    private boolean currentLocationBtnClick = false;
+    private boolean needPrimarySchool, needSecondarySchool, needSpecialSchool, needEnglishSchool;
 
     private double userLatitude = 0;
     private double userLongitude = 0;
@@ -79,6 +78,7 @@ public class QAddressActivity extends AppCompatActivity {
     private MissionViewModel missionViewModel;
 
     private ResultReceiver resultReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,6 +100,8 @@ public class QAddressActivity extends AppCompatActivity {
         configureFinishButton();
         configureCancelButton();
         configureUseCurrentLocationButton();
+
+        getUserSchoolPref();
     }
 
 
@@ -107,9 +109,6 @@ public class QAddressActivity extends AppCompatActivity {
         titleTextView = findViewById(R.id.question_address_title);
         generateMsg = findViewById(R.id.generate_msg);
         missionProgressBar = findViewById(R.id.mission_progress_bar);
-        addressTIL = findViewById(R.id.til_address);
-        addressEditText = findViewById(R.id.et_address);
-        addressEditText.addTextChangedListener(new addressEditTextWatcher());
         postcodeTIL = findViewById(R.id.til_postcode);
         postcodeEditText = findViewById(R.id.et_postcode);
         postcodeEditText.addTextChangedListener(new postcodeEditTextWatcher());
@@ -128,15 +127,14 @@ public class QAddressActivity extends AppCompatActivity {
                     generateMissions();
                     return;
                 }
-                String address = addressEditText.getText().toString();
                 String postcode = postcodeEditText.getText().toString();
 
-                if (validateAddress(address) && validatePostcode(postcode)) {
-                    convertAddressToCoordinate(address, postcode);
+                if (validatePostcode(postcode)) {
+                    convertAddressToCoordinate(postcode);
                     if (isValid) {
                         generateMissions();
                     } else {
-                        Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Invaild Address", "Please enter a valid address or use current location.");
+                        Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Invalid Address", "Please enter a valid postcode or use current location.");
                         return;
                     }
                 }
@@ -151,18 +149,18 @@ public class QAddressActivity extends AppCompatActivity {
         useCurrentLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                currentLocationBtnClick = true;
+                getLastLocation();
+                /*
                 if (hasUseCurrentLocation) {
-                    addressEditText.setEnabled(true);
-                    addressEditText.setText("");
                     postcodeEditText.setEnabled(true);
                     postcodeEditText.setText("");
-                    addressTIL.setEndIconActivated(true);
                     postcodeTIL.setEndIconActivated(true);
-                    useCurrentLocationButton.setText("Use Current Location");
+                    //useCurrentLocationButton.setText("Use Current Location");
                     hasUseCurrentLocation = false;
                 } else {
                     getLastLocation();
-                }
+                }*/
             }
         });
     }
@@ -206,16 +204,17 @@ public class QAddressActivity extends AppCompatActivity {
                     Location location = new Location("providerNA");
                     location.setLatitude(latitude);
                     location.setLongitude(longitude);
-                    convertCoordianteToAddress(location);
+                    convertCoordinateToAddress(location);
 
                     missionProgressBar.setVisibility(View.VISIBLE);
-
-                    addressEditText.setEnabled(false);
-                    postcodeEditText.setEnabled(false);
-                    addressTIL.setEndIconActivated(false);
-                    postcodeTIL.setEndIconActivated(false);
                     hasUseCurrentLocation = true;
+/*
+                    postcodeEditText.setEnabled(false);
+                    postcodeTIL.setEndIconActivated(false);
+
                     useCurrentLocationButton.setText("Enter My Location");
+                    */
+
                 } else {
                     // show error alert
                     Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Error", "Something went wrong! Fail to get your current location.");
@@ -235,21 +234,23 @@ public class QAddressActivity extends AppCompatActivity {
         protected void onReceiveResult(int resultCode, Bundle resultData) {
             super.onReceiveResult(resultCode, resultData);
             if (resultCode == Constants.SUCCESS_RESULT) {
-                String address = resultData.getString(Constants.RESULT_DATA_KEY_ONE);
+                //String address = resultData.getString(Constants.RESULT_DATA_KEY_ONE);
                 String postcode = resultData.getString(Constants.RESULT_DATA_KEY_TWO);
-                addressEditText.setText(address);
-                postcodeEditText.setText(postcode);
+                //addressEditText.setText(address);
+                if (!(postcodeEditText.getText().toString().equals(postcode))) {
+                    postcodeEditText.setText(postcode);
+                }
+
             } else {
-                addressEditText.setText("Use current Location");
-                postcodeEditText.setText("Use current Location");
                 Log.i("ConvertAddressError", resultData.getString(Constants.RESULT_DATA_KEY_ONE));
             }
+            currentLocationBtnClick = false;
             missionProgressBar.setVisibility(View.GONE);
         }
     }
 
 
-    private void convertCoordianteToAddress(Location location) {
+    private void convertCoordinateToAddress(Location location) {
         Intent intent = new Intent(this, FetchAddressIntentService.class);
         intent.putExtra(Constants.RECEIVER, resultReceiver);
         intent.putExtra(Constants.LOCATION_DATA_EXTRA, location);
@@ -258,16 +259,16 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
-    private void convertAddressToCoordinate(String address, String postcode) {
+    private void convertAddressToCoordinate(String postcode) {
         List<Address> addressList = null;
-        String location = address + " VIC " + postcode;
+        String location = postcode + ", Australia";
         Log.i("Address", location);
         try {
             addressList = geocoder.getFromLocationName(location, 1);
 
             if (addressList == null || addressList.size() == 0) {
                 isValid = false;
-                Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Incorrect Address", "We can not find this location, please check your address.");
+                Utilities.showAlertDialogwithOkButton(QAddressActivity.this, "Incorrect Address", "We can not find this postcode.");
                 return;
             }
 
@@ -286,22 +287,20 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
-    private void setLocation(double latitude, double longtitude) {
+    private void setLocation(double latitude, double longitude) {
         userLatitude = latitude;
-        userLongitude = longtitude;
+        userLongitude = longitude;
         SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sharedPref.edit();
         spEditor.putFloat("latitude", (float) latitude);
-        spEditor.putFloat("longitude", (float) longtitude);
+        spEditor.putFloat("longitude", (float) longitude);
         spEditor.apply();
     }
 
 
     private void generateMissions() {
-        new GetAllLibaryTask().execute();
+        new GetAllMissionsTask().execute();
         titleTextView.setVisibility(View.GONE);
-        addressTIL.setVisibility(View.GONE);
-        addressEditText.setVisibility(View.GONE);
         postcodeTIL.setVisibility(View.GONE);
         postcodeEditText.setVisibility(View.GONE);
         finishButton.setVisibility(View.GONE);
@@ -317,11 +316,11 @@ public class QAddressActivity extends AppCompatActivity {
         missionViewModel.initializeVars(this.getApplication());
     }
 
-    private class GetAllLibaryTask extends AsyncTask<String, Void, String> {
+    private class GetAllMissionsTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... strings) {
-            return networkConnection.getAllLibraries();
+            return "[" + networkConnection.getSerivces(0) + "," + networkConnection.getSerivces(1) + "," + networkConnection.getSerivces(2) + "," + networkConnection.getSerivces(3) + "]";
         }
 
         @Override
@@ -334,30 +333,37 @@ public class QAddressActivity extends AppCompatActivity {
                     } else {
                         missionViewModel.deleteAll();
                         for (int i = 0; i < jsonArray.length(); i++) {
-                            JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            String libName = jsonObject.getString("name");
-                            String libAddress = jsonObject.getString("address");
-                            String libPhoneNo = jsonObject.getString("phone");
-                            String libWebsite = jsonObject.getString("website");
-                            double libLatitude = jsonObject.getDouble("latitude");
-                            double libLongitude = jsonObject.getDouble("longitude");
-                            float currentDistance;
-                            if (userLatitude == 0 && userLongitude == 0) {
-                                currentDistance = 0;
-                            } else {
-                                // distance from user location
-                                float[] distance = new float[2];
-                                Location.distanceBetween(userLatitude, userLongitude, libLatitude, libLongitude, distance);
-                                currentDistance = distance[0];
-                                Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
-                                if (currentDistance < 8000) {
-                                    Mission mission = new Mission(libName, libAddress, libLatitude, libLongitude, "Service", 0);
-                                    missionViewModel.insert(mission);
-
+                            JSONArray serviceArray = jsonArray.getJSONArray(i);
+                            for (int j = 0; j < serviceArray.length(); j++) {
+                                JSONObject jsonObject = serviceArray.getJSONObject(j);
+                                String serviceName = jsonObject.getString("name");
+                                String serviceAddress = jsonObject.getString("address");
+                                double serviceLat = jsonObject.getDouble("latitude");
+                                double serviceLong = jsonObject.getDouble("longitude");
+                                float currentDistance;
+                                if (userLatitude == 0 && userLongitude == 0) {
+                                    currentDistance = 0;
+                                } else {
+                                    // distance from user location
+                                    float[] distance = new float[2];
+                                    Location.distanceBetween(userLatitude, userLongitude, serviceLat, serviceLong, distance);
+                                    currentDistance = distance[0];
+                                    Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
+                                    if (currentDistance < 8000) {
+                                        Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
+                                        // Education services should check the school type
+                                        if (i == 1) {
+                                            Mission checkedMission = checkSchoolPref(jsonObject.getString("type"), mission);
+                                            if ( checkedMission != null) {
+                                                missionViewModel.insert(checkedMission);
+                                            }
+                                        } else {
+                                            missionViewModel.insert(mission);
+                                        }
+                                    }
                                 }
                             }
                         }
-
                         goToAddMissionScreen();
                     }
                 } catch (JSONException e) {
@@ -370,6 +376,51 @@ public class QAddressActivity extends AppCompatActivity {
         }
     }
 
+
+    private void getUserSchoolPref() {
+        SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+        needPrimarySchool = sharedPref.getBoolean("needPrimarySchool", false);
+        needSecondarySchool = sharedPref.getBoolean("needSecondarySchool", false);
+        needSpecialSchool = sharedPref.getBoolean("needSpecialSchool", false);
+        needEnglishSchool = sharedPref.getBoolean("needEnglishSchool", false);
+    }
+
+
+    private Mission checkSchoolPref(String schoolType, Mission mission) {
+        switch (schoolType) {
+            case "Primary":
+                if (needPrimarySchool) {
+                    mission.setSchoolType(0);
+                    return mission;
+                }
+                break;
+            case "Secondary":
+                if (needSecondarySchool) {
+                    mission.setSchoolType(1);
+                    return mission;
+                }
+                break;
+            case "Pri/Sec":
+                if (needPrimarySchool || needSecondarySchool) {
+                    mission.setSchoolType(2);
+                    return mission;
+                }
+                break;
+            case "Special":
+                if (needSpecialSchool) {
+                    mission.setSchoolType(3);
+                    return mission;
+                }
+                break;
+            case "Adult English Program":
+                if (needEnglishSchool) {
+                    mission.setSchoolType(4);
+                    return mission;
+                }
+                break;
+        }
+        return null;
+    }
 
 
     private void showAlert() {
@@ -401,14 +452,6 @@ public class QAddressActivity extends AppCompatActivity {
         finish();
     }
 
-    private boolean validateAddress(String address) {
-        if (address.isEmpty()) {
-            addressTIL.setError("*Field cannot be empty!");
-            return false;
-        }
-        return true;
-    }
-
 
     private boolean validatePostcode(String postcode) {
         if (postcode.isEmpty()) {
@@ -438,20 +481,6 @@ public class QAddressActivity extends AppCompatActivity {
         });
     }
 
-    private class addressEditTextWatcher implements TextWatcher {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-        }
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            addressTIL.setErrorEnabled(false);
-        }
-
-        @Override
-        public void afterTextChanged(Editable s) {
-        }
-    }
 
 
     private class postcodeEditTextWatcher implements TextWatcher {
@@ -462,10 +491,15 @@ public class QAddressActivity extends AppCompatActivity {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             postcodeTIL.setErrorEnabled(false);
+            if (!currentLocationBtnClick) {
+                hasUseCurrentLocation = false;
+            }
         }
 
         @Override
         public void afterTextChanged(Editable s) {
+
+
         }
     }
 }

@@ -8,7 +8,7 @@ public class Service {
     private double latitude;
     private double longitude;
     private float currentDistance;
-    private String schoolType;
+    private int schoolType;
     private int category;
 
     public Service(String name, String address, double latitude, double longitude, float currentDistance,  int category) {
@@ -76,11 +76,11 @@ public class Service {
         this.currentDistance = currentDistance;
     }
 
-    public String getSchoolType() {
+    public int getSchoolType() {
         return schoolType;
     }
 
-    public void setSchoolType(String schoolType) {
+    public void setSchoolType(int schoolType) {
         this.schoolType = schoolType;
     }
 

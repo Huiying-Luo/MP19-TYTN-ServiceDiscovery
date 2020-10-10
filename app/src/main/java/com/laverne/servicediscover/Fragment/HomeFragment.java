@@ -64,7 +64,7 @@ public class HomeFragment extends Fragment {
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ServiceFragment("Library"));
+                replaceFragment(new ServiceFragment(0));
                 navigationView.setCheckedItem(R.id.library);
                 getActivity().setTitle("Library");
             }
@@ -73,7 +73,7 @@ public class HomeFragment extends Fragment {
         educationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ServiceFragment("Education"));
+                replaceFragment(new ServiceFragment(1));
                 navigationView.setCheckedItem(R.id.education);
                 getActivity().setTitle("Education");
             }
@@ -83,7 +83,7 @@ public class HomeFragment extends Fragment {
         parkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ServiceFragment("Park"));
+                replaceFragment(new ServiceFragment(2));
                 navigationView.setCheckedItem(R.id.park);
                 getActivity().setTitle("Park");
             }
@@ -93,7 +93,7 @@ public class HomeFragment extends Fragment {
         museumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replaceFragment(new ServiceFragment("Museum"));
+                replaceFragment(new ServiceFragment(3));
                 navigationView.setCheckedItem(R.id.museum);
                 getActivity().setTitle("Museum");
             }

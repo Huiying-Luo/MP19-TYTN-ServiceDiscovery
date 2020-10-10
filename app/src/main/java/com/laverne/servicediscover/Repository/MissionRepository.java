@@ -16,31 +16,52 @@ public class MissionRepository {
     private List<Mission> missionList;
     private Mission mission;
 
+
     public MissionRepository(Application application) {
         MissionDatabase db = MissionDatabase.getInstance(application);
         dao = db.missionDAO();
     }
 
 
-    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(final String category) {
+    public LiveData<List<Mission>> getAllNotAddedMissionsByCategory(final int category) {
         allMissions = dao.getAllNotAddedMissionsByCategory(category);
         return allMissions;
     }
+
+
+    public LiveData<List<Mission>> getAllNotAddedPrimarySchools() {
+        return allMissions = dao.getAllNotAddedPrimarySchools();
+    }
+
+
+    public LiveData<List<Mission>> getAllNotAddedSecondarySchools() {
+        return allMissions = dao.getAllNotAddedSecondarySchools();
+    }
+
+
+    public LiveData<List<Mission>> getAllNotAddedSpecialSchools() {
+        return allMissions = dao.getAllNotAddedSpecialSchools();
+    }
+
+
+    public LiveData<List<Mission>> getAllNotAddedEnglishSchools() {
+        return allMissions = dao.getAllNotAddedEnglishSchools();
+    }
+
 
     public LiveData<List<Mission>> getAllMissionsByStatus(final int status) {
         allMissions = dao.getAllMissionByStatus(status);
         return allMissions;
     }
 
+
     public List<Mission> getAllNotAddedMissions() {
-
         return missionList = dao.getAllNotAddedMissions();
-
     }
+
 
     public List<Mission> getAllInProgressMissions() {
         return dao.getAllInProgressMissions();
-
     }
 
 
@@ -58,6 +79,7 @@ public class MissionRepository {
         this.mission = mission;
     }
 
+
     public void insert(final Mission mission) {
         MissionDatabase.databaseWriteExecutor.execute(new Runnable() {
             @Override
@@ -66,6 +88,7 @@ public class MissionRepository {
             }
         });
     }
+
 
     public void insertAll(final Mission... missions) {
         MissionDatabase.databaseWriteExecutor.execute(new Runnable() {

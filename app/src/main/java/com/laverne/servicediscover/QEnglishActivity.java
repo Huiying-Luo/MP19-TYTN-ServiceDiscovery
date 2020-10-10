@@ -23,8 +23,7 @@ public class QEnglishActivity extends AppCompatActivity {
         basicButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 0 = basic
-                setEnglishLevel(0);
+                setEnglishPref(true);
                 nextActivity();
             }
         });
@@ -32,8 +31,7 @@ public class QEnglishActivity extends AppCompatActivity {
         mediumButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 1 = intermediate
-                setEnglishLevel(1);
+                setEnglishPref(true);
                 nextActivity();
             }
         });
@@ -41,8 +39,8 @@ public class QEnglishActivity extends AppCompatActivity {
         advancedButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 2 = advanced
-                setEnglishLevel(2);
+                // do not need english classes
+                setEnglishPref(false);
                 nextActivity();
             }
         });
@@ -54,10 +52,10 @@ public class QEnglishActivity extends AppCompatActivity {
         finish();
     }
 
-    private void setEnglishLevel(int englishLevel) {
+    private void setEnglishPref(boolean needEnglishSchool) {
         SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sharedPref.edit();
-        spEditor.putInt("EnglishLevel", englishLevel);
+        spEditor.putBoolean("needEnglishSchool", needEnglishSchool);
         spEditor.apply();
     }
 }

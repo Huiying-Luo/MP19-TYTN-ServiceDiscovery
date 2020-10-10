@@ -105,23 +105,30 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         // park does not have website and phone no
         if (service.getCategory() != 2) {
             final String phoneNo = service.getPhoneNo();
-            final String website = service.getWebsite();
             callBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     phoneCallListener.onPhoneCallClick(phoneNo);
                 }
             });
+            // Disable the website button for Adult English Programs
+            if (service.getCategory() == 1 && service.getSchoolType() == 4) {
+                websiteBtn.setEnabled(false);
+            } else {
+                websiteBtn.setEnabled(true);
+                final String website = service.getWebsite();
 
-            websiteBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    // open website
-                    Uri uri = Uri.parse(website);
-                    Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
-                    context.startActivity(launchWeb);
-                }
-            });
+                websiteBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // open website
+                        Uri uri = Uri.parse(website);
+                        Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
+                        context.startActivity(launchWeb);
+                    }
+                });
+            }
+
         } else {
             // make the buttons invisible when display parks
             callBtn.setVisibility(View.GONE);

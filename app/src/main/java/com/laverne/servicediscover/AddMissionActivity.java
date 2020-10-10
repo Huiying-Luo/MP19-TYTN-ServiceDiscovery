@@ -56,28 +56,28 @@ public class AddMissionActivity extends AppCompatActivity {
         libraryBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("Service");
+                goToNextScreen(0);
             }
         });
 
         educationBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("Education");
+                goToNextScreen(1);
             }
         });
 
         parkBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("Park");
+                goToNextScreen(2);
             }
         });
 
         museumBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToNextScreen("Museum");
+                goToNextScreen(3);
             }
         });
 
@@ -117,7 +117,7 @@ public class AddMissionActivity extends AppCompatActivity {
         }
     }
 
-    private void goToNextScreen(String category) {
+    private void goToNextScreen(int category) {
         Intent intent = new Intent(AddMissionActivity.this, MissionListActivity.class);
         intent.putExtra("category", category);
         startActivity(intent);
