@@ -67,9 +67,10 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
             allMissions = new ArrayList<>();
             allMissions.addAll(missionList);
             configureFilterSpinner();
-        } else {
-            getAllMissionsByCategoryFromRoomDatabase();
+
         }
+        getAllMissionsByCategoryFromRoomDatabase();
+
     }
 
     // Back button in action bar
@@ -107,7 +108,20 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
                 adapter.setMissionList(missionList);
             }
         });
+        calculateDistance();
+    }
 
+
+    private void getSchoolsByTypeFromRoomDatabase(int type) {
+        missionList.removeAll(missionList);
+
+        missionViewModel.getAllNotAddedSchoolsByType(type).observe(this, new Observer<List<Mission>>() {
+            @Override
+            public void onChanged(List<Mission> missions) {
+                missionList = missions;
+                adapter.updateList(missionList);
+            }
+        });
         calculateDistance();
     }
 
@@ -128,8 +142,6 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
 
     private void configureFilterSpinner() {
-
-
         String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
         final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
         filterSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, filterList);
@@ -138,38 +150,13 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterBySchoolType(position);
+                getSchoolsByTypeFromRoomDatabase(position);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
-    }
-
-    private void filterBySchoolType(int position) {
-        missionList.removeAll(missionList);
-        if (position != 0) {
-            for (int i = 0; i < allMissions.size(); i++) {
-                Mission tempMission = allMissions.get(i);
-                // primary and secondary schools
-                int schoolType = tempMission.getSchoolType();
-                if (position == 1 || position == 2) {
-                    if (schoolType == position - 1 || schoolType == 2) {
-                        missionList.add(tempMission);
-                    }
-                } else {
-                    // special and adult english schools
-                    if (schoolType == position) {
-                        missionList.add(tempMission);
-                    }
-                }
-            }
-        } else {
-            missionList.addAll(allMissions);
-        }
-        adapter.updateList(missionList);
-        layoutManager.scrollToPosition(0);
     }
 
 

@@ -32,6 +32,18 @@ public interface MissionDAO {
     @Query("SELECT * FROM mission WHERE status = 0 AND category = :category")
     LiveData<List<Mission>> getAllNotAddedMissionsByCategory(int category);
 
+    @Query("SELECT * FROM mission WHERE status = 0 AND category = 1 AND (schoolType = 0 OR schoolType = 2)")
+    LiveData<List<Mission>> getAllNotAddedPrimarySchools();
+
+    @Query("SELECT * FROM mission WHERE status = 0 AND category = 1 AND (schoolType = 1 OR schoolType = 2)")
+    LiveData<List<Mission>> getAllNotAddedSecondarySchools();
+
+    @Query("SELECT * FROM mission WHERE status = 0 AND category = 1 AND schoolType = 3")
+    LiveData<List<Mission>> getAllNotAddedSpecialSchools();
+
+    @Query("SELECT * FROM mission WHERE status = 0 AND category = 1 AND schoolType = 4")
+    LiveData<List<Mission>> getAllNotAddedEnglishSchools();
+
     @Query("SELECT * FROM mission WHERE uid = :id LIMIT 1")
     Mission findMissionByID(int id);
 

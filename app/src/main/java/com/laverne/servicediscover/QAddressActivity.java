@@ -51,7 +51,6 @@ import java.util.Locale;
 
 public class QAddressActivity extends AppCompatActivity {
 
-    private static int DELAY_TIME = 3200;
     private static final String TAG = "QAddressActivity";
 
     private TextView titleTextView;
@@ -66,6 +65,7 @@ public class QAddressActivity extends AppCompatActivity {
     private boolean isValid = false;
     private boolean hasUseCurrentLocation = false;
     private boolean currentLocationBtnClick = false;
+    private boolean needPrimarySchool, needSecondarySchool, needSpecialSchool, needEnglishSchool;
 
     private double userLatitude = 0;
     private double userLongitude = 0;
@@ -78,6 +78,7 @@ public class QAddressActivity extends AppCompatActivity {
     private MissionViewModel missionViewModel;
 
     private ResultReceiver resultReceiver;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,6 +100,8 @@ public class QAddressActivity extends AppCompatActivity {
         configureFinishButton();
         configureCancelButton();
         configureUseCurrentLocationButton();
+
+        getUserSchoolPref();
     }
 
 
@@ -348,27 +351,15 @@ public class QAddressActivity extends AppCompatActivity {
                                     Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
                                     if (currentDistance < 8000) {
                                         Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
-                                        // Education services should set the school type
+                                        // Education services should check the school type
                                         if (i == 1) {
-                                            switch (jsonObject.getString("type")) {
-                                                case "Primary":
-                                                    mission.setSchoolType(0);
-                                                    break;
-                                                case "Secondary":
-                                                    mission.setSchoolType(1);
-                                                    break;
-                                                case "Pri/Sec":
-                                                    mission.setSchoolType(2);
-                                                    break;
-                                                case "Special":
-                                                    mission.setSchoolType(3);
-                                                    break;
-                                                case "Adult English Program":
-                                                    mission.setSchoolType(4);
-                                                    break;
+                                            Mission checkedMission = checkSchoolPref(jsonObject.getString("type"), mission);
+                                            if ( checkedMission != null) {
+                                                missionViewModel.insert(checkedMission);
                                             }
+                                        } else {
+                                            missionViewModel.insert(mission);
                                         }
-                                        missionViewModel.insert(mission);
                                     }
                                 }
                             }
@@ -385,6 +376,51 @@ public class QAddressActivity extends AppCompatActivity {
         }
     }
 
+
+    private void getUserSchoolPref() {
+        SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+        needPrimarySchool = sharedPref.getBoolean("needPrimarySchool", false);
+        needSecondarySchool = sharedPref.getBoolean("needSecondarySchool", false);
+        needSpecialSchool = sharedPref.getBoolean("needSpecialSchool", false);
+        needEnglishSchool = sharedPref.getBoolean("needEnglishSchool", false);
+    }
+
+
+    private Mission checkSchoolPref(String schoolType, Mission mission) {
+        switch (schoolType) {
+            case "Primary":
+                if (needPrimarySchool) {
+                    mission.setSchoolType(0);
+                    return mission;
+                }
+                break;
+            case "Secondary":
+                if (needSecondarySchool) {
+                    mission.setSchoolType(1);
+                    return mission;
+                }
+                break;
+            case "Pri/Sec":
+                if (needPrimarySchool || needSecondarySchool) {
+                    mission.setSchoolType(2);
+                    return mission;
+                }
+                break;
+            case "Special":
+                if (needSpecialSchool) {
+                    mission.setSchoolType(3);
+                    return mission;
+                }
+                break;
+            case "Adult English Program":
+                if (needEnglishSchool) {
+                    mission.setSchoolType(4);
+                    return mission;
+                }
+                break;
+        }
+        return null;
+    }
 
 
     private void showAlert() {
