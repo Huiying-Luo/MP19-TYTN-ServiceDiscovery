@@ -10,6 +10,8 @@ public class Service {
     private float currentDistance;
     private int schoolType;
     private int category;
+    private String museumType;
+    private String museumDescription;
 
     public Service(String name, String address, double latitude, double longitude, float currentDistance,  int category) {
         this.name = name;
@@ -90,5 +92,21 @@ public class Service {
 
     public void setCategory(int category) {
         this.category = category;
+    }
+
+    public String getMuseumType() {
+        return museumType;
+    }
+
+    public void setMuseumType(String museumType) {
+        this.museumType = museumType;
+    }
+
+    public String getMuseumDescription() {
+        return museumDescription;
+    }
+
+    public void setMuseumDescription(String museumDescription) {
+        this.museumDescription = museumDescription;
     }
 }

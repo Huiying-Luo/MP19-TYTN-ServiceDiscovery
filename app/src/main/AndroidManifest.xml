@@ -14,7 +14,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".FilterActivity"></activity>
+        <activity android:name=".LoginActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -22,8 +23,7 @@
 
         <activity android:name=".MissionMapActivity" />
         <activity android:name=".MissionListActivity" />
-        <activity android:name=".AddMissionActivity"
-            />
+        <activity android:name=".AddMissionActivity" />
         <activity
             android:name=".QAddressActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />

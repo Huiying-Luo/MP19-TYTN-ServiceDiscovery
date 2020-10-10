@@ -46,7 +46,10 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.laverne.servicediscover.Adapter.ServiceRecyclerViewAdapter;
+import com.laverne.servicediscover.FilterActivity;
 import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.NetworkConnection.NetworkConnection;
 import com.laverne.servicediscover.R;
@@ -56,6 +59,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -63,9 +67,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
+import static android.app.Activity.RESULT_OK;
+
 public class ServiceFragment extends Fragment {
 
     private static final int REQUEST_CODE_CALL_PERMISSION = 2;
+    private static final int REQUEST_FILTER_CODE = 101;
     private static final String TAG = "ServiceFragment";
     private int category;
 
@@ -81,10 +88,12 @@ public class ServiceFragment extends Fragment {
     private RecyclerView.LayoutManager layoutManager;
     private List<Service> services;
     private List<Service> allServices;
+    private ArrayList<String> selectedMuseumTypes;
     private NetworkConnection networkConnection;
     private Geocoder geocoder;
     private TextView errorTextView;
     private ProgressBar progressBar;
+    private FloatingActionButton fab;
 
     private String callingNumber;
 
@@ -110,6 +119,10 @@ public class ServiceFragment extends Fragment {
             filterTitleTextView.setVisibility(View.VISIBLE);
             configureFilterSpinner();
         }
+        // Museum has floating action button for filter
+        if (category == 3) {
+            configureFloatingActionButton();
+        }
 
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
@@ -126,6 +139,33 @@ public class ServiceFragment extends Fragment {
         new GetAllServicesTask().execute();
 
         return view;
+    }
+
+    // Get Selected Museum Types
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_FILTER_CODE) {
+            if (resultCode == RESULT_OK) {
+                selectedMuseumTypes = data.getStringArrayListExtra("selectedChipData");
+                filterMuseums();
+            }
+        }
+    }
+
+
+    private void configureFloatingActionButton() {
+        fab = getActivity().findViewById(R.id.fab);
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), FilterActivity.class);
+                intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
+
+                startActivityForResult(intent, REQUEST_FILTER_CODE);
+            }
+        });
     }
 
     @Override
@@ -166,18 +206,7 @@ public class ServiceFragment extends Fragment {
         super.onCreateOptionsMenu(menu, inflater);
     }
 
-    /*    @Override
-        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-            switch (item.getItemId()) {
-                case R.id.action_search:
-                    return false;
-                default:
-                    break;
-            }
-            searchView.setOnQueryTextListener(queryTextListener);
-            return super.onOptionsItemSelected(item);
-        }
-    */
+
     private void configureView(View view) {
         //getActivity().setTitle(category);
         recyclerView = view.findViewById(R.id.library_recycler_view);
@@ -285,10 +314,13 @@ public class ServiceFragment extends Fragment {
                             // park do not has website and phone number
                             // 2 = park
                             if (category != 2) {
-                                String servicePhoneNo = jsonObject.getString("phone");
                                 String serviceWebsite = jsonObject.getString("website");
-                                service.setPhoneNo(servicePhoneNo);
                                 service.setWebsite(serviceWebsite);
+                                // museums do not has phone number
+                                if (category != 3) {
+                                    String servicePhoneNo = jsonObject.getString("phone");
+                                    service.setPhoneNo(servicePhoneNo);
+                                }
                             }
                             // if it is education service, set the school type
                             // 1 = Education
@@ -313,12 +345,24 @@ public class ServiceFragment extends Fragment {
                                 }
                                 allServices.add(service);
                             }
+
+                            // if it is museum, set the museum type and description
+                            if (category == 3) {
+                                service.setMuseumType(jsonObject.getString("type"));
+                                service.setMuseumDescription(jsonObject.getString("description"));
+                                allServices.add(service);
+                            }
                             services.add(service);
                         }
+
                         sortByCurrentLocation(false);
                         // remove the progress bar
                         progressBar.setVisibility(View.GONE);
                         adapter.updateList(services);
+                        // If Screen for Museum, make floating filter button visible
+                        if (category == 3) {
+                            fab.setVisibility(View.VISIBLE);
+                        }
                     }
                 } catch (JSONException e) {
                     Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong, please try again later.");
@@ -378,6 +422,18 @@ public class ServiceFragment extends Fragment {
     }
 
 
+    private void filterMuseums() {
+        services.removeAll(services);
+        for (int i = 0; i < allServices.size(); i++) {
+            if (selectedMuseumTypes.contains(allServices.get(i).getMuseumType())) {
+                services.add(allServices.get(i));
+            }
+        }
+        adapter.updateList(services);
+        layoutManager.scrollToPosition(0);
+    }
+
+
     private void resetRecyclerViewAdapter(boolean isSortedByHomeAddress) {
         adapter = new ServiceRecyclerViewAdapter(services);
         recyclerView.setAdapter(adapter);
@@ -408,7 +464,7 @@ public class ServiceFragment extends Fragment {
         adapter.updateList(services);
         layoutManager.scrollToPosition(0);
         // 1 = education
-        if (category == 1) {
+        if (category == 1 || category == 3) {
             // Sorting the school list (can be filtered)
             Collections.sort(allServices, new Comparator<Service>() {
                 @Override
@@ -425,8 +481,6 @@ public class ServiceFragment extends Fragment {
             @Override
             public void onRefresh() {
                 getLastLocation(true);
-
-
             }
         });
     }
