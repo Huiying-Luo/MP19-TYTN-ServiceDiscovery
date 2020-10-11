@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.R;
 
@@ -31,7 +32,6 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
     private OnPhoneCallListener phoneCallListener;
 
     public ServiceRecyclerViewAdapter(List<Service> services) {
-
         this.services = services;
         allServices = new ArrayList<>(services);
     }
@@ -50,6 +50,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         public TextView distanceTextView;
         public Button callButton;
         public Button websiteButton;
+        public Chip typeChip;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -60,6 +61,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
             distanceTextView = itemView.findViewById(R.id.service_distance);
             callButton = itemView.findViewById(R.id.service_call_btn);
             websiteButton = itemView.findViewById(R.id.service_website_btn);
+            typeChip = itemView.findViewById(R.id.type_chip);
 
             context = itemView.getContext();
         }
@@ -95,6 +97,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         TextView tvAddress = viewHolder.addressTextView;
         tvAddress.setText(service.getAddress());
         TextView tvDistance = viewHolder.distanceTextView;
+        Chip chipType = viewHolder.typeChip;
         float distance = 0;
         distance = service.getCurrentDistance();
 
@@ -137,6 +140,8 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
             }
 
             if (service.getCategory() == 3){
+                chipType.setVisibility(View.VISIBLE);
+                chipType.setText(service.getMuseumType());
                 // set the description
                 tvDescription.setText(service.getMuseumDescription());
                 // make the phone call button invisible when display museums
@@ -163,23 +168,22 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
     @Override
     public Filter getFilter() {
-        return libraryFilter;
+        return serviceFilter;
     }
 
-    private Filter libraryFilter = new Filter() {
+    private Filter serviceFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Service> filteredList = new ArrayList<>();
-
 
             if (constraint == null || constraint.length() == 0) {
                 // search input is empty, return all
                 filteredList.addAll(allServices);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Service library: allServices) {
-                    if (library.getName().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(library);
+                for (Service service: allServices) {
+                    if (service.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(service);
                     }
                 }
             }

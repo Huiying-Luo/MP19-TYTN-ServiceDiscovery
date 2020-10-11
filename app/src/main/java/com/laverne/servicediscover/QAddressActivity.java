@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -79,11 +80,16 @@ public class QAddressActivity extends AppCompatActivity {
 
     private ResultReceiver resultReceiver;
 
+    private ArrayList<String> selectedMuseumTypes;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_address);
+
+        setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // use to convert user current address from coordinate to address
         resultReceiver = new AddressResultReceiver(new Handler());
@@ -101,7 +107,7 @@ public class QAddressActivity extends AppCompatActivity {
         configureCancelButton();
         configureUseCurrentLocationButton();
 
-        getUserSchoolPref();
+        getUserPref();
     }
 
 
@@ -349,12 +355,22 @@ public class QAddressActivity extends AppCompatActivity {
                                     Location.distanceBetween(userLatitude, userLongitude, serviceLat, serviceLong, distance);
                                     currentDistance = distance[0];
                                     Log.i("CurrentDistance", String.valueOf(i) + ": " + String.valueOf(distance[0]));
-                                    if (currentDistance < 8000) {
+
+                                    // Museum Special Recommendation
+                                    if (i == 3) {
+                                        String museumType = jsonObject.getString("type");
+                                        Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
+                                        mission.setMuseumDescription(jsonObject.getString("description"));
+                                        Mission checkedMission = checkMuseumPref(currentDistance, museumType, mission);
+                                        if (checkedMission != null) {
+                                            missionViewModel.insert(checkedMission);
+                                        }
+                                    } else if (currentDistance < 8000) {
                                         Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
                                         // Education services should check the school type
                                         if (i == 1) {
                                             Mission checkedMission = checkSchoolPref(jsonObject.getString("type"), mission);
-                                            if ( checkedMission != null) {
+                                            if (checkedMission != null) {
                                                 missionViewModel.insert(checkedMission);
                                             }
                                         } else {
@@ -377,12 +393,19 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
-    private void getUserSchoolPref() {
+    private void getUserPref() {
         SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
         needPrimarySchool = sharedPref.getBoolean("needPrimarySchool", false);
         needSecondarySchool = sharedPref.getBoolean("needSecondarySchool", false);
         needSpecialSchool = sharedPref.getBoolean("needSpecialSchool", false);
         needEnglishSchool = sharedPref.getBoolean("needEnglishSchool", false);
+
+        // museum types
+        selectedMuseumTypes = new ArrayList<>();
+        int size = sharedPref.getInt("museumTypeSize", 0);
+        for (int i = 0; i < size; i++) {
+            selectedMuseumTypes.add(sharedPref.getString("museumType" + i, ""));
+        }
     }
 
 
@@ -418,6 +441,26 @@ public class QAddressActivity extends AppCompatActivity {
                     return mission;
                 }
                 break;
+        }
+        return null;
+    }
+
+
+    private Mission checkMuseumPref(double distance, String museumType, Mission mission) {
+        if (selectedMuseumTypes.contains(museumType)) {
+            if (!museumType.equals("Art") || !museumType.equals("History")) {
+                mission.setMuseumType(museumType);
+                return mission;
+            } else {
+                if (distance < 300000) {
+                    mission.setMuseumType(museumType);
+                    return mission;
+                }
+            }
+
+        } else if (distance < 100000) {
+            mission.setMuseumType(museumType);
+            return mission;
         }
         return null;
     }
@@ -482,7 +525,6 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
-
     private class postcodeEditTextWatcher implements TextWatcher {
         @Override
         public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -498,8 +540,15 @@ public class QAddressActivity extends AppCompatActivity {
 
         @Override
         public void afterTextChanged(Editable s) {
-
-
         }
+    }
+
+
+    // Back button in action bar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        Animatoo.animateSlideRight(this);
+        return true;
     }
 }

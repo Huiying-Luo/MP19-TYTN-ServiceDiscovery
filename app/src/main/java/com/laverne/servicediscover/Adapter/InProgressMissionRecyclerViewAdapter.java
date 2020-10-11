@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.laverne.servicediscover.Entity.Mission;
 import com.laverne.servicediscover.MissionMapActivity;
 import com.laverne.servicediscover.R;
@@ -36,6 +37,8 @@ public class InProgressMissionRecyclerViewAdapter extends RecyclerView.Adapter<I
         public TextView addressTextView;
         public TextView distanceTextView;
         public Button viewBtn;
+        public Chip categoryChip;
+        public Chip typeChip;
 
 
         public ViewHolder(@NonNull View itemView) {
@@ -44,6 +47,8 @@ public class InProgressMissionRecyclerViewAdapter extends RecyclerView.Adapter<I
             addressTextView = itemView.findViewById(R.id.inprogress_mission_address);
             distanceTextView = itemView.findViewById(R.id.inprogress_mission_distance);
             viewBtn = itemView.findViewById(R.id.mission_view_button);
+            categoryChip = itemView.findViewById(R.id.progress_category_chip);
+            typeChip = itemView.findViewById(R.id.progress_type_chip);
 
             context = itemView.getContext();
         }
@@ -69,17 +74,39 @@ public class InProgressMissionRecyclerViewAdapter extends RecyclerView.Adapter<I
         // viewholder binding with its data at the specified position
         TextView tvName = viewHolder.nameTextView;
         tvName.setText(mission.getName());
+
         TextView tvAddress = viewHolder.addressTextView;
         tvAddress.setText(mission.getAddress());
+
         TextView tvDistance = viewHolder.distanceTextView;
+
         float distance = mission.getDistance();
         if (distance < 1000) {
             tvDistance.setText("Distance: " + String.valueOf((int)distance) + "m");
         } else {
             tvDistance.setText("Distance: " + String.format("%.2f", distance * 0.001) + "km");
         }
-        Button btnView = viewHolder.viewBtn;
 
+
+        Chip chipCategory = viewHolder.categoryChip;
+        String[] categories = {"Library", "Education", "Park", "Museum"};
+        chipCategory.setText(categories[mission.getCategory()]);
+
+        Chip chipType = viewHolder.typeChip;
+
+        if (mission.getCategory() != 1 && mission.getCategory() != 3) {
+            chipType.setVisibility(View.GONE);
+        } else {
+            chipType.setVisibility(View.VISIBLE);
+            if (mission.getCategory() == 1) {
+                String[] schoolTypes = {"Primary", "Secondary", "Primary & Secondary", "Special", "Adult English"};
+                chipType.setText(schoolTypes[mission.getSchoolType()]);
+            } else if (mission.getCategory() == 3) {
+                chipType.setText(mission.getMuseumType());
+            }
+        }
+
+        Button btnView = viewHolder.viewBtn;
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

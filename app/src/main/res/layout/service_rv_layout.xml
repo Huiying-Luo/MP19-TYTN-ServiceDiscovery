@@ -14,43 +14,66 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/service_name"
+        <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginRight="20dp"
-            android:fontFamily="@font/opensanssemibold"
-            android:text="Carnegie Library"
-            android:textColor="@android:color/black"
-            android:textSize="20sp"
+            android:orientation="horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/service_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensanssemibold"
+                android:text="Carnegie Library"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:textColor="@android:color/black"
+                android:textSize="20sp" />
+
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/type_chip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="6dp"
+                android:layout_gravity="right"
+                android:checkable="false"
+                android:text="History"
+                style="@style/UnclickableChipStyle"
+                android:textAppearance="@style/UnclickablechipTextappearance"
+                android:visibility="gone"/>
+
+        </LinearLayout>
 
         <TextView
             android:id="@+id/service_description"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:fontFamily="@font/opensans"
-            android:text="16 Woorayl St"
-            android:textSize="16sp"
+            android:text="description"
             android:textColor="@android:color/black"
+            android:textSize="16sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/service_name" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <TextView
             android:id="@+id/service_address"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:fontFamily="@font/opensans"
             android:text="16 Woorayl St"
             android:textSize="16sp"
@@ -62,9 +85,9 @@
             android:id="@+id/service_distance"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="16dp"
             android:layout_marginTop="3dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginRight="16dp"
             android:fontFamily="@font/opensans"
             android:text="200m"
             android:textColor="@android:color/holo_red_dark"
@@ -79,10 +102,10 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="horizontal"
-            android:layout_marginBottom="16dp"
             android:layout_marginTop="12dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
             android:weightSum="2"
             app:layout_constraintTop_toBottomOf="@id/service_distance"
             app:layout_constraintBottom_toBottomOf="parent"

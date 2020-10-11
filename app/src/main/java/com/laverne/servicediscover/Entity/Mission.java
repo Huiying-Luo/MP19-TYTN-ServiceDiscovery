@@ -17,6 +17,8 @@ public class Mission {
     private Double longitude;
     private int category;
     private int schoolType = 0;
+    private String museumType;
+    private String museumDescription;
     private int status;
     private String completeDate = "";
     private float distance = 0;
@@ -101,5 +103,21 @@ public class Mission {
 
     public void setSchoolType(int schoolType) {
         this.schoolType = schoolType;
+    }
+
+    public String getMuseumType() {
+        return museumType;
+    }
+
+    public void setMuseumType(String museumType) {
+        this.museumType = museumType;
+    }
+
+    public String getMuseumDescription() {
+        return museumDescription;
+    }
+
+    public void setMuseumDescription(String museumDescription) {
+        this.museumDescription = museumDescription;
     }
 }

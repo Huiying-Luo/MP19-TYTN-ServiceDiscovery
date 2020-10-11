@@ -8,7 +8,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.location.Geocoder;
 import android.location.Location;
 import android.net.Uri;
@@ -23,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.view.inputmethod.EditorInfo;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -46,7 +47,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.laverne.servicediscover.Adapter.ServiceRecyclerViewAdapter;
 import com.laverne.servicediscover.FilterActivity;
@@ -59,7 +59,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -155,14 +154,12 @@ public class ServiceFragment extends Fragment {
 
 
     private void configureFloatingActionButton() {
-        fab = getActivity().findViewById(R.id.fab);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FilterActivity.class);
                 intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
-
                 startActivityForResult(intent, REQUEST_FILTER_CODE);
             }
         });
@@ -208,7 +205,8 @@ public class ServiceFragment extends Fragment {
 
 
     private void configureView(View view) {
-        //getActivity().setTitle(category);
+        fab = getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         recyclerView = view.findViewById(R.id.library_recycler_view);
         swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
         errorTextView = view.findViewById(R.id.library_error_tv);
@@ -359,6 +357,7 @@ public class ServiceFragment extends Fragment {
                         // remove the progress bar
                         progressBar.setVisibility(View.GONE);
                         adapter.updateList(services);
+                        setUpLayoutAnimation(recyclerView);
                         // If Screen for Museum, make floating filter button visible
                         if (category == 3) {
                             fab.setVisibility(View.VISIBLE);
@@ -418,26 +417,23 @@ public class ServiceFragment extends Fragment {
             services.addAll(allServices);
         }
         adapter.updateList(services);
+        setUpLayoutAnimation(recyclerView);
         layoutManager.scrollToPosition(0);
     }
 
 
     private void filterMuseums() {
         services.removeAll(services);
+
         for (int i = 0; i < allServices.size(); i++) {
             if (selectedMuseumTypes.contains(allServices.get(i).getMuseumType())) {
                 services.add(allServices.get(i));
             }
         }
+
         adapter.updateList(services);
+        setUpLayoutAnimation(recyclerView);
         layoutManager.scrollToPosition(0);
-    }
-
-
-    private void resetRecyclerViewAdapter(boolean isSortedByHomeAddress) {
-        adapter = new ServiceRecyclerViewAdapter(services);
-        recyclerView.setAdapter(adapter);
-        registerCallbackForPhoneCall();
     }
 
 
@@ -462,6 +458,7 @@ public class ServiceFragment extends Fragment {
         });
         swipeRefreshLayout.setRefreshing(false);
         adapter.updateList(services);
+        setUpLayoutAnimation(recyclerView);
         layoutManager.scrollToPosition(0);
         // 1 = education
         if (category == 1 || category == 3) {
@@ -561,4 +558,12 @@ public class ServiceFragment extends Fragment {
         }
     }
 
+
+    private void setUpLayoutAnimation(RecyclerView recyclerView) {
+        Context context = recyclerView.getContext();
+        LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_down_to_up);
+        recyclerView.setLayoutAnimation(layoutAnimationController);
+        recyclerView.getAdapter().notifyDataSetChanged();
+        recyclerView.scheduleLayoutAnimation();
+    }
 }

@@ -2,7 +2,9 @@ package com.laverne.servicediscover;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,7 +16,7 @@ import com.google.android.material.chip.Chip;
 
 import java.util.ArrayList;
 
-public class FilterActivity extends AppCompatActivity {
+public class QMuseumActivity extends AppCompatActivity {
 
     private Chip chipArt, chipAutomotive, chipAviation, chipEthnic, chipHistory, chipFarm,
             chipFashion, chipForestry, chipIndustry, chipLiterary, chipMaritime, chipMedia,
@@ -22,16 +24,20 @@ public class FilterActivity extends AppCompatActivity {
 
     private ArrayList<Chip> chips;
 
-    private Button applyBtn;
+    private Button nextBtn;
     private ToggleButton toggleButton;
     private ArrayList<String> selectedChipData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_filter);
+        setContentView(R.layout.activity_q_museum);
+
+        setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         configureView();
+
         selectedChipData = new ArrayList<>();
 
         CompoundButton.OnCheckedChangeListener checkedChangeListener = new CompoundButton.OnCheckedChangeListener() {
@@ -55,75 +61,69 @@ public class FilterActivity extends AppCompatActivity {
         Intent intent = getIntent();
         ArrayList<String> selectedMuseumTypes = intent.getStringArrayListExtra("selectedMuseumTypes");
         if (selectedMuseumTypes != null) {
-            if (selectedMuseumTypes.size() == 19) {
-                toggleButton.setChecked(true);
-            }
             for (int i = 0; i < chips.size(); i++) {
                 if (selectedMuseumTypes.contains(chips.get(i).getText().toString())) {
                     chips.get(i).setChecked(true);
                 }
             }
-        } else {
-            // default select all
-            toggleButton.setChecked(true);
         }
     }
 
 
     private void configureView() {
         chips = new ArrayList<>();
-        chipArt = findViewById(R.id.chipArt);
+        chipArt = findViewById(R.id.q_chipArt);
         chips.add(chipArt);
-        chipAutomotive = findViewById(R.id.chipAutomotive);
+        chipAutomotive = findViewById(R.id.q_chipAutomotive);
         chips.add(chipAutomotive);
-        chipAviation = findViewById(R.id.chipAviation);
+        chipAviation = findViewById(R.id.q_chipAviation);
         chips.add(chipAviation);
-        chipEthnic = findViewById(R.id.chipEthnic);
+        chipEthnic = findViewById(R.id.q_chipEthnic);
         chips.add(chipEthnic);
-        chipHistory = findViewById(R.id.chipHistory);
+        chipHistory = findViewById(R.id.q_chipHistory);
         chips.add(chipHistory);
-        chipFarm = findViewById(R.id.chipFarm);
+        chipFarm = findViewById(R.id.q_chipFarm);
         chips.add(chipFarm);
-        chipFashion = findViewById(R.id.chipFashion);
+        chipFashion = findViewById(R.id.q_chipFashion);
         chips.add(chipFashion);
-        chipForestry = findViewById(R.id.chipForestry);
+        chipForestry = findViewById(R.id.q_chipForestry);
         chips.add(chipForestry);
-        chipIndustry = findViewById(R.id.chipIndustry);
+        chipIndustry = findViewById(R.id.q_chipIndustry);
         chips.add(chipIndustry);
-        chipLiterary = findViewById(R.id.chipLiterary);
+        chipLiterary = findViewById(R.id.q_chipLiterary);
         chips.add(chipLiterary);
-        chipMaritime = findViewById(R.id.chipMaritime);
+        chipMaritime = findViewById(R.id.q_chipMaritime);
         chips.add(chipMaritime);
-        chipMedia = findViewById(R.id.chipMedia);
+        chipMedia = findViewById(R.id.q_chipMedia);
         chips.add(chipMedia);
-        chipMilitary = findViewById(R.id.chipMilitary);
+        chipMilitary = findViewById(R.id.q_chipMilitary);
         chips.add(chipMilitary);
-        chipMusic = findViewById(R.id.chipMusic);
+        chipMusic = findViewById(R.id.q_chipMusic);
         chips.add(chipMusic);
-        chipOpenAir = findViewById(R.id.chipOpenAir);
+        chipOpenAir = findViewById(R.id.q_chipOpenAir);
         chips.add(chipOpenAir);
-        chipPrison = findViewById(R.id.chipPrison);
+        chipPrison = findViewById(R.id.q_chipPrison);
         chips.add(chipPrison);
-        chipRailway = findViewById(R.id.chipRailway);
+        chipRailway = findViewById(R.id.q_chipRailway);
         chips.add(chipRailway);
-        chipSports = findViewById(R.id.chipSports);
+        chipSports = findViewById(R.id.q_chipSports);
         chips.add(chipSports);
-        chipTechnology = findViewById(R.id.chipTechnology);
+        chipTechnology = findViewById(R.id.q_chipTechnology);
         chips.add(chipTechnology);
 
-        applyBtn = findViewById(R.id.filter_apply_btn);
-        toggleButton = findViewById(R.id.filter_toggleButton);
+        nextBtn = findViewById(R.id.question_museum_next_btn);
+        toggleButton = findViewById(R.id.q_filter_toggleButton);
     }
 
 
     private void setUpButton() {
-        applyBtn.setOnClickListener(new View.OnClickListener() {
+        nextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent returnIntent = getIntent();
-                returnIntent.putStringArrayListExtra("selectedChipData", selectedChipData);
-                setResult(RESULT_OK, returnIntent);
-                finish();
+                setMuseumPref();
+                Intent intent = new Intent(QMuseumActivity.this, QAddressActivity.class);
+                startActivity(intent);
+                Animatoo.animateSlideLeft(QMuseumActivity.this);
             }
         });
 
@@ -141,5 +141,25 @@ public class FilterActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+
+    private void setMuseumPref() {
+        SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+        SharedPreferences.Editor spEditor = sharedPref.edit();
+        spEditor.putInt("museumTypeSize", selectedChipData.size());
+        for (int i = 0; i < selectedChipData.size(); i++) {
+            spEditor.putString("museumType" + i, selectedChipData.get(i));
+        }
+        spEditor.apply();
+    }
+
+
+    // Back button in action bar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        Animatoo.animateSlideRight(this);
+        return true;
     }
 }

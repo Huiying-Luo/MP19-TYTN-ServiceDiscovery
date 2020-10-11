@@ -5,27 +5,31 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FilterActivity">
+    android:background="@drawable/background"
+    tools:context=".QMuseumActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/question_museum_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginBottom="10dp"
-        android:text="Museum Type:"
+        android:layout_marginTop="65dp"
+        android:padding="10dp"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="2dp"
+        android:text="What types of museum are you interested in?"
+        android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="18sp"
-        android:fontFamily="@font/opensanssemibold" />
+        android:textSize="26sp" />
 
     <com.google.android.material.chip.ChipGroup
-        android:id="@+id/cgMuseum"
+        android:id="@+id/q_cgMuseum"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipArt"
+            android:id="@+id/q_chipArt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="10dp"
@@ -35,7 +39,7 @@
             />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipAutomotive"
+            android:id="@+id/q_chipAutomotive"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -44,7 +48,7 @@
             android:text="Automotive" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipAviation"
+            android:id="@+id/q_chipAviation"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -53,7 +57,7 @@
             android:text="Aviation" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipEthnic"
+            android:id="@+id/q_chipEthnic"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -62,7 +66,7 @@
             android:text="Ethnic" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipHistory"
+            android:id="@+id/q_chipHistory"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -71,7 +75,7 @@
             android:text="History" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipFarm"
+            android:id="@+id/q_chipFarm"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -80,7 +84,7 @@
             android:text="Farm" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipFashion"
+            android:id="@+id/q_chipFashion"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -89,7 +93,7 @@
             android:text="Fashion" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipForestry"
+            android:id="@+id/q_chipForestry"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -98,7 +102,7 @@
             android:text="Forestry" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipIndustry"
+            android:id="@+id/q_chipIndustry"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -107,7 +111,7 @@
             android:text="Industry" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipLiterary"
+            android:id="@+id/q_chipLiterary"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -116,7 +120,7 @@
             android:text="Literary" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipMaritime"
+            android:id="@+id/q_chipMaritime"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -125,7 +129,7 @@
             android:text="Maritime" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipMedia"
+            android:id="@+id/q_chipMedia"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -134,7 +138,7 @@
             android:text="Media" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipMilitary"
+            android:id="@+id/q_chipMilitary"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -143,7 +147,7 @@
             android:text="Military" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipMusic"
+            android:id="@+id/q_chipMusic"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -152,7 +156,7 @@
             android:text="Music" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipOpenAir"
+            android:id="@+id/q_chipOpenAir"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -161,7 +165,7 @@
             android:text="Open air" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipPrison"
+            android:id="@+id/q_chipPrison"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -170,7 +174,7 @@
             android:text="Prison" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipRailway"
+            android:id="@+id/q_chipRailway"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -179,7 +183,7 @@
             android:text="Railway" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipSports"
+            android:id="@+id/q_chipSports"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -188,7 +192,7 @@
             android:text="Sports" />
 
         <com.google.android.material.chip.Chip
-            android:id="@+id/chipTechnology"
+            android:id="@+id/q_chipTechnology"
             style="@style/CustomChipStyle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -198,11 +202,11 @@
     </com.google.android.material.chip.ChipGroup>
 
     <ToggleButton
-        android:id="@+id/filter_toggleButton"
-        android:layout_width="120dp"
+        android:id="@+id/q_filter_toggleButton"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
-        android:layout_margin="10dp"
+        android:layout_margin="15dp"
         android:text="ToggleButton"
         android:fontFamily="@font/opensanssemibold"
         android:textSize="15sp"
@@ -210,17 +214,23 @@
         android:textAllCaps="false"
         android:textOff="Select All"/>
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"/>
+
         <Button
-            android:id="@+id/filter_apply_btn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:background="@drawable/button_background"
-            android:text="Apply"
-            android:textAllCaps="false"
+            android:id="@+id/question_museum_next_btn"
+            android:layout_width="250dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="88dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/intro_button_background"
             android:fontFamily="@font/opensansbold"
+            android:text="Next"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
 </LinearLayout>

@@ -32,22 +32,6 @@ public class MissionViewModel extends ViewModel {
     }
 
 
-    public LiveData<List<Mission>> getAllNotAddedSchoolsByType(int type) {
-        switch (type) {
-            case 1:
-                return mRepository.getAllNotAddedPrimarySchools();
-            case 2:
-                return mRepository.getAllNotAddedSecondarySchools();
-            case 3:
-                return mRepository.getAllNotAddedSpecialSchools();
-            case 4:
-                return mRepository.getAllNotAddedEnglishSchools();
-            default:
-                return mRepository.getAllNotAddedMissionsByCategory(1);
-        }
-    }
-
-
     public LiveData<List<Mission>> getAllMissionsByStatus(int status) {
         return mRepository.getAllMissionsByStatus(status);
     }
@@ -55,6 +39,11 @@ public class MissionViewModel extends ViewModel {
 
     public List<Mission> getAllNotAddedMissions() {
         return mRepository.getAllNotAddedMissions();
+    }
+
+
+    public List<Mission> getAllNotAddedMissionsListByCategory(int category) {
+        return mRepository.getAllNotAddedMissionsListByCategory(category);
     }
 
 

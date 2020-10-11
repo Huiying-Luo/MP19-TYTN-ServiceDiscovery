@@ -11,12 +11,17 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 public class QSchoolActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_q_school);
+
+        setTitle("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         final CheckBox primarySchool = findViewById(R.id.checkBoxPrimary);
         final CheckBox secondarySchool = findViewById(R.id.checkBoxSecondary);
@@ -53,7 +58,7 @@ public class QSchoolActivity extends AppCompatActivity {
                 } else {
                     Intent intent = new Intent(QSchoolActivity.this, QEnglishActivity.class);
                     startActivity(intent);
-                    finish();
+                    Animatoo.animateSlideLeft(QSchoolActivity.this);
                 }
             }
         });
@@ -67,5 +72,11 @@ public class QSchoolActivity extends AppCompatActivity {
     }
 
 
-
+    // Back button in action bar
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed();
+        Animatoo.animateSlideRight(this);
+        return true;
+    }
 }

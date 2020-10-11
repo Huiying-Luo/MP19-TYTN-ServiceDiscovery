@@ -1,5 +1,6 @@
 package com.laverne.servicediscover;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -7,12 +8,15 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -20,6 +24,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.laverne.servicediscover.Adapter.MissionListRecyclerViewAdapter;
 import com.laverne.servicediscover.Entity.Mission;
 import com.laverne.servicediscover.Model.Service;
@@ -33,6 +44,9 @@ import java.util.List;
 
 public class MissionListActivity extends AppCompatActivity implements MissionListRecyclerViewAdapter.OnMissionListener {
 
+    private static final int REQUEST_FILTER_CODE = 1;
+
+    private TextView titleTextView;
     private RecyclerView recyclerView;
     private Spinner filterSpinner;
     private ArrayAdapter<String> filterSpinnerAdapter;
@@ -41,8 +55,9 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     private MissionViewModel missionViewModel;
     private int category;
     private List<Mission> missionList;
-    private List<Mission> allMissions;
     private Intent intent;
+    private FloatingActionButton fab;
+    private ArrayList<String> selectedMuseumTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +66,11 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         setTitle("Add New Mission");
 
         intent = getIntent();
-        category = intent.getIntExtra("category", -1);
+        category = intent.getIntExtra("category", 4);
+
+        String[] categories = {"Library", "School", "Park", "Museum", "Mission"};
+        titleTextView = findViewById(R.id.add_mission_title);
+        titleTextView.setText("Select a " + categories[category] + " :");
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -60,26 +79,50 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         initializeViewModel();
         initializeRecyclerView();
 
+        // Education need spinner for filter
         if (category == 1) {
             filterSpinner = findViewById(R.id.mission_filter_spinner);
             filterSpinner.setVisibility(View.VISIBLE);
-            getAllMissionsByCategoryFromRoomDatabase();
-            allMissions = new ArrayList<>();
-            allMissions.addAll(missionList);
             configureFilterSpinner();
+        }
 
+        // Museum has floating action button for filter
+        if (category == 3) {
+            fab = findViewById(R.id.mission_fab);
+            fab.setVisibility(View.VISIBLE);
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(MissionListActivity.this, FilterActivity.class);
+                    intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
+                    startActivityForResult(intent, REQUEST_FILTER_CODE);
+                }
+            });
         }
         getAllMissionsByCategoryFromRoomDatabase();
 
+    }
+
+
+    // Get Selected Museum Types
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_FILTER_CODE) {
+            if (resultCode == RESULT_OK) {
+                selectedMuseumTypes = data.getStringArrayListExtra("selectedChipData");
+                adapter.filterByMuseumTypes(selectedMuseumTypes);
+            }
+        }
     }
 
     // Back button in action bar
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        Animatoo.animateSlideRight(this);
         return true;
     }
-
 
 
     private void initializeRecyclerView() {
@@ -101,32 +144,11 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     private void getAllMissionsByCategoryFromRoomDatabase() {
         missionList = new ArrayList<>();
 
-        missionViewModel.getAllNotAddedMissionsByCategory(category).observe(this, new Observer<List<Mission>>() {
-            @Override
-            public void onChanged(List<Mission> missions) {
-                missionList = missions;
-                adapter.setMissionList(missionList);
-            }
-        });
-        calculateDistance();
+        new ChangeMissionsDistanceAsyncTask().execute();
     }
 
 
-    private void getSchoolsByTypeFromRoomDatabase(int type) {
-        missionList.removeAll(missionList);
-
-        missionViewModel.getAllNotAddedSchoolsByType(type).observe(this, new Observer<List<Mission>>() {
-            @Override
-            public void onChanged(List<Mission> missions) {
-                missionList = missions;
-                adapter.updateList(missionList);
-            }
-        });
-        calculateDistance();
-    }
-
-
-    private void calculateDistance() {
+    private void calculateDistances() {
         SharedPreferences sharedPref = getSharedPreferences("User", MODE_PRIVATE);
         double latitude = sharedPref.getFloat("latitude", 0);
         double longitude = sharedPref.getFloat("longitude", 0);
@@ -140,6 +162,29 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         }
     }
 
+    private class ChangeMissionsDistanceAsyncTask extends AsyncTask<String, Void, Integer> {
+
+        @Override
+        protected Integer doInBackground(String... strings) {
+            missionList.addAll(missionViewModel.getAllNotAddedMissionsListByCategory(category));
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Integer result) {
+            calculateDistances();
+            missionList.removeAll(missionList);
+            missionViewModel.getAllNotAddedMissionsByCategory(category).observe(MissionListActivity.this, new Observer<List<Mission>>() {
+                @Override
+                public void onChanged(List<Mission> missions) {
+                    missionList = missions;
+                    adapter.setMissionList(missions);
+                }
+
+            });
+        }
+    }
+
 
     private void configureFilterSpinner() {
         String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
@@ -150,7 +195,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                getSchoolsByTypeFromRoomDatabase(position);
+                adapter.filterBySchoolType(position);
             }
 
             @Override
@@ -177,6 +222,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
                 Intent intent = new Intent(MissionListActivity.this, MainActivity.class);
                 intent.putExtra("goToMission", true);
                 startActivity(intent);
+                Animatoo.animateInAndOut(MissionListActivity.this);
                 finish();
             }
         });
@@ -188,4 +234,5 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         });
         alert.create().show();
     }
+
 }
