@@ -11,6 +11,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
+
 public class AddMissionActivity extends AppCompatActivity {
 
     private CardView libraryBtn;
@@ -36,6 +38,7 @@ public class AddMissionActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
+        Animatoo.animateSlideRight(this);
         return true;
     }
 
@@ -121,7 +124,8 @@ public class AddMissionActivity extends AppCompatActivity {
         Intent intent = new Intent(AddMissionActivity.this, MissionListActivity.class);
         intent.putExtra("category", category);
         startActivity(intent);
-        //startActivityForResult(intent, REQUEST_CODE);
+
+       Animatoo.animateSlideLeft(this);
     }
 
 

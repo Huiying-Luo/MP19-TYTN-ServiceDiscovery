@@ -2,6 +2,7 @@ package com.laverne.servicediscover.Fragment;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -12,6 +13,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
+import android.view.animation.LayoutAnimationController;
 import android.widget.Button;
 
 import androidx.annotation.NonNull;
@@ -25,6 +28,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -34,7 +38,6 @@ import com.laverne.servicediscover.Adapter.InProgressMissionRecyclerViewAdapter;
 import com.laverne.servicediscover.AddMissionActivity;
 import com.laverne.servicediscover.Entity.Mission;
 import com.laverne.servicediscover.IntroductionActivity;
-import com.laverne.servicediscover.QAddressActivity;
 import com.laverne.servicediscover.R;
 import com.laverne.servicediscover.Utilities;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
@@ -99,6 +102,7 @@ public class InProgressMissionFragment extends Fragment {
                 if (needQuestionnaire) {
                     Intent intent = new Intent(getActivity(), IntroductionActivity.class);
                     startActivityForResult(intent, REQUEST_INTRO);
+                    Animatoo.animateSlideLeft(getActivity());
                 } else {
                     new CheckMissionsAsyncTask().execute();
                 }
@@ -139,6 +143,7 @@ public class InProgressMissionFragment extends Fragment {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(getActivity(), IntroductionActivity.class);
                         startActivity(intent);
+                        Animatoo.animateSlideLeft(getActivity());
                     }
                 });
                 alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -151,6 +156,7 @@ public class InProgressMissionFragment extends Fragment {
             } else {
                 Intent intent = new Intent(getActivity(), AddMissionActivity.class);
                 startActivity(intent);
+                Animatoo.animateSlideLeft(getActivity());
             }
         }
     }
@@ -192,8 +198,8 @@ public class InProgressMissionFragment extends Fragment {
                 @Override
                 public void onChanged(List<Mission> missions) {
                     adapter.setMissionList(missions);
-                }
 
+                }
             });
         }
     }

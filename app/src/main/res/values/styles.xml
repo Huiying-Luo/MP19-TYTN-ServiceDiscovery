@@ -1,6 +1,6 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar.Bridge">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
@@ -18,4 +18,32 @@
     <style name="TextAppearance.App.TextInputLayout" parent="@android:style/TextAppearance">
         <item name="android:textColor">@android:color/white</item>
     </style>
+
+    <style name="chipTextappearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
+    </style>
+
+    <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
+        <item name="chipBackgroundColor">@color/chip_background_color </item>
+        <item name="android:textColor">@color/chip_text_color</item>
+        <item name="checkedIconTint">@color/white</item>
+        <item name="rippleColor">@color/whiteAlpha</item>
+    </style>
+
+    <style name="UnclickablechipTextappearance" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">15sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
+    </style>
+
+    <style name="UnclickableChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/orange</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="UnclickableChipStyle2" parent="Widget.MaterialComponents.Chip.Choice">
+        <item name="chipBackgroundColor">@color/colorPrimary</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
 </resources>

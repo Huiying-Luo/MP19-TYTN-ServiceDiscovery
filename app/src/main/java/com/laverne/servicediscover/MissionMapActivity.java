@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.blogspot.atifsoftwares.animatoolib.Animatoo;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -280,6 +281,7 @@ public class MissionMapActivity extends AppCompatActivity implements OnMapReadyC
                 Intent intent = new Intent(MissionMapActivity.this, MainActivity.class);
                 intent.putExtra("goToCompletedMission", true);
                 startActivity(intent);
+                Animatoo.animateInAndOut(MissionMapActivity.this);
                 finish();
             }
         });

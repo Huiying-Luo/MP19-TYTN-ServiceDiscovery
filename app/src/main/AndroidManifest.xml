@@ -14,7 +14,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".LoginActivity"></activity>
+        <activity android:name=".QMuseumActivity"></activity>
+        <activity
+            android:name=".FilterActivity"
+            android:theme="@style/Theme.MaterialComponents.Light.NoActionBar.Bridge"/>
+        <activity android:name=".LoginActivity" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -22,23 +26,22 @@
 
         <activity android:name=".MissionMapActivity" />
         <activity android:name=".MissionListActivity" />
-        <activity android:name=".AddMissionActivity"
-            />
+        <activity android:name=".AddMissionActivity" />
         <activity
             android:name=".QAddressActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            />
         <activity
             android:name=".QEnglishActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+             />
         <activity
             android:name=".QSchoolActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+            />
         <activity
             android:name=".IntroductionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".QKidsActivity"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+             />
         <activity
             android:name=".SplashScreen"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar">

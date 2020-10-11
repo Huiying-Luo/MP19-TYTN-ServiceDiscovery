@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.laverne.servicediscover.R;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
@@ -27,6 +28,7 @@ public class HomeFragment extends Fragment {
     private CardView libraryBtn, parkBtn, educationBtn, museumBtn, inprogressBtn, completeBtn;
     private LinearLayout publicServiceLayout;
     private NavigationView navigationView;
+    private FloatingActionButton fab;
 
     private MissionViewModel missionViewModel;
 
@@ -125,6 +127,8 @@ public class HomeFragment extends Fragment {
 
 
     private void configureUI(View view) {
+        fab = getActivity().findViewById(R.id.fab);
+        fab.setVisibility(View.GONE);
         completedTextView = view.findViewById(R.id.completed_number);
         inprogressTextView = view.findViewById(R.id.inprogress_number);
         viewBtn = view.findViewById(R.id.home_view_btn);

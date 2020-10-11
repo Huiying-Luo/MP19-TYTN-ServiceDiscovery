@@ -16,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.chip.Chip;
 import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.R;
 
@@ -31,7 +32,6 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
     private OnPhoneCallListener phoneCallListener;
 
     public ServiceRecyclerViewAdapter(List<Service> services) {
-
         this.services = services;
         allServices = new ArrayList<>(services);
     }
@@ -45,19 +45,23 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView nameTextView;
+        public TextView descriptionTextView;
         public TextView addressTextView;
         public TextView distanceTextView;
         public Button callButton;
         public Button websiteButton;
+        public Chip typeChip;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            nameTextView = itemView.findViewById(R.id.library_name);
-            addressTextView = itemView.findViewById(R.id.library_address);
-            distanceTextView = itemView.findViewById(R.id.library_distance);
-            callButton = itemView.findViewById(R.id.library_call_btn);
-            websiteButton = itemView.findViewById(R.id.library_website_btn);
+            nameTextView = itemView.findViewById(R.id.service_name);
+            descriptionTextView = itemView.findViewById(R.id.service_description);
+            addressTextView = itemView.findViewById(R.id.service_address);
+            distanceTextView = itemView.findViewById(R.id.service_distance);
+            callButton = itemView.findViewById(R.id.service_call_btn);
+            websiteButton = itemView.findViewById(R.id.service_website_btn);
+            typeChip = itemView.findViewById(R.id.type_chip);
 
             context = itemView.getContext();
         }
@@ -89,9 +93,11 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         // viewholder binding with its data at the specified position
         TextView tvName = viewHolder.nameTextView;
         tvName.setText(service.getName());
+        TextView tvDescription = viewHolder.descriptionTextView;
         TextView tvAddress = viewHolder.addressTextView;
         tvAddress.setText(service.getAddress());
         TextView tvDistance = viewHolder.distanceTextView;
+        Chip chipType = viewHolder.typeChip;
         float distance = 0;
         distance = service.getCurrentDistance();
 
@@ -104,13 +110,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         Button websiteBtn = viewHolder.websiteButton;
         // park does not have website and phone no
         if (service.getCategory() != 2) {
-            final String phoneNo = service.getPhoneNo();
-            callBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    phoneCallListener.onPhoneCallClick(phoneNo);
-                }
-            });
+
             // Disable the website button for Adult English Programs
             if (service.getCategory() == 1 && service.getSchoolType() == 4) {
                 websiteBtn.setEnabled(false);
@@ -128,9 +128,28 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
                     }
                 });
             }
+            // museum does not have phone number
+            if (service.getCategory() != 3) {
+                final String phoneNo = service.getPhoneNo();
+                callBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        phoneCallListener.onPhoneCallClick(phoneNo);
+                    }
+                });
+            }
+
+            if (service.getCategory() == 3){
+                chipType.setVisibility(View.VISIBLE);
+                chipType.setText(service.getMuseumType());
+                // set the description
+                tvDescription.setText(service.getMuseumDescription());
+                // make the phone call button invisible when display museums
+                callBtn.setVisibility(View.GONE);
+            }
 
         } else {
-            // make the buttons invisible when display parks
+            // make buttons invisible when display parks
             callBtn.setVisibility(View.GONE);
             websiteBtn.setVisibility(View.GONE);
         }
@@ -149,23 +168,22 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
     @Override
     public Filter getFilter() {
-        return libraryFilter;
+        return serviceFilter;
     }
 
-    private Filter libraryFilter = new Filter() {
+    private Filter serviceFilter = new Filter() {
         @Override
         protected FilterResults performFiltering(CharSequence constraint) {
             List<Service> filteredList = new ArrayList<>();
-
 
             if (constraint == null || constraint.length() == 0) {
                 // search input is empty, return all
                 filteredList.addAll(allServices);
             } else {
                 String filterPattern = constraint.toString().toLowerCase().trim();
-                for (Service library: allServices) {
-                    if (library.getName().toLowerCase().contains(filterPattern)) {
-                        filteredList.add(library);
+                for (Service service: allServices) {
+                    if (service.getName().toLowerCase().contains(filterPattern)) {
+                        filteredList.add(service);
                     }
                 }
             }

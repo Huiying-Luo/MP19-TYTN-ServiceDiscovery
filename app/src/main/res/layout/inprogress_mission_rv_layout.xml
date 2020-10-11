@@ -26,8 +26,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginBottom="15dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <TextView
@@ -59,6 +59,34 @@
                 android:text="200m"
                 android:textColor="@android:color/holo_red_dark"
                 android:textSize="16sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/progress_category_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:checkable="false"
+                    android:text="Library"
+                    style="@style/UnclickableChipStyle"
+                    android:textAppearance="@style/UnclickablechipTextappearance" />
+
+                <com.google.android.material.chip.Chip
+                    android:id="@+id/progress_type_chip"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:checkable="false"
+                    android:text="History"
+                    style="@style/UnclickableChipStyle2"
+                    android:textAppearance="@style/UnclickablechipTextappearance"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 
