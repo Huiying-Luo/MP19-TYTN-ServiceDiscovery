@@ -38,10 +38,20 @@ public class AddMissionActivity extends AppCompatActivity {
     @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
-        Animatoo.animateSlideRight(this);
+
         return true;
     }
 
+    @Override
+    public void onBackPressed() {
+        // after entering the questionnaires, we don't want to go back to the question page
+        // go to in progress mission list
+        Intent intent = new Intent(AddMissionActivity.this, MainActivity.class);
+        intent.putExtra("goToMission", true);
+        startActivity(intent);
+
+        Animatoo.animateSlideRight(this);
+    }
 
     private void configureUI() {
         setTitle("Add New Mission");
@@ -125,7 +135,7 @@ public class AddMissionActivity extends AppCompatActivity {
         intent.putExtra("category", category);
         startActivity(intent);
 
-       Animatoo.animateSlideLeft(this);
+        Animatoo.animateSlideLeft(this);
     }
 
 

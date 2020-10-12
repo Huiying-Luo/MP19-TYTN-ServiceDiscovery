@@ -3,4 +3,31 @@
     <string name="Open">open</string>
     <string name="Close">close</string>
 
+    <string name="Q1">Q1: What is this app used for?</string>
+    <string name="Q2">Q2: How many public services can I choose?</string>
+    <string name="Q3">Q3: What is a "Mission"?</string>
+    <string name="Q4">Q4: How can I add a mission?</string>
+    <string name="Q5">Q5: Why should I fill the questions?</string>
+
+
+    <string name="A1">
+      A: This app is designed for guiding refugees to discover and learn about the public services they can access for free.
+    </string>
+
+    <string name="A2">
+        A: There are four categories of services available: Library, Education, Park, Museum. All the free services in these four categories are shown in this app.
+    </string>
+
+    <string name="A3">
+       A: The mission in our app is used to encourage users to go to the public services. The mission represents if the users have finished visiting one service.
+    </string>>
+
+    <string name="A4">
+        A: Users can click the “View” button at the home page and add new missions.
+    </string>
+
+    <string name="A5">
+        A: We need to know some information about you like your status, interest and preferences so that we can  recommend the most suitable services to you :)
+    </string>
+
 </resources>

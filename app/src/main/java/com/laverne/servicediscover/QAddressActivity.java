@@ -157,16 +157,6 @@ public class QAddressActivity extends AppCompatActivity {
             public void onClick(View v) {
                 currentLocationBtnClick = true;
                 getLastLocation();
-                /*
-                if (hasUseCurrentLocation) {
-                    postcodeEditText.setEnabled(true);
-                    postcodeEditText.setText("");
-                    postcodeTIL.setEndIconActivated(true);
-                    //useCurrentLocationButton.setText("Use Current Location");
-                    hasUseCurrentLocation = false;
-                } else {
-                    getLastLocation();
-                }*/
             }
         });
     }
@@ -214,12 +204,6 @@ public class QAddressActivity extends AppCompatActivity {
 
                     missionProgressBar.setVisibility(View.VISIBLE);
                     hasUseCurrentLocation = true;
-/*
-                    postcodeEditText.setEnabled(false);
-                    postcodeTIL.setEndIconActivated(false);
-
-                    useCurrentLocationButton.setText("Enter My Location");
-                    */
 
                 } else {
                     // show error alert
@@ -305,6 +289,7 @@ public class QAddressActivity extends AppCompatActivity {
 
 
     private void generateMissions() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         new GetAllMissionsTask().execute();
         titleTextView.setVisibility(View.GONE);
         postcodeTIL.setVisibility(View.GONE);
