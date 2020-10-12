@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             navigationView.setCheckedItem(R.id.mission);
         } else {
             replaceFragment(new HomeFragment());
+            setTitle("Home");
             navigationView.setCheckedItem(R.id.homepage);
         }
     }

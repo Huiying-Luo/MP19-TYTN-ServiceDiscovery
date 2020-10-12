@@ -24,6 +24,11 @@
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
     </style>
 
+    <style name="chipTextappearanceSmall" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">12sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
+    </style>
+
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipBackgroundColor">@color/chip_background_color </item>
         <item name="android:textColor">@color/chip_text_color</item>
@@ -32,7 +37,11 @@
     </style>
 
     <style name="UnclickablechipTextappearance" parent="TextAppearance.MaterialComponents.Chip">
-        <item name="android:textSize">15sp</item>
+    <item name="android:textSize">15sp</item>
+    <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
+</style>
+    <style name="UnclickablechipTextappearanceSmall" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">13sp</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
     </style>
 
