@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".FilterActivity">
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginBottom="10dp"
+        android:text="Museum Type:"
+        android:textColor="@android:color/black"
+        android:textSize="16sp"
+        android:fontFamily="@font/opensanssemibold" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgMuseum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipArt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            style="@style/CustomChipStyle"
+            android:text="Art"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAutomotive"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Automotive" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipAviation"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Aviation" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipEthnic"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Ethnic" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipHistory"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="History" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFarm"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Farm" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipFashion"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Fashion" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipForestry"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Forestry" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipIndustry"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Industry" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipLiterary"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Literary" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMaritime"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Maritime" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMedia"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Media" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMilitary"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Military" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipMusic"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Music" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipOpenAir"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Open air" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrison"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Prison" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipRailway"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Railway" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSports"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Sports" />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipTechnology"
+            style="@style/CustomChipStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:textAppearance="@style/chipTextappearanceSmall"
+            android:text="Technology" />
+    </com.google.android.material.chip.ChipGroup>
+
+    <ToggleButton
+        android:id="@+id/filter_toggleButton"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_margin="10dp"
+        android:text="ToggleButton"
+        android:fontFamily="@font/opensanssemibold"
+        android:textSize="13sp"
+        android:textOn="Deselect All"
+        android:textAllCaps="false"
+        android:textOff="Select All"/>
+
+        <Button
+            android:id="@+id/filter_apply_btn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:background="@drawable/button_background"
+            android:text="Apply"
+            android:textAllCaps="false"
+            android:fontFamily="@font/opensansbold"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:textStyle="bold" />
+
+</LinearLayout>
