@@ -203,6 +203,7 @@ public class QAddressActivity extends AppCompatActivity {
                     convertCoordinateToAddress(location);
 
                     missionProgressBar.setVisibility(View.VISIBLE);
+                    finishButton.setClickable(false);
                     hasUseCurrentLocation = true;
 
                 } else {
@@ -236,6 +237,7 @@ public class QAddressActivity extends AppCompatActivity {
             }
             currentLocationBtnClick = false;
             missionProgressBar.setVisibility(View.GONE);
+            finishButton.setClickable(true);
         }
     }
 
