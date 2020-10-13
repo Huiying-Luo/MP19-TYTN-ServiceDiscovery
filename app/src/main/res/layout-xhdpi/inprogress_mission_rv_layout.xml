@@ -19,15 +19,14 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
             android:orientation="vertical">
 
             <TextView
@@ -37,7 +36,7 @@
                 android:text="Carnegie Library"
                 android:fontFamily="@font/opensanssemibold"
                 android:textColor="@android:color/black"
-                android:textSize="20sp"
+                android:textSize="18sp"
                 />
 
             <TextView
@@ -47,7 +46,7 @@
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/opensans"
                 android:text="16 Woorayl St"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
 
             <TextView
@@ -58,7 +57,7 @@
                 android:fontFamily="@font/opensans"
                 android:text="200m"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -71,7 +70,7 @@
                     android:checkable="false"
                     android:text="Library"
                     style="@style/UnclickableChipStyle"
-                    android:textAppearance="@style/UnclickablechipTextappearance" />
+                    android:textAppearance="@style/UnclickablechipTextappearanceSmall" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/progress_type_chip"
@@ -81,13 +80,10 @@
                     android:checkable="false"
                     android:text="History"
                     style="@style/UnclickableChipStyle2"
-                    android:textAppearance="@style/UnclickablechipTextappearance"
+                    android:textAppearance="@style/UnclickablechipTextappearanceSmall"
                     android:visibility="gone"/>
 
             </LinearLayout>
-
-
-
         </LinearLayout>
 
         <Button
@@ -97,9 +93,11 @@
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:fontFamily="@font/opensansbold"
-            android:textSize="16sp"
+            android:textSize="14sp"
             android:text="View"
             android:layout_marginRight="15dp"
             android:background="@drawable/button_background" />
+
+
     </LinearLayout>
 </androidx.cardview.widget.CardView>

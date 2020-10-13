@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    tools:context=".QAddressActivity"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/question_address_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="2dp"
+        android:text="Please give us a location to do the location-based recommendation"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="21sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp">
+
+            <TextView
+                android:id="@+id/generate_msg"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/opensanssemibold"
+                android:gravity="center"
+                android:lineSpacingExtra="2dp"
+                android:text="We are finding \nthe suitable public services\n for you..."
+                android:textAlignment="center"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/mission_progress_bar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:indeterminate="true"
+                android:max="100"
+                android:progress="1"
+                android:visibility="gone" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/postcode"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/question_address_location_button">
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_postcode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            app:errorEnabled="true"
+            app:hintTextAppearance="@style/TextAppearance.App.TextInputLayout"
+            app:errorTextColor="@android:color/holo_red_dark">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_postcode"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:ems="10"
+                android:hint="Postcode"
+                android:inputType="number"
+                android:imeOptions="actionDone"
+                android:paddingLeft="7dp" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <Button
+        android:id="@+id/question_address_location_button"
+        android:layout_width="250dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="35dp"
+        android:background="@drawable/orange_button_background"
+        android:text="Use Current Location"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/opensansbold"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout_address"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout_address"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="60dp"
+        android:orientation="horizontal"
+        android:weightSum="2"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/iquestion_address_cancel_button"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:background="@drawable/intro_button_background"
+            android:fontFamily="@font/opensansbold"
+            android:text="Cancel"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/question_address_finish_button"
+            android:layout_width="0dp"
+            android:layout_height="45dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="25dp"
+            android:layout_weight="1"
+            android:background="@drawable/intro_button_background"
+            android:fontFamily="@font/opensansbold"
+            android:text="Finish"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="14sp" />
+
+
+    </LinearLayout>
+
+
+
+
+
+</LinearLayout>

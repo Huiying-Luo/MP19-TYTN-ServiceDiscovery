@@ -104,7 +104,7 @@
                         android:fontFamily="@font/opensanssemibold"
                         android:text="Completed"
                         android:textColor="@color/lightGrey"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView_completed" />
 
@@ -158,7 +158,7 @@
                         android:fontFamily="@font/opensanssemibold"
                         android:text="In Progress"
                         android:textColor="@color/lightGrey"
-                        android:textSize="13sp"
+                        android:textSize="14sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView_inprogress" />
 

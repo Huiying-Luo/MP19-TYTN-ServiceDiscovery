@@ -141,6 +141,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
 
             if (service.getCategory() == 3){
                 chipType.setVisibility(View.VISIBLE);
+                tvDescription.setVisibility(View.VISIBLE);
                 chipType.setText(service.getMuseumType());
                 // set the description
                 tvDescription.setText(service.getMuseumDescription());

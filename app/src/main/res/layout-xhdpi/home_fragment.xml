@@ -16,11 +16,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="12dp"
             android:fontFamily="@font/opensansbold"
             android:text="Mission Summary"
             android:textColor="@android:color/black"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -28,7 +28,7 @@
         <LinearLayout
             android:layout_width="65dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:orientation="horizontal"
@@ -44,7 +44,7 @@
                 android:fontFamily="@font/opensanssemibold"
                 android:text="View"
                 android:textColor="@color/red"
-                android:textSize="18sp" />
+                android:textSize="16sp" />
 
             <ImageView
                 android:id="@+id/imageView3"
@@ -63,7 +63,7 @@
             android:id="@+id/mission_linearlayout"
             android:layout_width="match_parent"
             android:layout_height="80dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:orientation="horizontal"
 
             android:weightSum="2"
@@ -104,7 +104,7 @@
                         android:fontFamily="@font/opensanssemibold"
                         android:text="Completed"
                         android:textColor="@color/lightGrey"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView_completed" />
 
@@ -117,7 +117,7 @@
                         android:fontFamily="@font/opensansbold"
                         android:text="0"
                         android:textColor="@android:color/black"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -158,7 +158,7 @@
                         android:fontFamily="@font/opensanssemibold"
                         android:text="In Progress"
                         android:textColor="@color/lightGrey"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/imageView_inprogress" />
 
@@ -171,10 +171,9 @@
                         android:fontFamily="@font/opensansbold"
                         android:text="0"
                         android:textColor="@android:color/black"
-                        android:textSize="22sp"
+                        android:textSize="20sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
-                    " />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
@@ -187,11 +186,11 @@
             android:id="@+id/home_title2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="35dp"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/opensansbold"
             android:text="Public Services"
             android:textColor="@android:color/black"
-            android:textSize="22sp"
+            android:textSize="20sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.061"
@@ -212,15 +211,15 @@
                 android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="35dp"
+                android:layout_marginTop="15dp"
                 android:gravity="center"
                 android:weightSum="2">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_library"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginRight="38dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginRight="42dp"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
@@ -233,8 +232,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_edu"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
@@ -250,15 +249,15 @@
                 android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="25dp"
                 android:gravity="center"
                 android:orientation="horizontal">
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_park"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginRight="38dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
+                    android:layout_marginRight="42dp"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
@@ -270,8 +269,8 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView_museum"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
+                    android:layout_width="130dp"
+                    android:layout_height="130dp"
                     app:cardCornerRadius="10dp">
 
                     <ImageView
