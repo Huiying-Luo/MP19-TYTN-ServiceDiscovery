@@ -11,14 +11,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="70dp"
         android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2dp"
         android:text="What do you think of \nyour English？"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23sp" />
+        android:textSize="21sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -27,14 +27,14 @@
 
     <Button
         android:id="@+id/question_eglish_basic"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="18dp"
         android:background="@drawable/intro_button_background"
         android:text="Basic"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false"
         android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/question_eglish_intermediate"
@@ -43,14 +43,14 @@
 
     <Button
         android:id="@+id/question_eglish_intermediate"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="18dp"
         android:background="@drawable/intro_button_background"
         android:text="Intermediate"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false"
         android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/question_eglish_advanced"
@@ -59,14 +59,14 @@
 
     <Button
         android:id="@+id/question_eglish_advanced"
-        android:layout_width="170dp"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="88dp"
+        android:layout_marginBottom="80dp"
         android:background="@drawable/intro_button_background"
         android:text="Advanced"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false"
         android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toBottomOf="parent"

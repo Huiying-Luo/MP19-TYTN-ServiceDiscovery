@@ -8,7 +8,7 @@
     <Button
         android:id="@+id/btn_addMission"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="45dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="15dp"
         android:layout_marginRight="15dp"
@@ -20,7 +20,7 @@
         android:paddingLeft="60dp"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:fontFamily="@font/opensansbold" />
 
     <androidx.recyclerview.widget.RecyclerView

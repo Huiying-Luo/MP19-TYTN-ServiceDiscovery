@@ -13,14 +13,14 @@
         android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
+        android:layout_marginTop="40dp"
         android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2dp"
         android:text="What kind of school\nyour kid(s) go to?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23sp"
+        android:textSize="21sp"
         app:layout_constraintBottom_toTopOf="@+id/school_linear"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -36,7 +36,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="25dp"
+        android:layout_marginBottom="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/question_school_nextButton"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,7 +52,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="      Primary School"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <CheckBox
             android:id="@+id/checkBoxSecondary"
@@ -63,7 +63,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="      Secondary School"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <CheckBox
             android:id="@+id/checkBoxSpecial"
@@ -74,7 +74,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="      Special School"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <CheckBox
             android:id="@+id/checkBoxNone"
@@ -84,7 +84,7 @@
             android:fontFamily="@font/opensansbold"
             android:text="      Other"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/hint"
@@ -93,7 +93,7 @@
             android:layout_marginTop="5dp"
             android:fontFamily="@font/opensans"
             android:text="*You can select more than one option."
-            android:textSize="14sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/question_school_error"
@@ -102,7 +102,7 @@
             android:layout_marginTop="5dp"
             android:text=""
             android:textColor="@android:color/holo_red_dark"
-            android:textSize="14sp"
+            android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.422"
             app:layout_constraintStart_toStartOf="parent"
@@ -113,17 +113,17 @@
     <Button
         android:id="@+id/question_school_nextButton"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="65dp"
         android:background="@drawable/intro_button_background"
         android:paddingLeft="20dp"
-        android:paddingTop="15dp"
+        android:paddingTop="10dp"
         android:paddingRight="20dp"
         android:paddingBottom="15dp"
         android:text="Next"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false"
         android:fontFamily="@font/opensansbold"
  />

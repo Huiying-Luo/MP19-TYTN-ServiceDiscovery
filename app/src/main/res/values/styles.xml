@@ -29,6 +29,11 @@
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
     </style>
 
+    <style name="chipTextappearanceExtraSmall" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">10sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
+    </style>
+
     <style name="CustomChipStyle" parent="Widget.MaterialComponents.Chip.Filter">
         <item name="chipBackgroundColor">@color/chip_background_color </item>
         <item name="android:textColor">@color/chip_text_color</item>
@@ -40,10 +45,17 @@
     <item name="android:textSize">15sp</item>
     <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
 </style>
+
     <style name="UnclickablechipTextappearanceSmall" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">13sp</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
     </style>
+
+    <style name="UnclickablechipTextappearanceExtraSmall" parent="TextAppearance.MaterialComponents.Chip">
+        <item name="android:textSize">13sp</item>
+        <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensanssemibold</item>
+    </style>
+
 
     <style name="UnclickableChipStyle" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/orange</item>
@@ -53,6 +65,22 @@
     <style name="UnclickableChipStyle2" parent="Widget.MaterialComponents.Chip.Choice">
         <item name="chipBackgroundColor">@color/colorPrimary</item>
         <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="NavigationDrawer">
+        <item name="fontFamily">@font/opensanssemibold</item>
+    </style>
+
+    <style name="NavigationDrawerMedium">
+        <item name="android:textSize">14sp</item>
+        <item name="listPreferredItemHeightSmall">45dp</item>
+        <item name="fontFamily">@font/opensanssemibold</item>
+    </style>
+
+    <style name="NavigationDrawerSmallText">
+        <item name="android:textSize">12sp</item>
+        <item name="listPreferredItemHeightSmall">40dp</item>
+        <item name="fontFamily">@font/opensanssemibold</item>
     </style>
 
 </resources>

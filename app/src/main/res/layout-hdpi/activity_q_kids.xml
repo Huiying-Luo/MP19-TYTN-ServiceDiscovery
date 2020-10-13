@@ -11,13 +11,13 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="100dp"
         android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
         android:text="Do you have any kids?"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23sp" />
+        android:textSize="21sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -28,7 +28,7 @@
     <Button
         android:id="@+id/Q1_yes_Button"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="35dp"
         android:background="@drawable/intro_button_background"
@@ -39,14 +39,14 @@
         android:fontFamily="@font/opensansbold"
         android:text="Yes"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false"
  />
 
     <Button
         android:id="@+id/Q1_no_Button"
         android:layout_width="120dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="88dp"
         android:background="@drawable/intro_button_background"
@@ -57,7 +57,7 @@
         android:paddingBottom="15dp"
         android:text="No"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:textAllCaps="false" />
 
 </LinearLayout>

@@ -435,17 +435,17 @@ public class QAddressActivity extends AppCompatActivity {
 
     private Mission checkMuseumPref(double distance, String museumType, Mission mission) {
         if (selectedMuseumTypes.contains(museumType)) {
-            if (!museumType.equals("Art") || !museumType.equals("History")) {
-                mission.setMuseumType(museumType);
-                return mission;
-            } else {
-                if (distance < 300000) {
+            if (museumType.equals("Art") || museumType.equals("History")) {
+                if (distance < 20000) {
                     mission.setMuseumType(museumType);
                     return mission;
                 }
+            } else {
+                mission.setMuseumType(museumType);
+                return mission;
             }
 
-        } else if (distance < 100000) {
+        } else if (distance < 10000) {
             mission.setMuseumType(museumType);
             return mission;
         }

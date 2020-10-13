@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp"
+    android:layout_margin="8dp"
     app:cardElevation="2dp"
     app:cardCornerRadius="10dp">
 
@@ -26,8 +26,8 @@
             android:layout_weight="1"
             android:layout_marginLeft="12dp"
             android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp"
             android:orientation="vertical">
 
             <TextView
@@ -37,28 +37,28 @@
                 android:text="Carnegie Library"
                 android:fontFamily="@font/opensanssemibold"
                 android:textColor="@android:color/black"
-                android:textSize="18sp"
+                android:textSize="16sp"
                 />
 
             <TextView
                 android:id="@+id/inprogress_mission_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="5dp"
                 android:fontFamily="@font/opensans"
                 android:text="16 Woorayl St"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
 
             <TextView
                 android:id="@+id/inprogress_mission_distance"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="2dp"
                 android:fontFamily="@font/opensans"
                 android:text="200m"
                 android:textColor="@android:color/holo_red_dark"
-                android:textSize="14sp" />
+                android:textSize="12sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -67,21 +67,21 @@
                 <com.google.android.material.chip.Chip
                     android:id="@+id/progress_category_chip"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="45dp"
                     android:checkable="false"
                     android:text="Library"
                     style="@style/UnclickableChipStyle"
-                    android:textAppearance="@style/UnclickablechipTextappearanceSmall" />
+                    android:textAppearance="@style/UnclickablechipTextappearanceExtraSmall" />
 
                 <com.google.android.material.chip.Chip
                     android:id="@+id/progress_type_chip"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+                    android:layout_height="45dp"
+                    android:layout_marginLeft="5dp"
                     android:checkable="false"
                     android:text="History"
                     style="@style/UnclickableChipStyle2"
-                    android:textAppearance="@style/UnclickablechipTextappearanceSmall"
+                    android:textAppearance="@style/UnclickablechipTextappearanceExtraSmall"
                     android:visibility="gone"/>
 
             </LinearLayout>
@@ -90,18 +90,14 @@
         <Button
             android:id="@+id/mission_view_button"
             android:layout_width="70dp"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_gravity="center_vertical"
             android:textColor="@android:color/white"
             android:fontFamily="@font/opensansbold"
-            android:textSize="14sp"
+            android:textSize="12sp"
             android:text="View"
-            android:layout_marginRight="15dp"
-            android:background="@drawable/button_background"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
+            android:layout_marginRight="12dp"
+            android:background="@drawable/button_background" />
 
     </LinearLayout>
 </androidx.cardview.widget.CardView>

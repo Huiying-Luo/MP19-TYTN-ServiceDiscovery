@@ -13,14 +13,14 @@
         android:id="@+id/question_address_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="65dp"
+        android:layout_marginTop="50dp"
         android:fontFamily="@font/opensansbold"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="2dp"
         android:text="Please give us a location to do the location-based recommendation"
         android:textAlignment="center"
         android:textColor="@android:color/black"
-        android:textSize="23sp" />
+        android:textSize="21sp" />
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -104,14 +104,14 @@
     <Button
         android:id="@+id/question_address_location_button"
         android:layout_width="250dp"
-        android:layout_height="wrap_content"
+        android:layout_height="45dp"
         android:layout_gravity="center_horizontal"
         android:layout_marginBottom="35dp"
         android:background="@drawable/orange_button_background"
         android:text="Use Current Location"
         android:textAllCaps="false"
         android:textColor="@android:color/white"
-        android:textSize="16sp"
+        android:textSize="14sp"
         android:fontFamily="@font/opensansbold"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout_address"
         app:layout_constraintEnd_toEndOf="parent"
@@ -132,7 +132,7 @@
         <Button
             android:id="@+id/iquestion_address_cancel_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
             android:layout_weight="1"
             android:background="@drawable/intro_button_background"
@@ -140,12 +140,12 @@
             android:text="Cancel"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
         <Button
             android:id="@+id/question_address_finish_button"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="45dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="25dp"
             android:layout_weight="1"
@@ -154,7 +154,7 @@
             android:text="Finish"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
 
 
     </LinearLayout>

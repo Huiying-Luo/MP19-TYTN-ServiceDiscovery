@@ -17,16 +17,16 @@
 
         <ImageView
             android:id="@+id/logo"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:background="@drawable/logo" />
 
         <ImageView
             android:id="@+id/app_name"
-            android:layout_width="189dp"
-            android:layout_height="95dp"
+            android:layout_width="178dp"
+            android:layout_height="89dp"
             android:layout_below="@+id/logo"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/app_name" />
@@ -42,7 +42,7 @@
             android:text="Tell us something\nabout yourself so that we can provide suitable public services to you! "
             android:textAlignment="center"
             android:textColor="@android:color/black"
-            android:textSize="18sp" />
+            android:textSize="16sp" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -63,7 +63,7 @@
             <Button
                 android:id="@+id/intro_cancelButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_weight="1"
                 android:background="@drawable/intro_button_background"
@@ -71,12 +71,12 @@
                 android:text="Cancel"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/intro_startButton"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginLeft="25dp"
                 android:layout_weight="1"
@@ -85,7 +85,7 @@
                 android:text="Start"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="16sp" />
+                android:textSize="14sp" />
 
         </LinearLayout>
 
