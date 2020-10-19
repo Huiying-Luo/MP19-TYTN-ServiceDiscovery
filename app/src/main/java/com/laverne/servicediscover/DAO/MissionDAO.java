@@ -38,6 +38,9 @@ public interface MissionDAO {
     @Query("SELECT * FROM mission WHERE uid = :id LIMIT 1")
     Mission findMissionByID(int id);
 
+    @Query("SELECT * FROM mission WHERE category = :category AND name = :name AND address = :address AND latitude = :latitude AND longitude = :longitude LIMIT 1")
+    Mission findMission(int category, String name, String address, double latitude, double longitude);
+
 
     @Insert
     void insertAll(Mission...missions);

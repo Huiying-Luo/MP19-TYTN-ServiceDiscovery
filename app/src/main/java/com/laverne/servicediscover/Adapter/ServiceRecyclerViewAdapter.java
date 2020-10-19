@@ -29,43 +29,42 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
     private List<Service> services;
     private List<Service> allServices;
     private Context context;
-    private OnPhoneCallListener phoneCallListener;
+    private OnServiceListener mOnServiceListener;
 
-    public ServiceRecyclerViewAdapter(List<Service> services) {
+    public ServiceRecyclerViewAdapter(List<Service> services, OnServiceListener onServiceListener) {
         this.services = services;
         allServices = new ArrayList<>(services);
+        this.mOnServiceListener = onServiceListener;
     }
 
 
-    public void setPhoneCallListener(OnPhoneCallListener listener) {
-        this.phoneCallListener = listener;
-    }
-
-
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         public TextView nameTextView;
         public TextView descriptionTextView;
         public TextView addressTextView;
         public TextView distanceTextView;
-        public Button callButton;
-        public Button websiteButton;
         public Chip typeChip;
+        public OnServiceListener onServiceListener;
 
-        public ViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView, OnServiceListener onServiceListener) {
             super(itemView);
 
             nameTextView = itemView.findViewById(R.id.service_name);
             descriptionTextView = itemView.findViewById(R.id.service_description);
             addressTextView = itemView.findViewById(R.id.service_address);
             distanceTextView = itemView.findViewById(R.id.service_distance);
-            callButton = itemView.findViewById(R.id.service_call_btn);
-            websiteButton = itemView.findViewById(R.id.service_website_btn);
             typeChip = itemView.findViewById(R.id.type_chip);
+            this.onServiceListener = onServiceListener;
 
+            itemView.setOnClickListener(this);
             context = itemView.getContext();
         }
 
+        @Override
+        public void onClick(View v) {
+            onServiceListener.onServiceClick(getAdapterPosition());
+        }
     }
 
     @Override
@@ -81,7 +80,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         // Inflate the view from XML layout file
         View libraryView = inflater.inflate(R.layout.service_rv_layout, parent, false);
         // construct the viewholder with the new view
-        ViewHolder viewHolder = new ViewHolder(libraryView);
+        ViewHolder viewHolder = new ViewHolder(libraryView, mOnServiceListener);
         return viewHolder;
     }
 
@@ -106,39 +105,6 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
         } else {
             tvDistance.setText("Distance: " + String.format("%.2f", distance * 0.001) + "km");
         }
-        Button callBtn = viewHolder.callButton;
-        Button websiteBtn = viewHolder.websiteButton;
-        // park does not have website and phone no
-        if (service.getCategory() != 2) {
-
-            // Disable the website button for Adult English Programs
-            if (service.getCategory() == 1 && service.getSchoolType() == 4) {
-                websiteBtn.setEnabled(false);
-            } else {
-                websiteBtn.setEnabled(true);
-                final String website = service.getWebsite();
-
-                websiteBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        // open website
-                        Uri uri = Uri.parse(website);
-                        Intent launchWeb = new Intent(Intent.ACTION_VIEW, uri);
-                        context.startActivity(launchWeb);
-                    }
-                });
-            }
-            // museum does not have phone number
-            if (service.getCategory() != 3) {
-                final String phoneNo = service.getPhoneNo();
-                callBtn.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        phoneCallListener.onPhoneCallClick(phoneNo);
-                    }
-                });
-            }
-
             if (service.getCategory() == 3){
                 chipType.setVisibility(View.VISIBLE);
                 tvDescription.setVisibility(View.VISIBLE);
@@ -146,20 +112,10 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
                 // set the description
                 tvDescription.setText(service.getMuseumDescription());
                 // make the phone call button invisible when display museums
-                callBtn.setVisibility(View.GONE);
+
             }
-
-        } else {
-            // make buttons invisible when display parks
-            callBtn.setVisibility(View.GONE);
-            websiteBtn.setVisibility(View.GONE);
-        }
     }
 
-
-    public interface OnPhoneCallListener{
-        void onPhoneCallClick(String phoneNo);
-    }
 
     public void updateList(List<Service> services) {
         this.services = services;
@@ -201,4 +157,8 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
             notifyDataSetChanged();
         }
     };
+
+    public interface OnServiceListener {
+        void onServiceClick(int position);
+    }
 }

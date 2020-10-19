@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MissionMapActivity"
+    tools:context=".MapActivity"
     android:orientation="vertical">
 
     <fragment
@@ -26,11 +26,48 @@
     android:background="@color/orange"/>
 
     <Button
+        android:id="@+id/add_to_mission_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Add as Mission"
+        android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:background="@color/orange"/>
+
+    <Button
         android:id="@+id/complete_mission_btn"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginTop="5dp"
         android:text="Complete Mission"
+        android:layout_marginBottom="5dp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/website_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Website"
+        android:textAllCaps="false"
+        android:layout_marginTop="5dp"
+        android:fontFamily="@font/opensansbold"
+        android:textSize="13sp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
+
+    <Button
+        android:id="@+id/call_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:text="Call"
         android:layout_marginBottom="5dp"
         android:textAllCaps="false"
         android:fontFamily="@font/opensansbold"

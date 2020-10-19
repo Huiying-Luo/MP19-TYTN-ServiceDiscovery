@@ -133,7 +133,7 @@ public class MissionListRecyclerViewAdapter extends RecyclerView.Adapter<Mission
         void onMissionClick(int position);
     }
 
-
+/*
     public void filterBySchoolType(int schoolType) {
         List<Mission> filteredList = new ArrayList<>();
 
@@ -150,6 +150,41 @@ public class MissionListRecyclerViewAdapter extends RecyclerView.Adapter<Mission
                 if (mission.getSchoolType() == schoolType) {
                     filteredList.add(mission);
                 }
+            }
+        }
+
+        missionList.clear();
+        missionList.addAll(filteredList);
+        notifyDataSetChanged();
+    }
+*/
+
+    public void filterBySchoolTypes(ArrayList<String> selectedSchoolTypes) {
+        List<Mission> filteredList = new ArrayList<>();
+
+        for (Mission mission: allMissions) {
+            int schoolType =  mission.getSchoolType();
+            boolean addToList = false;
+            switch (schoolType) {
+                case 0:
+                    addToList = selectedSchoolTypes.contains("Primary School");
+                    break;
+                case 1:
+                    addToList = selectedSchoolTypes.contains("Secondary School");
+                    break;
+                case 2:
+                    addToList = selectedSchoolTypes.contains("Primary School") || selectedSchoolTypes.contains("Secondary School");
+                    break;
+                case 3:
+                    addToList = selectedSchoolTypes.contains("Special School");
+                    break;
+                case 4:
+                    addToList = selectedSchoolTypes.contains("Adult English Program");
+                    break;
+            }
+
+            if (addToList) {
+                filteredList.add(mission);
             }
         }
 

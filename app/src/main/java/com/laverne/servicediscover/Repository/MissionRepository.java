@@ -59,6 +59,11 @@ public class MissionRepository {
     }
 
 
+    public Mission findMission(int category, String name, String address, double latitude, double longitude) {
+        return dao.findMission(category, name, address, latitude, longitude);
+    }
+
+
     public void setMission(Mission mission) {
         this.mission = mission;
     }
