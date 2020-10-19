@@ -79,27 +79,8 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         initializeViewModel();
         initializeRecyclerView();
 
-        // Education need spinner for filter
-        if (category == 1) {
-            filterSpinner = findViewById(R.id.mission_filter_spinner);
-            filterSpinner.setVisibility(View.VISIBLE);
-            configureFilterSpinner();
-        }
-
-        // Museum has floating action button for filter
-        if (category == 3) {
-            fab = findViewById(R.id.mission_fab);
-            fab.setVisibility(View.VISIBLE);
-            fab.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(MissionListActivity.this, FilterActivity.class);
-                    intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
-                    startActivityForResult(intent, REQUEST_FILTER_CODE);
-                }
-            });
-        }
         getAllMissionsByCategoryFromRoomDatabase();
+
 
     }
 
@@ -172,6 +153,28 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
         @Override
         protected void onPostExecute(Integer result) {
+
+            // Education need spinner for filter
+            if (category == 1) {
+                filterSpinner = findViewById(R.id.mission_filter_spinner);
+                filterSpinner.setVisibility(View.VISIBLE);
+                configureFilterSpinner();
+            }
+
+            // Museum has floating action button for filter
+            if (category == 3) {
+                fab = findViewById(R.id.mission_fab);
+                fab.setVisibility(View.VISIBLE);
+                fab.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent(MissionListActivity.this, FilterActivity.class);
+                        intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
+                        startActivityForResult(intent, REQUEST_FILTER_CODE);
+                    }
+                });
+            }
+
             calculateDistances();
             missionList.removeAll(missionList);
             missionViewModel.getAllNotAddedMissionsByCategory(category).observe(MissionListActivity.this, new Observer<List<Mission>>() {
