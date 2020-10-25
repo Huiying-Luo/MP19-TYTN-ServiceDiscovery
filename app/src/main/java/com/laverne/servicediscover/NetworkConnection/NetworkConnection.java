@@ -10,7 +10,7 @@ import okhttp3.Response;
 public class NetworkConnection {
 
     //public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-    private static final String BASE_URL = "https://safe-everglades-39383.herokuapp.com/api/";
+    private static final String BASE_URL = "https://service-discovery-api.herokuapp.com/api/";
 
     private OkHttpClient client = null;
     private String result;
