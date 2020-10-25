@@ -1,7 +1,8 @@
 # MP19-TYTN-ServiceDiscovery
 Our project is to develop an Android application to guide refugees to discover and personally learn about the public services that they can free access in Victoria so that they can get support from those services when they need it.
 # Service Discovery Android Application
-<img src="/Screenshots/SplashScreen.png" height="350"> <img src="/Screenshots/HomeScreen.png" height="350"> <img src="/Screenshots/NavigationMenu.png" height="350"> <img src="/Screenshots/MuseumScreen.png" height="350"> <img src="/Screenshots/MissionScreen.png" height="350"> <img src="/Screenshots/MapView1.png" height="350">
+<img src="/Screenshots/SplashScreen.png" height="350"> <img src="/Screenshots/HomeScreen.png" height="350"> <img src="/Screenshots/NavigationMenu.png" height="350"> <img src="/Screenshots/MuseumScreen.png" height="350"> <br/>
+<img src="/Screenshots/MissionScreen.png" height="350"> <img src="/Screenshots/MapView1.png" height="350">
 # Build/Run the App
 ### Requirements 
 * Android Studio
