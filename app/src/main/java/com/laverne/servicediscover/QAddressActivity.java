@@ -66,7 +66,7 @@ public class QAddressActivity extends AppCompatActivity {
     private boolean isValid = false;
     private boolean hasUseCurrentLocation = false;
     private boolean currentLocationBtnClick = false;
-    private boolean needPrimarySchool, needSecondarySchool, needSpecialSchool, needEnglishSchool;
+    private boolean needPrimarySchool, needSecondarySchool, needSpecialSchool, needEnglishSchool, isReset;
 
     private double userLatitude = 0;
     private double userLongitude = 0;
@@ -290,6 +290,14 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
+    private void setResetPref() {
+        SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+        SharedPreferences.Editor spEditor = sharedPref.edit();
+        spEditor.putBoolean("isReset", true);
+        spEditor.apply();
+    }
+
+
     private void generateMissions() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         new GetAllMissionsTask().execute();
@@ -324,7 +332,14 @@ public class QAddressActivity extends AppCompatActivity {
                     if (jsonArray.length() == 0) {
                         showAlert();
                     } else {
-                        missionViewModel.deleteAll();
+                        // Avoid deleting the missions added before the user first time doing the survey
+                        if (isReset) {
+                            missionViewModel.deleteAll();
+                        } else {
+                            // After that, all surveys are for reset
+                            setResetPref();
+                        }
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONArray serviceArray = jsonArray.getJSONArray(i);
                             for (int j = 0; j < serviceArray.length(); j++) {
@@ -334,6 +349,7 @@ public class QAddressActivity extends AppCompatActivity {
                                 double serviceLat = jsonObject.getDouble("latitude");
                                 double serviceLong = jsonObject.getDouble("longitude");
                                 float currentDistance;
+
                                 if (userLatitude == 0 && userLongitude == 0) {
                                     currentDistance = 0;
                                 } else {
@@ -350,7 +366,9 @@ public class QAddressActivity extends AppCompatActivity {
                                         mission.setMuseumDescription(jsonObject.getString("description"));
                                         Mission checkedMission = checkMuseumPref(currentDistance, museumType, mission);
                                         if (checkedMission != null) {
-                                            missionViewModel.insert(checkedMission);
+                                            // check whether the user already add this service to mission list.
+                                            new CheckMissionAsyncTask().execute(new Mission[]{checkedMission});
+
                                         }
                                     } else if (currentDistance < 8000) {
                                         Mission mission = new Mission(serviceName, serviceAddress, serviceLat, serviceLong, i, 0);
@@ -358,10 +376,11 @@ public class QAddressActivity extends AppCompatActivity {
                                         if (i == 1) {
                                             Mission checkedMission = checkSchoolPref(jsonObject.getString("type"), mission);
                                             if (checkedMission != null) {
-                                                missionViewModel.insert(checkedMission);
+                                                new CheckMissionAsyncTask().execute(new Mission[]{checkedMission});
+
                                             }
                                         } else {
-                                            missionViewModel.insert(mission);
+                                            new CheckMissionAsyncTask().execute(new Mission[]{mission});
                                         }
                                     }
                                 }
@@ -380,8 +399,26 @@ public class QAddressActivity extends AppCompatActivity {
     }
 
 
+    private class CheckMissionAsyncTask extends AsyncTask<Mission, Void, Mission[]> {
+
+        @Override
+        protected Mission[] doInBackground(Mission... missions) {
+            return new Mission[] {missions[0], missionViewModel.findMission(missions[0].getCategory(), missions[0].getName(), missions[0].getAddress(), missions[0].getLatitude(), missions[0].getLongitude())};
+        }
+
+        @Override
+        protected void onPostExecute(Mission... missions) {
+            if (missions[1] == null) {
+                missionViewModel.insert(missions[0]);
+            }
+        }
+    }
+
     private void getUserPref() {
         SharedPreferences sharedPref = this.getSharedPreferences("User", Context.MODE_PRIVATE);
+
+        isReset = sharedPref.getBoolean("isReset", false);
+
         needPrimarySchool = sharedPref.getBoolean("needPrimarySchool", false);
         needSecondarySchool = sharedPref.getBoolean("needSecondarySchool", false);
         needSpecialSchool = sharedPref.getBoolean("needSpecialSchool", false);

@@ -50,6 +50,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.laverne.servicediscover.Adapter.ServiceRecyclerViewAdapter;
 import com.laverne.servicediscover.FilterActivity;
+import com.laverne.servicediscover.MapActivity;
 import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.NetworkConnection.NetworkConnection;
 import com.laverne.servicediscover.R;
@@ -68,10 +69,10 @@ import java.util.Locale;
 
 import static android.app.Activity.RESULT_OK;
 
-public class ServiceFragment extends Fragment {
+public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdapter.OnServiceListener {
 
-    private static final int REQUEST_CODE_CALL_PERMISSION = 2;
-    private static final int REQUEST_FILTER_CODE = 101;
+    private static final int REQUEST_SCHOOL_FILTER_CODE = 101;
+    private static final int REQUEST_MUSEUM_FILTER_CODE = 102;
     private static final String TAG = "ServiceFragment";
     private int category;
 
@@ -88,15 +89,13 @@ public class ServiceFragment extends Fragment {
     private List<Service> services;
     private List<Service> allServices;
     private ArrayList<String> selectedMuseumTypes;
+    private ArrayList<String> selectedSchoolTypes;
     private NetworkConnection networkConnection;
     private Geocoder geocoder;
     private TextView errorTextView;
     private ProgressBar progressBar;
     private FloatingActionButton fab;
 
-    private String callingNumber;
-
-    private String address;
     private double[] currentLatLng = new double[]{0, 0};
 
     private SearchView searchView = null;
@@ -113,13 +112,15 @@ public class ServiceFragment extends Fragment {
         View view = inflater.inflate(R.layout.service_fragment, container, false);
 
         configureView(view);
+        /*
         // 1 = Education
         if (category == 1) {
             filterTitleTextView.setVisibility(View.VISIBLE);
             configureFilterSpinner();
-        }
-        // Museum has floating action button for filter
-        if (category == 3) {
+        } */
+
+        // Education & Museum has floating action button for filter
+        if (category == 1 || category == 3) {
             configureFloatingActionButton();
         }
 
@@ -144,10 +145,15 @@ public class ServiceFragment extends Fragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_FILTER_CODE) {
+        if (requestCode == REQUEST_MUSEUM_FILTER_CODE) {
             if (resultCode == RESULT_OK) {
                 selectedMuseumTypes = data.getStringArrayListExtra("selectedChipData");
                 filterMuseums();
+            }
+        } else if (requestCode == REQUEST_SCHOOL_FILTER_CODE) {
+            if (resultCode == RESULT_OK) {
+                selectedSchoolTypes = data.getStringArrayListExtra("selectedChipData");
+                filterSchools();
             }
         }
     }
@@ -159,8 +165,15 @@ public class ServiceFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), FilterActivity.class);
-                intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
-                startActivityForResult(intent, REQUEST_FILTER_CODE);
+                if (category == 3) {
+                    intent.putExtra("filterType", 1);
+                    intent.putStringArrayListExtra("selectedTypes", selectedMuseumTypes);
+                    startActivityForResult(intent, REQUEST_MUSEUM_FILTER_CODE);
+                } else {
+                    intent.putExtra("filterType", 0);
+                    intent.putStringArrayListExtra("selectedTypes", selectedSchoolTypes);
+                    startActivityForResult(intent, REQUEST_SCHOOL_FILTER_CODE);
+                }
             }
         });
     }
@@ -211,7 +224,6 @@ public class ServiceFragment extends Fragment {
         swipeRefreshLayout = view.findViewById(R.id.library_swipe_refresh_layout);
         errorTextView = view.findViewById(R.id.library_error_tv);
         progressBar = view.findViewById(R.id.library_progress_bar);
-        filterSpinner = view.findViewById(R.id.school_filter_spinner);
         filterTitleTextView = view.findViewById(R.id.filter_title);
     }
 
@@ -250,12 +262,39 @@ public class ServiceFragment extends Fragment {
 
 
     private void initRecyclerView() {
-        adapter = new ServiceRecyclerViewAdapter(services);
+        adapter = new ServiceRecyclerViewAdapter(services, this);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 0));
         recyclerView.setAdapter(adapter);
-        registerCallbackForPhoneCall();
+        //registerCallbackForPhoneCall();
         layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
+    }
+
+    @Override
+    public void onServiceClick(int position) {
+        Intent intent = new Intent(getActivity(), MapActivity.class);
+        Service service = services.get(position);
+        intent.putExtra("name",service.getName());
+        intent.putExtra("latitude", service.getLatitude());
+        intent.putExtra("longitude", service.getLongitude());
+        intent.putExtra("type", 1);
+        intent.putExtra("category", category);
+        intent.putExtra("address", service.getAddress());
+
+        if (service.getPhoneNo() != null) {
+            intent.putExtra("phoneNo", service.getPhoneNo());
+        }
+        if (service.getWebsite() != null) {
+            intent.putExtra("website", service.getWebsite());
+        }
+        if (category == 1) {
+            intent.putExtra("schoolType", service.getSchoolType());
+        }
+        if (category == 3) {
+            intent.putExtra("museumDescription", service.getMuseumDescription());
+            intent.putExtra("museumType", service.getMuseumType());
+        }
+        startActivity(intent);
     }
 
 
@@ -359,7 +398,7 @@ public class ServiceFragment extends Fragment {
                         adapter.updateList(services);
                         setUpLayoutAnimation(recyclerView);
                         // If Screen for Museum, make floating filter button visible
-                        if (category == 3) {
+                        if (category == 3 || category == 1) {
                             fab.setVisibility(View.VISIBLE);
                         }
                     }
@@ -373,7 +412,7 @@ public class ServiceFragment extends Fragment {
         }
     }
 
-
+/*
     private void configureFilterSpinner() {
         filterSpinner.setVisibility(View.VISIBLE);
 
@@ -393,8 +432,8 @@ public class ServiceFragment extends Fragment {
             }
         });
     }
-
-
+*/
+/*
     private void filterBySchoolType(int position) {
         services.removeAll(services);
         if (position != 0) {
@@ -420,7 +459,41 @@ public class ServiceFragment extends Fragment {
         setUpLayoutAnimation(recyclerView);
         layoutManager.scrollToPosition(0);
     }
+*/
 
+    private void filterSchools() {
+        services.removeAll(services);
+
+        for (int i = 0; i < allServices.size(); i++) {
+            int schoolType =  allServices.get(i).getSchoolType();
+            boolean addToList = false;
+            switch (schoolType) {
+                case 0:
+                    addToList = selectedSchoolTypes.contains("Primary School");
+                    break;
+                case 1:
+                    addToList = selectedSchoolTypes.contains("Secondary School");
+                    break;
+                case 2:
+                    addToList = selectedSchoolTypes.contains("Primary School") || selectedSchoolTypes.contains("Secondary School");
+                    break;
+                case 3:
+                    addToList = selectedSchoolTypes.contains("Special School");
+                    break;
+                case 4:
+                    addToList = selectedSchoolTypes.contains("Adult English Program");
+                    break;
+            }
+
+            if (addToList) {
+                services.add(allServices.get(i));
+            }
+        }
+
+        adapter.updateList(services);
+        setUpLayoutAnimation(recyclerView);
+        layoutManager.scrollToPosition(0);
+    }
 
     private void filterMuseums() {
         services.removeAll(services);
@@ -482,7 +555,7 @@ public class ServiceFragment extends Fragment {
         });
     }
 
-
+/*
     private void goToApplicationSettings() {
         Intent intent = new Intent();
         intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
@@ -558,7 +631,7 @@ public class ServiceFragment extends Fragment {
         }
     }
 
-
+*/
     private void setUpLayoutAnimation(RecyclerView recyclerView) {
         Context context = recyclerView.getContext();
         LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_down_to_up);

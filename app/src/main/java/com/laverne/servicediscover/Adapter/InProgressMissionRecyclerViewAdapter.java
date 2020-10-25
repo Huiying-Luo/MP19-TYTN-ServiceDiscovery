@@ -2,7 +2,6 @@ package com.laverne.servicediscover.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.chip.Chip;
 import com.laverne.servicediscover.Entity.Mission;
-import com.laverne.servicediscover.MissionMapActivity;
+import com.laverne.servicediscover.MapActivity;
 import com.laverne.servicediscover.R;
 
 import java.util.ArrayList;
@@ -110,7 +109,8 @@ public class InProgressMissionRecyclerViewAdapter extends RecyclerView.Adapter<I
         btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, MissionMapActivity.class);
+                Intent intent = new Intent(context, MapActivity.class);
+                intent.putExtra("type", 0);
                 intent.putExtra("id", mission.uid);
                 intent.putExtra("name", mission.getName());
                 intent.putExtra("latitude", mission.getLatitude());

@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -16,7 +15,6 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Looper;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -25,26 +23,19 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.blogspot.atifsoftwares.animatoolib.Animatoo;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.laverne.servicediscover.Adapter.MissionListRecyclerViewAdapter;
 import com.laverne.servicediscover.Entity.Mission;
-import com.laverne.servicediscover.Model.Service;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 public class MissionListActivity extends AppCompatActivity implements MissionListRecyclerViewAdapter.OnMissionListener {
 
-    private static final int REQUEST_FILTER_CODE = 1;
+    private static final int REQUEST_SCHOOL_FILTER_CODE = 1011;
+    private static final int REQUEST_MUSEUM_FILTER_CODE = 1022;
 
     private TextView titleTextView;
     private RecyclerView recyclerView;
@@ -58,6 +49,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     private Intent intent;
     private FloatingActionButton fab;
     private ArrayList<String> selectedMuseumTypes;
+    private ArrayList<String> selectedSchoolTypes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,14 +77,19 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     }
 
 
-    // Get Selected Museum Types
+    // Get Selected Museum/School Types
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_FILTER_CODE) {
+        if (requestCode == REQUEST_MUSEUM_FILTER_CODE) {
             if (resultCode == RESULT_OK) {
                 selectedMuseumTypes = data.getStringArrayListExtra("selectedChipData");
                 adapter.filterByMuseumTypes(selectedMuseumTypes);
+            }
+        } else if (requestCode == REQUEST_SCHOOL_FILTER_CODE) {
+            if (resultCode == RESULT_OK) {
+                selectedSchoolTypes = data.getStringArrayListExtra("selectedChipData");
+                adapter.filterBySchoolTypes(selectedSchoolTypes);
             }
         }
     }
@@ -153,26 +150,17 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
 
         @Override
         protected void onPostExecute(Integer result) {
-
+/*
             // Education need spinner for filter
             if (category == 1) {
                 filterSpinner = findViewById(R.id.mission_filter_spinner);
                 filterSpinner.setVisibility(View.VISIBLE);
                 configureFilterSpinner();
             }
-
-            // Museum has floating action button for filter
-            if (category == 3) {
-                fab = findViewById(R.id.mission_fab);
-                fab.setVisibility(View.VISIBLE);
-                fab.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(MissionListActivity.this, FilterActivity.class);
-                        intent.putStringArrayListExtra("selectedMuseumTypes", selectedMuseumTypes);
-                        startActivityForResult(intent, REQUEST_FILTER_CODE);
-                    }
-                });
+ */
+            // Education & Museum has floating action button for filter
+            if (category == 3 || category == 1) {
+                configureFloatingActionButton();
             }
 
             calculateDistances();
@@ -189,6 +177,27 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
     }
 
 
+    private void configureFloatingActionButton() {
+        fab = findViewById(R.id.mission_fab);
+        fab.setVisibility(View.VISIBLE);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MissionListActivity.this, FilterActivity.class);
+                if (category == 3) {
+                    intent.putExtra("filterType", 1);
+                    intent.putStringArrayListExtra("selectedTypes", selectedMuseumTypes);
+                    startActivityForResult(intent, REQUEST_MUSEUM_FILTER_CODE);
+                } else {
+                    intent.putExtra("filterType", 0);
+                    intent.putStringArrayListExtra("selectedTypes", selectedSchoolTypes);
+                    startActivityForResult(intent, REQUEST_SCHOOL_FILTER_CODE);
+                }
+            }
+        });
+    }
+
+/*
     private void configureFilterSpinner() {
         String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
         final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
@@ -207,7 +216,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         });
     }
 
-
+*/
     @Override
     public void onMissionClick(final int position) {
 

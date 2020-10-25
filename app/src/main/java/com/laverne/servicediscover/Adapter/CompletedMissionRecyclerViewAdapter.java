@@ -1,18 +1,15 @@
 package com.laverne.servicediscover.Adapter;
 
 import android.content.Context;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.laverne.servicediscover.Entity.Mission;
-import com.laverne.servicediscover.MissionMapActivity;
 import com.laverne.servicediscover.R;
 
 import java.util.ArrayList;

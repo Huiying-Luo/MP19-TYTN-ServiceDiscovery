@@ -62,6 +62,11 @@ public class MissionViewModel extends ViewModel {
     }
 
 
+    public Mission findMission(int category, String name, String address, double latitude, double longitude) {
+        return mRepository.findMission(category, name, address, latitude, longitude);
+    }
+
+
     public void insert(Mission mission) {
         mRepository.insert(mission);
     }

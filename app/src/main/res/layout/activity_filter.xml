@@ -8,7 +8,7 @@
     tools:context=".FilterActivity">
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/filter_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -18,6 +18,59 @@
         android:textColor="@android:color/black"
         android:textSize="18sp"
         android:fontFamily="@font/opensanssemibold" />
+
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/cgSchool"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:chipSpacingHorizontal="200dp"
+        app:chipSpacingVertical="10dp"
+        >
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipPrimarySchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            style="@style/CustomChipStyle"
+            android:text="Primary School"
+            android:textAppearance="@style/chipTextappearance"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSecondarySchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            style="@style/CustomChipStyle"
+            android:text="Secondary School"
+            android:textAppearance="@style/chipTextappearance"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipSpecialSchool"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            style="@style/CustomChipStyle"
+            android:text="Special School"
+            android:tag="0"
+            android:textAppearance="@style/chipTextappearance"
+            />
+
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chipEnglishProgram"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            style="@style/CustomChipStyle"
+            android:text="Adult English Program"
+            android:textAppearance="@style/chipTextappearance"
+            />
+
+    </com.google.android.material.chip.ChipGroup>
+
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/cgMuseum"
