@@ -71,7 +71,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
 
-    private static final String GOOGLE_MAP_KEY = "AIzaSyCEADqWbiBEunIO0gjudx7NLK8OC8ccTI4";
+    private static final String GOOGLE_API_KEY = "AIzaSyCEADqWbiBEunIO0gjudx7NLK8OC8ccTI4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -288,7 +288,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         // Output format
         String output = "json";
         // Building the url to the web service
-        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + GOOGLE_MAP_KEY;
+        String url = "https://maps.googleapis.com/maps/api/directions/" + output + "?" + parameters + "&key=" + GOOGLE_API_KEY;
         return url;
     }
 
