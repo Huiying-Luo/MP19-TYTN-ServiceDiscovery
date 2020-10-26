@@ -32,7 +32,7 @@ Our project is to develop an Android application to guide refugees to discover a
     <img src="/Screenshots/chooseAPI.png" width="600"><br />
     <br />
 2. __Run the App:__
-    1. If you have created multiple emulators, select __"Pixel 2 API 29"__ on the toolbar.<br />
+    1. If you have created multiple emulators, select one of them on the toolbar.<br />
     <br />
     <img src="/Screenshots/toolbar.png" width="600"><br />
     <br />
