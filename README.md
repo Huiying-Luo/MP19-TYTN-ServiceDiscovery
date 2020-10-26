@@ -23,7 +23,7 @@ Our project is to develop an Android application to guide refugees to discover a
     <br />
     <img src="/Screenshots/addDevice.png" width="650"><br />
     <br />
-    3. Select __"Pixel 2"__ as the type of the emulater<br />
+    3. You can select any type of the device<br />
     <br />
     <img src="/Screenshots/createDevice.png" width="600"><br />
     <br />
