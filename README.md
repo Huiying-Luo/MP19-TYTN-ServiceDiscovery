@@ -10,7 +10,10 @@ Our project is to develop an Android application to guide refugees to discover a
 > **Download the Code**
 1. Download ZIP in this page
 2. Unzip the file and get the folder named "MP19-TYTN-ServiceDiscovery-master"
-3. Open the folder in Android Studio
+> **Open the Project**
+1. Open "Android Studio"
+2. Select "Open an existing Android Studio Project"
+3. Select the  "MP19-TYTN-ServiceDiscovery-master" folder
 > **Run on the Emulator** 
 >
 *To run your app on the emulator you need to first create an Android Virtual Device (AVD). If you have not create the Pixel 2 AVD before, please follow the first step, otherwise, skip it.*
