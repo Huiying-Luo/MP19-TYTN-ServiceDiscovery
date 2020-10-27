@@ -51,6 +51,9 @@ public class FilterActivity extends AppCompatActivity {
 
         setUpButton();
 
+        Intent intent = getIntent();
+        filterType = intent.getIntExtra("filterType", 0);
+
         // set checked changed listener
         if (filterType == 0) {
             for (int i = 0; i < schoolChips.size(); i++) {
@@ -62,8 +65,7 @@ public class FilterActivity extends AppCompatActivity {
             }
         }
 
-        Intent intent = getIntent();
-        filterType = intent.getIntExtra("filterType", 0);
+
         // filter for school
         if (filterType == 0) {
             cgSchool.setVisibility(View.VISIBLE);
