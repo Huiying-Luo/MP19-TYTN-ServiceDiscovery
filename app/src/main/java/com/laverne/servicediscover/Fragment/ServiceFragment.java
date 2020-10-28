@@ -407,7 +407,7 @@ public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdap
                     e.printStackTrace();
                 }
             } else {
-                Utilities.showAlertDialogwithOkButton(getActivity(), "Error", "Something went wrong, please try again later.");
+                Utilities.showAlertDialogwithOkButton(getActivity(), "Network Error", "No Internet Connection, please check your network and try again.");
             }
         }
     }
