@@ -7,11 +7,17 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    // Style for splash screen
+    <style name="SplashScreenTheme" parent = "Theme.AppCompat.NoActionBar">
+    <item name="android:windowBackground" type="">@drawable/splash_screen_background</item>
+    </style>
+
+    // no action bar
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
-
+    // for navigation drawer
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
     <style name="AppTheme.PopUpOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
@@ -19,6 +25,7 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    // filter chips
     <style name="chipTextappearance" parent="TextAppearance.MaterialComponents.Chip">
         <item name="android:textSize">15sp</item>
         <item name="android:fontFamily" tools:targetApi="jelly_bean">@font/opensans</item>
