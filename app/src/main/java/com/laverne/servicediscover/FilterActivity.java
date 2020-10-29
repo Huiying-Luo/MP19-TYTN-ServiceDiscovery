@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.TextView;
 import android.widget.ToggleButton;
 
 import com.google.android.material.chip.Chip;
@@ -22,6 +23,8 @@ public class FilterActivity extends AppCompatActivity {
                 chipPrimarySchool, chipSecondarySchool, chipSpecialSchool, chipEnglish;
 
     private ChipGroup cgMuseum, cgSchool;
+
+    private TextView filterTitleTV;
 
     private ArrayList<Chip> museumChips;
     private ArrayList<Chip> schoolChips;
@@ -68,6 +71,7 @@ public class FilterActivity extends AppCompatActivity {
 
         // filter for school
         if (filterType == 0) {
+            filterTitleTV.setText("School Types: ");
             cgSchool.setVisibility(View.VISIBLE);
             cgMuseum.setVisibility(View.GONE);
             ArrayList<String> selectedSchoolTypes = intent.getStringArrayListExtra("selectedTypes");
@@ -86,6 +90,7 @@ public class FilterActivity extends AppCompatActivity {
             }
             // filter for museum
         } else {
+            filterTitleTV.setText("Museum Types: ");
             cgMuseum.setVisibility(View.VISIBLE);
             cgSchool.setVisibility(View.GONE);
             ArrayList<String> selectedMuseumTypes = intent.getStringArrayListExtra("selectedTypes");
@@ -107,6 +112,8 @@ public class FilterActivity extends AppCompatActivity {
 
 
     private void configureView() {
+        filterTitleTV = findViewById(R.id.filter_title);
+
         cgMuseum = findViewById(R.id.cgMuseum);
         cgSchool = findViewById(R.id.cgSchool);
 
