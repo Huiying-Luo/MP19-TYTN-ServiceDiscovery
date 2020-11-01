@@ -17,7 +17,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -29,7 +28,6 @@ import com.laverne.servicediscover.Entity.Mission;
 import com.laverne.servicediscover.ViewModel.MissionViewModel;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class MissionListActivity extends AppCompatActivity implements MissionListRecyclerViewAdapter.OnMissionListener {
@@ -72,8 +70,6 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         initializeRecyclerView();
 
         getAllMissionsByCategoryFromRoomDatabase();
-
-
     }
 
 
@@ -197,26 +193,7 @@ public class MissionListActivity extends AppCompatActivity implements MissionLis
         });
     }
 
-/*
-    private void configureFilterSpinner() {
-        String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
-        final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
-        filterSpinnerAdapter = new ArrayAdapter<String>(this, R.layout.spinner_item, filterList);
 
-        filterSpinner.setAdapter(filterSpinnerAdapter);
-        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                adapter.filterBySchoolType(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-
-*/
     @Override
     public void onMissionClick(final int position) {
 

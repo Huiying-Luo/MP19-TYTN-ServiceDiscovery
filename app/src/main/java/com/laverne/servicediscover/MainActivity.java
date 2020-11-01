@@ -150,51 +150,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onActivityResult(requestCode, resultCode, data);
     }
 
-    /*
-    private void checkSettingsAndStartLocationUpdates() {
-        LocationSettingsRequest request = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest).build();
-        SettingsClient client = LocationServices.getSettingsClient(this);
-
-        Task<LocationSettingsResponse> locationSettingsResponseTask = client.checkLocationSettings(request);
-
-        locationSettingsResponseTask.addOnSuccessListener(new OnSuccessListener<LocationSettingsResponse>() {
-            @Override
-            public void onSuccess(LocationSettingsResponse locationSettingsResponse) {
-                // Settings of device are satisfied and start location update
-                startLocationUpdates();
-            }
-        });
-
-        locationSettingsResponseTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                // show an alert
-                if (e instanceof ResolvableApiException) {
-                    ResolvableApiException apiException = (ResolvableApiException) e;
-                    try {
-                        apiException.startResolutionForResult(MainActivity.this, 1001);
-                    } catch (IntentSender.SendIntentException ex) {
-                        ex.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-
-
-
-    private void startLocationUpdates() {
-        fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
-    }
-
-
-    private void stopLocationUpdates() {
-        fusedLocationProviderClient.removeLocationUpdates(locationCallback);
-    }
-
-*/
-
 
     private void askLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -214,7 +169,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         } else {
             // Permission is Granted
-
         }
     }
 
@@ -227,7 +181,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 Log.i("Location Permission", "Granted" );
             } else {
                 // Permission not granted
-
                 if (!ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this, Manifest.permission.ACCESS_FINE_LOCATION)) {
                     // This block here means PERMANENTLY DENIED PERMISSION (Don't ask again)
                     new AlertDialog.Builder(MainActivity.this)

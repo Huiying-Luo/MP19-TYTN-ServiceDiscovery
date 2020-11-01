@@ -60,6 +60,7 @@ public class FAQAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         String group = (String) getGroup(groupPosition);
@@ -73,6 +74,7 @@ public class FAQAdapter extends BaseExpandableListAdapter {
         return convertView;
     }
 
+
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         String child = (String) getChild(groupPosition, childPosition);
@@ -85,6 +87,7 @@ public class FAQAdapter extends BaseExpandableListAdapter {
         answerTextView.setText(child);
         return convertView;
     }
+
 
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {

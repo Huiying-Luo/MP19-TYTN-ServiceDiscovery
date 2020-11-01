@@ -111,8 +111,6 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
                 chipType.setText(service.getMuseumType());
                 // set the description
                 tvDescription.setText(service.getMuseumDescription());
-                // make the phone call button invisible when display museums
-
             }
     }
 
@@ -150,6 +148,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
             return  results;
         }
 
+
         @Override
         protected void publishResults(CharSequence constraint, FilterResults results) {
             services.clear();
@@ -157,6 +156,7 @@ public class ServiceRecyclerViewAdapter extends RecyclerView.Adapter<ServiceRecy
             notifyDataSetChanged();
         }
     };
+
 
     public interface OnServiceListener {
         void onServiceClick(int position);

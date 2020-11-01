@@ -30,7 +30,6 @@ public class InProgressMissionRecyclerViewAdapter extends RecyclerView.Adapter<I
     }
 
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView nameTextView;
         public TextView addressTextView;

@@ -144,7 +144,6 @@ public class QAddressActivity extends AppCompatActivity {
                         return;
                     }
                 }
-
             }
 
         });
