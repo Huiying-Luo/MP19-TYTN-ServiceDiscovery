@@ -33,7 +33,6 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
         public TextView addressTextView;
         public TextView completeDateTextView;
 
-
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nameTextView = itemView.findViewById(R.id.completed_mission_name);
@@ -58,6 +57,7 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
         return viewHolder;
     }
 
+
     @Override
     public void onBindViewHolder(@NonNull CompletedMissionRecyclerViewAdapter.ViewHolder viewHolder, int position) {
         final Mission mission = missionList.get(position);
@@ -71,11 +71,11 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
     }
 
 
-
     public void setMissionList(List<Mission> missionList) {
         this.missionList = missionList;
         notifyDataSetChanged();
     }
+
 
 
     public void updateList(List<Mission> missionList) {
@@ -88,3 +88,4 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
         return missionList.size();
     }
 }
+

@@ -34,12 +34,6 @@ public class IntroductionActivity extends AppCompatActivity {
         cancelButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
-                Intent intent = new Intent(IntroductionActivity.this, MainActivity.class);
-                intent.putExtra("goToMission", true);
-                startActivity(intent);
-
-                 */
                 finish();
             }
         });

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background"
+    android:orientation="vertical"
+    tools:context=".QSchoolActivity">
+
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:fontFamily="@font/opensansbold"
+        android:gravity="center_horizontal"
+        android:lineSpacingExtra="2dp"
+        android:text="What kind of school\nyour kid(s) go to?"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="26sp" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <LinearLayout
+        android:id="@+id/school_linear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="36dp"
+        android:layout_gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <CheckBox
+            android:id="@+id/checkBoxPrimary"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:text="      Primary School"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSecondary"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:gravity="center_horizontal"
+            android:text="    Secondary School"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/checkBoxSpecial"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="15dp"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:text="      Special School"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <CheckBox
+            android:id="@+id/checkBoxNone"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:buttonTint="@android:color/black"
+            android:fontFamily="@font/opensansbold"
+            android:text="      Other"
+            android:textColor="@android:color/black"
+            android:textSize="20sp" />
+
+        <TextView
+            android:id="@+id/hint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/opensans"
+            android:text="*You can select more than one option."
+            android:textSize="15sp" />
+
+        <TextView
+            android:id="@+id/question_school_error"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:text=""
+            android:textColor="@android:color/holo_red_dark"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/question_school_nextButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="80dp"
+        android:layout_marginLeft="135dp"
+        android:layout_marginRight="135dp"
+        android:background="@drawable/intro_button_background"
+        android:paddingLeft="20dp"
+        android:paddingTop="15dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="15dp"
+        android:text="Next"
+        android:textColor="@android:color/white"
+        android:textSize="18sp"
+        android:textAllCaps="false"
+        android:fontFamily="@font/opensansbold" />
+
+</LinearLayout>

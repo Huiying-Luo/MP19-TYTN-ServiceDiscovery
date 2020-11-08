@@ -133,31 +133,6 @@ public class MissionListRecyclerViewAdapter extends RecyclerView.Adapter<Mission
         void onMissionClick(int position);
     }
 
-/*
-    public void filterBySchoolType(int schoolType) {
-        List<Mission> filteredList = new ArrayList<>();
-
-        if (schoolType == 0) {
-            filteredList.addAll(allMissions);
-        } else if (schoolType == 1 || schoolType == 2){
-            for (Mission mission: allMissions) {
-                if (mission.getSchoolType() == schoolType - 1 || mission.getSchoolType() == 2) {
-                    filteredList.add(mission);
-                }
-            }
-        } else {
-            for (Mission mission: allMissions) {
-                if (mission.getSchoolType() == schoolType) {
-                    filteredList.add(mission);
-                }
-            }
-        }
-
-        missionList.clear();
-        missionList.addAll(filteredList);
-        notifyDataSetChanged();
-    }
-*/
 
     public void filterBySchoolTypes(ArrayList<String> selectedSchoolTypes) {
         List<Mission> filteredList = new ArrayList<>();

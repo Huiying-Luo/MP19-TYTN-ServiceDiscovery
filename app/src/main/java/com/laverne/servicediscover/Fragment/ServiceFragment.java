@@ -78,10 +78,8 @@ public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdap
 
     FusedLocationProviderClient fusedLocationProviderClient;
     private LocationRequest locationRequest;
-
-    private Spinner filterSpinner;
     private TextView filterTitleTextView;
-    private ArrayAdapter<String> filterSpinnerAdapter;
+
     private RecyclerView recyclerView;
     private SwipeRefreshLayout swipeRefreshLayout;
     private ServiceRecyclerViewAdapter adapter;
@@ -112,12 +110,7 @@ public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdap
         View view = inflater.inflate(R.layout.service_fragment, container, false);
 
         configureView(view);
-        /*
-        // 1 = Education
-        if (category == 1) {
-            filterTitleTextView.setVisibility(View.VISIBLE);
-            configureFilterSpinner();
-        } */
+
 
         // Education & Museum has floating action button for filter
         if (category == 1 || category == 3) {
@@ -412,54 +405,6 @@ public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdap
         }
     }
 
-/*
-    private void configureFilterSpinner() {
-        filterSpinner.setVisibility(View.VISIBLE);
-
-        String[] options = new String[]{"All", "Primary School", "Secondary School", "Special School", "Adult English Program"};
-        final List<String> filterList = new ArrayList<String>(Arrays.asList(options));
-        filterSpinnerAdapter = new ArrayAdapter<String>(getActivity(), R.layout.spinner_item, filterList);
-
-        filterSpinner.setAdapter(filterSpinnerAdapter);
-        filterSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                filterBySchoolType(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-    }
-*/
-/*
-    private void filterBySchoolType(int position) {
-        services.removeAll(services);
-        if (position != 0) {
-            for (int i = 0; i < allServices.size(); i++) {
-                Service tempSerivce = allServices.get(i);
-                // primary and secondary schools
-                int schoolType = tempSerivce.getSchoolType();
-                if (position == 1 || position == 2) {
-                    if (schoolType == position - 1 || schoolType == 2) {
-                        services.add(tempSerivce);
-                    }
-                } else {
-                    // special and adult english schools
-                    if (schoolType == position) {
-                        services.add(tempSerivce);
-                    }
-                }
-            }
-        } else {
-            services.addAll(allServices);
-        }
-        adapter.updateList(services);
-        setUpLayoutAnimation(recyclerView);
-        layoutManager.scrollToPosition(0);
-    }
-*/
 
     private void filterSchools() {
         services.removeAll(services);
@@ -555,83 +500,7 @@ public class ServiceFragment extends Fragment implements ServiceRecyclerViewAdap
         });
     }
 
-/*
-    private void goToApplicationSettings() {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getActivity().getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
 
-
-    private void registerCallbackForPhoneCall() {
-        adapter.setPhoneCallListener(new ServiceRecyclerViewAdapter.OnPhoneCallListener() {
-            @Override
-            public void onPhoneCallClick(String phoneNo) {
-                makePhoneCall(phoneNo);
-            }
-        });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == REQUEST_CODE_CALL_PERMISSION) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                // permission granted
-                makePhoneCall(callingNumber);
-            }
-        }
-    }
-
-
-    private void makePhoneCall(final String phoneNo) {
-        callingNumber = phoneNo;
-        if (ContextCompat.checkSelfPermission(getActivity().getApplicationContext(), Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-            if (!ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {
-                // This block here means PERMANENTLY DENIED PERMISSION (Don't ask again)
-                new AlertDialog.Builder(getActivity())
-                        .setMessage("Phone Number: " + phoneNo + "\nIf you want to make a phone call here, please go to Settings to enable the phone call permission.")
-                        .setPositiveButton("Go to Settings", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                goToApplicationSettings();
-                            }
-                        })
-                        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.dismiss();
-                            }
-                        })
-                        .show();
-            } else {
-                ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.CALL_PHONE}, REQUEST_CODE_CALL_PERMISSION);
-            }
-
-        } else {
-            new AlertDialog.Builder(getActivity())
-                    .setMessage("Do you want to call the number:\n" + phoneNo)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        @SuppressLint("MissingPermission")
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Intent callIntent = new Intent(Intent.ACTION_CALL);
-                            callIntent.setData(Uri.parse("tel:" + phoneNo));
-                            getActivity().startActivity(callIntent);
-                        }
-                    })
-                    .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .show();
-        }
-    }
-
-*/
     private void setUpLayoutAnimation(RecyclerView recyclerView) {
         Context context = recyclerView.getContext();
         LayoutAnimationController layoutAnimationController = AnimationUtils.loadLayoutAnimation(context, R.anim.layout_down_to_up);
