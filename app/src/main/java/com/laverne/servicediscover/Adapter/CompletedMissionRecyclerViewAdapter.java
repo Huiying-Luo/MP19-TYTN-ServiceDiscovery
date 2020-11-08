@@ -77,6 +77,7 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
     }
 
 
+
     public void updateList(List<Mission> missionList) {
         this.missionList = missionList;
         notifyDataSetChanged();
@@ -87,3 +88,4 @@ public class CompletedMissionRecyclerViewAdapter extends RecyclerView.Adapter<Co
         return missionList.size();
     }
 }
+
