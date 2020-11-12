@@ -78,7 +78,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private Mission existingMission;
 
 
-    private static final String GOOGLE_API_KEY = "AIzaSyCEADqWbiBEunIO0gjudx7NLK8OC8ccTI4";
+    private static final String GOOGLE_API_KEY = "AIzaSyC4iJfZ2QIhpgsrig7P3JTZuvSTSIROCNI";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
